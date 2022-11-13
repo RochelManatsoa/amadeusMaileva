@@ -22,3 +22,6 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Services\Maileva\MailevaApi:
+        arguments: ['%env(resolve:MAILEVA_ENDPOINT)%', '%env(resolve:MAILEVA_CLIENT_TYPE)%', '%env(resolve:MAILEVA_CLIENT_ID)%', '%env(resolve:MAILEVA_CLIENT_SECRET)%', '%env(resolve:MAILEVA_CLIENT_USERNAME)%', '%env(resolve:MAILEVA_CLIENT_PASSWORD)%']
+    
