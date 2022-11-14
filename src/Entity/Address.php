@@ -42,10 +42,6 @@ class Address
      */
     private $country;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Service::class, mappedBy="address", cascade={"persist", "remove"})
-     */
-    private $service;
 
     public function getId(): ?int
     {
@@ -108,28 +104,6 @@ class Address
     public function setCountry(?string $country): self
     {
         $this->country = $country;
-
-        return $this;
-    }
-
-    public function getService(): ?Service
-    {
-        return $this->service;
-    }
-
-    public function setService(?Service $service): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($service === null && $this->service !== null) {
-            $this->service->setAddress(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($service !== null && $service->getAddress() !== $this) {
-            $service->setAddress($this);
-        }
-
-        $this->service = $service;
 
         return $this;
     }

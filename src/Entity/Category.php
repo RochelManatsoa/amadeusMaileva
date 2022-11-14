@@ -34,6 +34,16 @@ class Category
      */
     private $services;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $slug;
+
+    public function __toString(): string
+    {
+        return (string) $this->getName();
+    }
+
     public function __construct()
     {
         $this->services = new ArrayCollection();
@@ -94,6 +104,18 @@ class Category
                 $service->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
