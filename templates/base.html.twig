@@ -38,7 +38,7 @@
 					</ul>
 					<div class="d-flex">
 						{% if app.user %}
-							<a class="btn btn-primary" href="{{path('app_logout')}}">Se déconnecter</a>
+							<a class="btn btn-outline-primary" href="{{path('app_logout')}}">Se déconnecter</a>
 						{% else %}
 							<a class="btn btn-primary" href="{{path('app_login')}}">Se connecter</a>
 						{% endif %}
@@ -49,5 +49,6 @@
 		<div class="body-template"> {% block body %}{% endblock %}
 			</div>
 		</body>
+		{% block jsFooter %}{% endblock %}
 	</html>
 </body></html>

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ServiceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -61,6 +63,16 @@ class Service
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $slug;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Resiliation::class, mappedBy="service")
+     */
+    private $resiliations;
+
+    public function __construct()
+    {
+        $this->resiliations = new ArrayCollection();
+    }
 
     public function __toString(): string
     {
@@ -176,6 +188,36 @@ class Service
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Resiliation>
+     */
+    public function getResiliations(): Collection
+    {
+        return $this->resiliations;
+    }
+
+    public function addResiliation(Resiliation $resiliation): self
+    {
+        if (!$this->resiliations->contains($resiliation)) {
+            $this->resiliations[] = $resiliation;
+            $resiliation->setService($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResiliation(Resiliation $resiliation): self
+    {
+        if ($this->resiliations->removeElement($resiliation)) {
+            // set the owning side to null (unless already changed)
+            if ($resiliation->getService() === $this) {
+                $resiliation->setService(null);
+            }
+        }
 
         return $this;
     }
