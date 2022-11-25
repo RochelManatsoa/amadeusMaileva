@@ -2,7 +2,7 @@
 
 namespace App\EventSubscriber;
 
-use App\Entity\{Service, Category};
+use App\Entity\{Service, Category, Letter};
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -30,7 +30,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
         $entity = $event->getEntityInstance();
 
-        if($entity instanceof Service || $entity instanceof Category){
+        if($entity instanceof Service || $entity instanceof Category || $entity instanceof Letter){
             $slug = $this->sluggerInterface->slug($entity->getName());
             $entity->setSlug(strtolower($slug));
         }

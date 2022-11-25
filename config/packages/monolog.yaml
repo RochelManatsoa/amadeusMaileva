@@ -1,10 +1,17 @@
 monolog:
-    channels:
-        - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
+    channels: ['maileva', 'main', 'console']
 
 when@dev:
     monolog:
         handlers:
+            maileva:
+                # log all messages (since debug is the lowest level)
+                level:    debug
+                type:     rotating_file
+                path:     'logsMaileva/maileva.log'
+                channels: [maileva]
+                formatter: monolog.formatter.standard
+                max_files: 30
             main:
                 type: stream
                 path: "%kernel.logs_dir%/%kernel.environment%.log"

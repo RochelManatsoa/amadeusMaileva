@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Category;
+use App\Entity\Envoi;
+use App\Entity\Letter;
 use App\Entity\Service;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -29,7 +31,10 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToCrud('Envois', 'fas fa-file-import', Envoi::class);
+        yield MenuItem::linkToCrud('Documents', 'fas fa-folder', Service::class);
         yield MenuItem::linkToCrud('Service à résilier', 'fas fa-list', Service::class);
         yield MenuItem::linkToCrud('Catégorie', 'fas fa-tag', Category::class);
+        yield MenuItem::linkToCrud('Modèle de lettre', 'fas fa-edit', Letter::class);
     }
 }

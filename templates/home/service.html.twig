@@ -36,16 +36,17 @@
 								<div class="accordion-body">
 									<p>Plus besoin de chercher l'adresse de résiliation, nous l'avons trouvé pour vous ! Sélectionnez une société pour l'ajouter à votre lettre.</p>
 									<!-- Button trigger modal -->
-									<a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+									<a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="select-service">
 										Sélectionnez la société à résilier
-										<i class="fa-solid fa-circle-chevron-down"></i>
+										<i class="fa-solid fa-circle-chevron-down mx-2"></i>
 
 									</a>
 
 									<!-- Modal -->
 									<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
-										<div class="modal-dialog modal-dialog-scrollable">
+										<div class="modal-dialog modal-dialog-scrollable modal-lg">
+
 
 											<div class="modal-content">
 												<div class="modal-header">
@@ -56,7 +57,9 @@
 												<div class="modal-body">
 													{% for service in services %}
 														<div class="form-check">
-															<input class="form-check-input" type="radio" name="service" id="{{'service' ~ service.id}}">
+															<input class="form-check-input" type="radio" name="{{'service' ~ service.id}}" id="{{'service' ~ service.id}}" data-service="{{service.slug}}">
+
+
 															<label class="form-check-label" for="{{'service' ~ service.id}}1">
 																{{service.name}}
 															</label>
@@ -78,15 +81,17 @@
 
 								</button>
 							</h2>
-							<div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+							<div id="collapseTwo" data-services="{{ dataServices | json_encode()}}" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+
 								<div class="accordion-body">
 									<div class="card card-body">
-										{{ form_row(form.service.name)}}
-										{{ form_row(form.service.address)}}
-										{{ form_row(form.service.complement)}}
+										{{ form_row(form.service.name, { 'attr' : { 'data-service' : 'name'}})}}
+										{{ form_row(form.service.address, { 'attr' : { 'data-service' : 'adress'}})}}
+										{{ form_row(form.service.complement, { 'attr' : { 'data-service' : 'complement'}})}}
+
 										<div class="row">
-											<div class="col">{{ form_row(form.service.zipCode)}}</div>
-											<div class="col">{{ form_row(form.service.city)}}</div>
+											<div class="col">{{ form_row(form.service.zipCode, { 'attr' : { 'data-service' : 'zipCode'}})}}</div>
+											<div class="col">{{ form_row(form.service.city, { 'attr' : { 'data-service' : 'city'}})}}</div>
 										</div>
 									</div>
 								</div>
@@ -103,7 +108,10 @@
 					<legend>{{ form_label(form.service) }}</legend>
 					<div class="ancientitulaire">
 						{{ form_row(form.number)}}
-						{{ form_row(form.type)}}
+						{{ form_row(form.type, {'attr': {'data-letters':  letters | json_encode() 
+						}})}}
+
+
 						{{ form_row(form.description)}}
 					</div>
 
@@ -140,10 +148,10 @@
 
 				<section>
 					<p>The next and previous buttons help you to navigate through your content.</p>
-					<div style="display:none;">
+					<div style="">
 						{{form_rest(form)}}
 					</div>
-
+					<button type="submit" class="btn btn-primary">Soumettre</button>
 				</section>
 
 				{{ form_end(form) }}
@@ -157,4 +165,42 @@
 	<script src="{{asset('assets/js/jquery.steps.min.js')}}"></script>
 	<script src="{{asset('assets/js/jqueryValidate.js')}}"></script>
 	<script src="{{asset('assets/js/main.js')}}"></script>
+	<script>
+		$(function () {
+
+var data = $('#resiliation_form_type').data('letters');
+
+$('#resiliation_form_number').blur(function (e) {
+var number = $(this).val() 
+var content = $('#resiliation_form_description').text()
+content = content.replace('[ mobile-identifiant ]', number)
+$('#resiliation_form_description').html(content)
+});
+$(document).on('change', '.form-check', function () {
+var ref = $(this).children('input').data('service')
+var services = $('#collapseTwo').data('services');
+var addressService = services[ref]
+$('#select-service').html(addressService.name + '<i class="fa-solid fa-circle-chevron-down mx-2"></i>')
+$('input#resiliation_form_service_name').val(addressService.name)
+$('input#resiliation_form_service_address').val(addressService.address)
+$('input#resiliation_form_service_complement').val(addressService.complement)
+$('input#resiliation_form_service_zipCode').val(addressService.zipCode)
+$('input#resiliation_form_service_city').val(addressService.city)
+console.log(services[ref].name)
+console.log(addressService.name)
+
+console.log(services[ref])
+console.log(ref)
+
+$('.modal').modal('hide');
+});
+
+$('#resiliation_form_description').html(data[1].content)
+
+$('#resiliation_form_type').on('change', function (e) {
+var Value = $(".ancientitulaire").find(":selected").val();
+$('#resiliation_form_description').html(data[Value].content)
+})
+})
+	</script>
 {% endblock %}

@@ -11,6 +11,11 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
+    monolog.formatter.standard:
+        class: Monolog\Formatter\LineFormatter
+        arguments:
+            $format: "%%datetime%% |  client ip %%extra.client_ip%% | %%channel%%.%%level_name%%:  %%message%% %%context%%\n"
+    
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
@@ -23,5 +28,5 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
     App\Services\Maileva\MailevaApi:
-        arguments: ['%env(resolve:MAILEVA_ENDPOINT)%', '%env(resolve:MAILEVA_CLIENT_TYPE)%', '%env(resolve:MAILEVA_CLIENT_ID)%', '%env(resolve:MAILEVA_CLIENT_SECRET)%', '%env(resolve:MAILEVA_CLIENT_USERNAME)%', '%env(resolve:MAILEVA_CLIENT_PASSWORD)%']
+        arguments: ['%env(resolve:MAILEVA_ENDPOINT)%', '%env(resolve:MAILEVA_ENDPOINT_API)%', '%env(resolve:MAILEVA_CLIENT_TYPE)%', '%env(resolve:MAILEVA_CLIENT_ID)%', '%env(resolve:MAILEVA_CLIENT_SECRET)%', '%env(resolve:MAILEVA_CLIENT_USERNAME)%', '%env(resolve:MAILEVA_CLIENT_PASSWORD)%']
     

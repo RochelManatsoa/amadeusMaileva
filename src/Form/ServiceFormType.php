@@ -12,15 +12,11 @@ class ServiceFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', null, ['label' => 'Nom du service'])
-            ->add('description')
-            ->add('address', null, ['label' => 'Addresse du service'])
+            ->add('name', null, ['label' => 'Nom du service *'])
+            ->add('address', null, ['label' => 'Addresse du service *'])
             ->add('complement', null, ['label' => 'Complément'])
             ->add('zipCode', null, ['label' => 'Code postale *'])
             ->add('city', null, ['label' => 'Ville *'])
-            ->add('country')
-            ->add('slug')
-            ->add('category')
         ;
     }
 

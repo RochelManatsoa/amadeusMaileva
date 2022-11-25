@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Resiliation
 {
+    const DOC_DOWNLOAD = 'document/';
+    
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -123,5 +125,20 @@ class Resiliation
         $this->description = $description;
 
         return $this;
+    }
+
+    public function getGeneratedCerfaPath(): ?string
+    {
+        $path = $this::DOC_DOWNLOAD . $this->id . "/" .
+            $this->commande->getImmatriculation() . '-' .
+            $this->commande->getCodePostal();
+
+        return $path;
+    }
+
+    public function getGeneratedCerfaPathFile(): ?string
+    {
+
+        return $this->getGeneratedCerfaPath() . '/cerfa.pdf';
     }
 }
