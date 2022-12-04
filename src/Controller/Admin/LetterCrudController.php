@@ -21,7 +21,7 @@ class LetterCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             TextField::new('name'),
-            TextareaField::new('content'),
+            TextareaField::new('content')->hideOnIndex(),
         ];
     }
 }

@@ -65,7 +65,7 @@ class Service
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity=Resiliation::class, mappedBy="service")
+     * @ORM\OneToMany(targetEntity=Resiliation::class, mappedBy="service", cascade={"persist", "remove"})
      */
     private $resiliations;
 

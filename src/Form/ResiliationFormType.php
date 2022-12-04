@@ -12,6 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 
 class ResiliationFormType extends AbstractType
 {
@@ -24,6 +25,7 @@ class ResiliationFormType extends AbstractType
                 'label' => 'Motif',
                 'class' => Letter::class,
                 'choice_label'  => 'name',
+                'data'=>$options['defaultModel']
             ])
             ->add('number', null, ['label' => 'Numéro de contrat *'])
             ->add('description', TextareaType::class, [
@@ -38,5 +40,7 @@ class ResiliationFormType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Resiliation::class,
         ]);
+
+        $resolver->setRequired(array('defaultModel'));
     }
 }

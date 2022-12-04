@@ -42,7 +42,7 @@ class Client
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, inversedBy="client", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $user;
 

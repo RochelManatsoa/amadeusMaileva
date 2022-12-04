@@ -7,6 +7,7 @@ use App\Entity\Letter;
 use App\Form\ServiceType;
 use App\Form\ServiceFormType;
 use App\Form\ResiliationFormType;
+use App\Manager\ResiliationManager;
 use App\Repository\LetterRepository;
 use App\Services\Maileva\MailevaApi;
 use App\Repository\ServiceRepository;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\{Service, Category, Resiliation};
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
@@ -39,37 +41,24 @@ class HomeController extends AbstractController
         Request $request,
         Category $category,
         LetterRepository $letterRepository,
-        ServiceRepository $serviceRepository
+        ServiceRepository $serviceRepository,
+        ResiliationManager $resiliationManager
     ): Response {
+        $service = $serviceRepository->find($category);
         $services = $serviceRepository->findAll($category);
         $dataServices = $this->objectToArray($services);
-        // dd($dataServices);
-        $services = $serviceRepository->findAll($category);
         $models = $this->objectToArray($letterRepository->findAll());
-        $resiliation = new Resiliation();
-        $resiliation->setCreatedAt(new \DateTimeImmutable());
-        $form = $this->createForm(ResiliationFormType::class, $resiliation);
+        $resiliation = $resiliationManager->init();
+        $resiliation->setService($service);
+        $form = $this->createForm(ResiliationFormType::class, $resiliation, ['defaultModel'=> null]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            dd($form->getData());
-            // "name": "Résiliation d'un abonnement téléphonique",
-            // "custom_id": "order_1234",
-            // "custom_data": "order_1234",
-            // "acknowledgement_of_receipt": true,
-            // "acknowledgement_of_receipt_scanning": true,
-            // "color_printing": true,
-            // "duplex_printing": true,
-            // "optional_address_sheet": false,
-            // "notification_email": "do_not_reply@maileva.com",
-            // "sender_address_line_1": "Société Durand",
-            // "sender_address_line_2": "M. Pierre DUPONT",
-            // "sender_address_line_3": "Batiment B",
-            // "sender_address_line_4": "10 avenue Charles de Gaulle",
-            // "sender_address_line_5": "",
-            // "sender_address_line_6": "94673 Charenton-Le-Pont",
-            // "sender_country_code": "FR",
-            // "archiving_duration": 3,
-            // "return_envelope_reference": 123456
+            $resiliation = $form->getData();
+            $resiliationManager->save($resiliation);
+
+            return $this->redirectToRoute('app_preview', [
+                'customId' => $resiliation->getCustomId(),
+            ]);
         }
 
         return $this->render('home/service.html.twig', [
@@ -112,11 +101,13 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/apercu-pdf/{slug}", name="app_doc_preview")
+     * @Route("/apercu-pdf/{customId}", name="app_doc_preview")
      */
-    public function preview(Resiliation $resiliation)
+    public function preview(Resiliation $resiliation, ResiliationManager $resiliationManager)
     {
+        $file = $resiliationManager->generatePreview($resiliation);
 
+        return new BinaryFileResponse($file);
     }
 
 
@@ -134,5 +125,51 @@ class HomeController extends AbstractController
     public function resiliationFacile(MailevaApi $token): Response
     {
         return $this->render('home/resiliationFacile.html.twig', []);
+    }
+
+    /**
+     * @Route("/preview/{customId}", name="app_preview")
+     */
+    public function previewDocument(
+        Resiliation $resiliation, 
+        Request $request,
+        LetterRepository $letterRepository,
+        ServiceRepository $serviceRepository,
+        ResiliationManager $resiliationManager
+        )
+    {
+        $services = $serviceRepository->findAll($resiliation->getService()->getCategory());
+        $dataServices = $this->objectToArray($services);
+        $defaultModel = $letterRepository->findOneByName($resiliation->getType());
+        $models = $this->objectToArray($letterRepository->findAll());
+        $form = $this->createForm(ResiliationFormType::class, $resiliation, ['defaultModel'=>$defaultModel]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $resiliation = $form->getData();
+            $resiliationManager->save($resiliation);
+
+            return $this->redirectToRoute('app_preview', [
+                'customId' => $resiliation->getCustomId(),
+            ]);
+        }
+
+        return $this->render('home/service.html.twig', [
+            'services' => $services,
+            'dataServices' => $dataServices,
+            'letters' => $models,
+            'category' => $resiliation->getService()->getCategory()->getName(),
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/resume/{customId}", name="app_resume")
+     */
+    public function resume(Resiliation $resiliation)
+    {
+        return $this->render('home/recap.html.twig', [
+            'category' => $resiliation->getService()->getCategory()->getName(),
+            'resiliation' => $resiliation,
+        ]);
     }
 }

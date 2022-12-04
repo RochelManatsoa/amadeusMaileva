@@ -147,14 +147,15 @@
 				<h3>Récapitulatif</h3>
 
 				<section>
-					<p>The next and previous buttons help you to navigate through your content.</p>
-					<div style="">
-						{{form_rest(form)}}
-					</div>
-					<button type="submit" class="btn btn-primary">Soumettre</button>
+					<legend>Récapitulatif des informations liées à la demande</legend>
+                    <div id="resum"></div>
+                    <div style="display:none;">
+                        {{form_rest(form)}}
+                    </div>
 				</section>
 
 				{{ form_end(form) }}
+
 
 			</div>
 		</div>
@@ -166,41 +167,46 @@
 	<script src="{{asset('assets/js/jqueryValidate.js')}}"></script>
 	<script src="{{asset('assets/js/main.js')}}"></script>
 	<script>
+
 		$(function () {
 
-var data = $('#resiliation_form_type').data('letters');
+            initFormStep(
+                $("#example-basic"),
+                "h3",
+                "fieldset",
+                "fade"
+            );
 
-$('#resiliation_form_number').blur(function (e) {
-var number = $(this).val() 
-var content = $('#resiliation_form_description').text()
-content = content.replace('[ mobile-identifiant ]', number)
-$('#resiliation_form_description').html(content)
-});
-$(document).on('change', '.form-check', function () {
-var ref = $(this).children('input').data('service')
-var services = $('#collapseTwo').data('services');
-var addressService = services[ref]
-$('#select-service').html(addressService.name + '<i class="fa-solid fa-circle-chevron-down mx-2"></i>')
-$('input#resiliation_form_service_name').val(addressService.name)
-$('input#resiliation_form_service_address').val(addressService.address)
-$('input#resiliation_form_service_complement').val(addressService.complement)
-$('input#resiliation_form_service_zipCode').val(addressService.zipCode)
-$('input#resiliation_form_service_city').val(addressService.city)
-console.log(services[ref].name)
-console.log(addressService.name)
+			var data = $('#resiliation_form_type').data('letters');
 
-console.log(services[ref])
-console.log(ref)
+			$('#resiliation_form_number').blur(function (e) {
+				var number = $(this).val() 
+				var content = $('#resiliation_form_description').text()
+				content = content.replace('[ mobile-identifiant ]', number)
+				$('#resiliation_form_description').html(content)
+			});
 
-$('.modal').modal('hide');
-});
+			$(document).on('change', '.form-check', function (e) {
+				e.preventDefault()
+				var ref = $(this).children('input').data('service')
+				var services = $('#collapseTwo').data('services');
+				var addressService = services[ref]
+				$('#select-service').html(addressService.name + '<i class="fa-solid fa-circle-chevron-down mx-2"></i>')
+				$('input#resiliation_form_service_name').val(addressService.name)
+				$('input#resiliation_form_service_address').val(addressService.address)
+				$('input#resiliation_form_service_complement').val(addressService.complement)
+				$('input#resiliation_form_service_zipCode').val(addressService.zipCode)
+				$('input#resiliation_form_service_city').val(addressService.city)
 
-$('#resiliation_form_description').html(data[1].content)
+				$('.modal').modal('hide');
+			});
 
-$('#resiliation_form_type').on('change', function (e) {
-var Value = $(".ancientitulaire").find(":selected").val();
-$('#resiliation_form_description').html(data[Value].content)
-})
-})
+			$('#resiliation_form_description').html(data[1].content)
+
+			$('#resiliation_form_type').on('change', function (e) {
+				var Value = $(".ancientitulaire").find(":selected").val();
+				$('#resiliation_form_description').text(data[Value].content)
+			})
+		})
 	</script>
 {% endblock %}

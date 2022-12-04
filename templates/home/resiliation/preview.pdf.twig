@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>{{resiliation.number }}</title>
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css'>
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ pathToWeb ~ asset('assets/css/main.css') }}">
+  <style type="text/css">
+    .logo-facture{
+      width:100px;
+    }
+    body{
+      width: 794px;
+      height: 1123px;
+      font-family:Roboto;
+      font-size: 14px;
+      background-image: url("{{ pathToWeb ~ asset('assets/images/bg-preview.png') }}");
+      background-repeat: repeat;
+    }
+    h1{
+      font-size: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <br>
+  <br>
+  <br>
+  <div class="container">
+  <div class="invoice">
+    <div class="row">
+      <div class="col-7">
+		<p>
+          {{ resiliation.client.firstName}}, {{ resiliation.client.lastName}}<br>
+          {{ resiliation.client.address.name }}<br>
+          {{ resiliation.client.address.zipCode}} - {{ resiliation.client.address.city}}<br>
+          {{ resiliation.client.mobile }}<br>
+        </p>        
+      </div>
+      <div class="col-5">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-7">
+      </div>
+      <div class="col-5">
+        <p>
+          <br>
+            <strong>{{ resiliation.service.name }}</strong> <br>
+            {{ resiliation.service.address }} <br>
+            {% if resiliation.service.complement is not null %}
+              {{ resiliation.service.complement }} <br>
+            {% endif %}
+            {{ resiliation.service.zipCode }} - {{ resiliation.service.city }} <br>
+        </p>
+      </div>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <br>
+    <div class="row">
+      <div class="col">
+        <p> A <strong>{{ resiliation.client.address.city }}</strong>, {{ resiliation.createdAt | date('d/m/Y') }}</p><br>
+        <p><u><strong>Objet</strong></u> : {{ resiliation.type }}</p>
+        <div>
+          {{ resiliation.description |nl2br }} 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

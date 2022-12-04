@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\ResiliationRepository;
+
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ResiliationRepository;
 
 /**
  * @ORM\Entity(repositoryClass=ResiliationRepository::class)
@@ -20,13 +21,13 @@ class Resiliation
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="resiliations")
+     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="resiliations", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $service;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="resiliations")
+     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="resiliations", cascade={"persist", "remove"})
      */
     private $client;
 
@@ -36,7 +37,7 @@ class Resiliation
     private $type;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
@@ -49,6 +50,11 @@ class Resiliation
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $customId;
 
     public function getId(): ?int
     {
@@ -91,12 +97,12 @@ class Resiliation
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
 
@@ -127,18 +133,32 @@ class Resiliation
         return $this;
     }
 
-    public function getGeneratedCerfaPath(): ?string
+    public function getGeneratedResiliationPath(): ?string
     {
-        $path = $this::DOC_DOWNLOAD . $this->id . "/" .
-            $this->commande->getImmatriculation() . '-' .
-            $this->commande->getCodePostal();
+        $path = $this::DOC_DOWNLOAD . $this->service->getSlug() . "/" .$this->id;
 
         return $path;
     }
 
-    public function getGeneratedCerfaPathFile(): ?string
+    public function getGeneratedResiliationPathFile(): ?string
     {
+        return $this->getGeneratedResiliationPath() . '/resiliation.pdf';
+    }
 
-        return $this->getGeneratedCerfaPath() . '/cerfa.pdf';
+    public function getGeneratedPreviewPathFile(): ?string
+    {
+        return $this->getGeneratedResiliationPath() . '/preview.pdf';
+    }
+
+    public function getCustomId(): ?string
+    {
+        return $this->customId;
+    }
+
+    public function setCustomId(string $customId): self
+    {
+        $this->customId = $customId;
+
+        return $this;
     }
 }
