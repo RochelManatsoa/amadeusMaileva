@@ -1,0 +1,212 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Résiliation
+	{{category}}
+{% endblock %}
+
+{% block javascripts %}
+	{{parent()}}
+	<link href="{{asset('assets/css/jquery.steps.css')}}" rel="stylesheet">
+{% endblock %}
+
+
+{% block body %}
+	<div class="container py-5">
+		<h1 class="h3 py-3 font-weight-normal text-center">Lettre de résiliation -
+			{{category}}</h1>
+
+		<div class="row">
+			<div class="col-md-8 offset-md-2">
+
+				{{ form_start(form, {'attr': {'id': 'example-basic'}}) }}
+
+				<h3>Services à résilier</h3>
+
+				<section style="position: relative;width: 100%;">
+					<legend>{{ form_label(form.service) }}</legend>
+					<div class="accordion" id="accordionExample">
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="headingOne">
+								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+									Sélectionnez une société depuis notre annuaire
+								</button>
+							</h2>
+							<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+								<div class="accordion-body">
+									<p>Plus besoin de chercher l'adresse de résiliation, nous l'avons trouvé pour vous ! Sélectionnez une société pour l'ajouter à votre lettre.</p>
+									<!-- Button trigger modal -->
+									<a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="select-service">
+										Sélectionnez la société à résilier
+										<i class="fa-solid fa-circle-chevron-down mx-2"></i>
+
+									</a>
+
+									<!-- Modal -->
+									<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+										<div class="modal-dialog modal-dialog-scrollable modal-lg">
+
+
+											<div class="modal-content">
+												<div class="modal-header">
+
+													<h1 class="modal-title fs-5" id="exampleModalLabel">Sélectionnez une société depuis notre annuaire</h1>
+													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<div class="modal-body">
+													{% for service in services %}
+														<div class="form-check">
+															<input class="form-check-input" type="radio" name="{{'service' ~ service.id}}" id="{{'service' ~ service.id}}" data-service="{{service.slug}}">
+
+
+															<label class="form-check-label" for="{{'service' ~ service.id}}1">
+																{{service.name}}
+															</label>
+														</div>
+													{% endfor %}
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+								</div>
+							</div>
+						</div>
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="headingTwo">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+									Adresse de résiliation de votre destinataire
+
+								</button>
+							</h2>
+							<div id="collapseTwo" data-services="{{ dataServices | json_encode()}}" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+
+								<div class="accordion-body">
+									<div class="card card-body">
+										{{ form_row(form.service.name, { 'attr' : { 'data-service' : 'name'}})}}
+										{{ form_row(form.service.address, { 'attr' : { 'data-service' : 'adress'}})}}
+										{{ form_row(form.service.complement, { 'attr' : { 'data-service' : 'complement'}})}}
+
+										<div class="row">
+											<div class="col">{{ form_row(form.service.zipCode, { 'attr' : { 'data-service' : 'zipCode'}})}}</div>
+											<div class="col">{{ form_row(form.service.city, { 'attr' : { 'data-service' : 'city'}})}}</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</section>
+
+				<h3>Modèle de lettre</h3>
+
+				<section style="position: relative;width: 100%;">
+
+					<legend>{{ form_label(form.service) }}</legend>
+					<div class="ancientitulaire">
+						{{ form_row(form.number)}}
+						{{ form_row(form.type, {'attr': {'data-letters':  letters | json_encode() 
+						}})}}
+
+
+						{{ form_row(form.description)}}
+					</div>
+
+
+				</section>
+
+
+				<h3>Coordonnées</h3>
+
+				<section style="position: relative;width: 100%;">
+
+					<legend>Mes coordonnées</legend>
+					<div class="ancientitulaire">
+						<div class="row">
+							<div class="col">{{ form_row(form.client.firstName)}}</div>
+							<div class="col">{{ form_row(form.client.lastName)}}</div>
+						</div>
+						{{ form_row(form.client.mobile)}}
+						{{ form_row(form.client.address.name)}}
+						{{ form_row(form.client.address.complement)}}
+						<div class="row">
+							<div class="col">{{ form_row(form.client.address.zipCode)}}</div>
+							<div class="col">{{ form_row(form.client.address.city)}}</div>
+						</div>
+
+
+					</div>
+
+
+				</section>
+
+
+				<h3>Récapitulatif</h3>
+
+				<section>
+					<legend>Récapitulatif des informations liées à la demande</legend>
+                    <div id="resum"></div>
+                    <div style="display:none;">
+                        {{form_rest(form)}}
+                    </div>
+				</section>
+
+				{{ form_end(form) }}
+
+
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block jsFooter %}
+	<script src="{{asset('assets/js/jquery.min.js')}}"></script>
+	<script src="{{asset('assets/js/jquery.steps.min.js')}}"></script>
+	<script src="{{asset('assets/js/jqueryValidate.js')}}"></script>
+	<script src="{{asset('assets/js/main.js')}}"></script>
+	<script>
+
+		$(function () {
+
+            initFormStep(
+                $("#example-basic"),
+                "h3",
+                "fieldset",
+                "fade"
+            );
+
+			var data = $('#resiliation_form_type').data('letters');
+
+			$('#resiliation_form_number').blur(function (e) {
+				var number = $(this).val() 
+				var content = $('#resiliation_form_description').text()
+				content = content.replace('[ mobile-identifiant ]', number)
+				$('#resiliation_form_description').html(content)
+			});
+
+			$(document).on('change', '.form-check', function (e) {
+				e.preventDefault()
+				var ref = $(this).children('input').data('service')
+				var services = $('#collapseTwo').data('services');
+				var addressService = services[ref]
+				$('#select-service').html(addressService.name + '<i class="fa-solid fa-circle-chevron-down mx-2"></i>')
+				$('input#resiliation_form_service_name').val(addressService.name)
+				$('input#resiliation_form_service_address').val(addressService.address)
+				$('input#resiliation_form_service_complement').val(addressService.complement)
+				$('input#resiliation_form_service_zipCode').val(addressService.zipCode)
+				$('input#resiliation_form_service_city').val(addressService.city)
+
+				$('.modal').modal('hide');
+			});
+
+			$('#resiliation_form_description').html(data[1].content)
+
+			$('#resiliation_form_type').on('change', function (e) {
+				var Value = $(".ancientitulaire").find(":selected").val();
+				$('#resiliation_form_description').text(data[Value].content)
+			})
+		})
+	</script>
+{% endblock %}
