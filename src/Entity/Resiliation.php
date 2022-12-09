@@ -135,7 +135,7 @@ class Resiliation
 
     public function getGeneratedResiliationPath(): ?string
     {
-        $path = $this::DOC_DOWNLOAD . $this->service->getSlug() . "/" .$this->id;
+        $path = $this::DOC_DOWNLOAD . $this->service->getSlug() . "/" .$this->customId;
 
         return $path;
     }

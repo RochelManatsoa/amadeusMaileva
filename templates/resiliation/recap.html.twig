@@ -23,8 +23,9 @@
 					<div class="content">
 					<div class="row">
 						<div class="col-6 text-center">
-							<a href="{{ path('app_doc_preview', {'customId': resiliation.customId})}}" class="btn btn-outline-primary px-2 my-2" target=_blank >Aperçu <i class='fa-solid fa-file-pdf'></i></a><br>
-							<a href="{{ path('app_preview', {'customId': resiliation.customId})}}" class="btn btn-outline-secondary px-2 my-2">Modifier <i class='fa-solid fa-edit'></i></a>
+							<a href="{{ path('app_resiliation_preview_doc', {'customId': resiliation.customId})}}" class="btn btn-outline-primary px-2 my-2" target=_blank >Aperçu <i class='fa-solid fa-file-pdf'></i></a><br>
+							<a href="{{ path('app_resiliation_preview', {'customId': resiliation.customId})}}" class="btn btn-outline-secondary px-2 my-2">Modifier <i class='fa-solid fa-edit'></i></a><br>
+							<a href="{{ path('app_maileva_send', {'customId': resiliation.customId})}}" class="btn btn-outline-info btn-lg px-2 my-2">Envoyer <i class='fa-solid fa-send'></i></a><br>
 						</div>
 						<div class="col-6">
 							<img class="img-fluid px-2 my-2" src="{{ asset('assets/images/Stripe_payment_form.png')}}" alt="stripe" >

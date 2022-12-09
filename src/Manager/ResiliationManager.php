@@ -43,12 +43,12 @@ class ResiliationManager
         $file = $resiliation->getGeneratedPreviewPathFile();
         if (!is_dir($folder)) mkdir($folder, 0777, true);
 		$scanFolder = scandir($folder);
-        if (!in_array("preview.pdf", $scanFolder)) { 
+        // if (!in_array("preview.pdf", $scanFolder)) { 
             $snappy = new Pdf('/usr/local/bin/wkhtmltopdf');
-            $html = $this->twig->render("home/resiliation/preview.pdf.twig", ['resiliation' => $resiliation]);
+            $html = $this->twig->render("resiliation/pdf/preview.pdf.twig", ['resiliation' => $resiliation]);
             $output = $snappy->getOutputFromHtml($html);
             file_put_contents($file, $output);
-        }
+        // }
         
         return $file;
 	}
@@ -61,7 +61,7 @@ class ResiliationManager
 		$scanFolder = scandir($folder);
         if (!in_array("resiliation.pdf", $scanFolder)) { 
             $snappy = new Pdf('/usr/local/bin/wkhtmltopdf');
-            $html = $this->twig->render("home/resiliation/resiliation.pdf.twig", ['resiliation' => $resiliation]);
+            $html = $this->twig->render("resiliation/pdf/resiliation.pdf.twig", ['resiliation' => $resiliation]);
             $output = $snappy->getOutputFromHtml($html);
             file_put_contents($file, $output);
         }

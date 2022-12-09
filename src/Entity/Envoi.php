@@ -23,12 +23,17 @@ class Envoi
     private $name;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
     private $customId;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string")
+     */
+    private $envoiId;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $customData;
 
@@ -180,30 +185,6 @@ class Envoi
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getCustomId(): ?int
-    {
-        return $this->customId;
-    }
-
-    public function setCustomId(int $customId): self
-    {
-        $this->customId = $customId;
-
-        return $this;
-    }
-
-    public function getCustomData(): ?string
-    {
-        return $this->customData;
-    }
-
-    public function setCustomData(string $customData): self
-    {
-        $this->customData = $customData;
 
         return $this;
     }
@@ -528,6 +509,42 @@ class Envoi
     public function setArchiveDate(?\DateTimeInterface $archiveDate): self
     {
         $this->archiveDate = $archiveDate;
+
+        return $this;
+    }
+
+    public function getCustomId(): ?string
+    {
+        return $this->customId;
+    }
+
+    public function setCustomId(string $customId): self
+    {
+        $this->customId = $customId;
+
+        return $this;
+    }
+
+    public function getCustomData(): ?string
+    {
+        return $this->customData;
+    }
+
+    public function setCustomData(?string $customData): self
+    {
+        $this->customData = $customData;
+
+        return $this;
+    }
+
+    public function getEnvoiId(): ?string
+    {
+        return $this->envoiId;
+    }
+
+    public function setEnvoiId(string $envoiId): self
+    {
+        $this->envoiId = $envoiId;
 
         return $this;
     }

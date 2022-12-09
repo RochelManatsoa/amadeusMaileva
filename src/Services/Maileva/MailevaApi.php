@@ -3,6 +3,7 @@
 namespace App\Services\Maileva;
 
 use App\Entity\ApiExchange;
+use App\Entity\Envoi;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -70,6 +71,7 @@ class MailevaApi
     private function saveExchange(ApiExchange $apiExchange, string $response): void
     {
         $apiExchange->setResponse($response);
+        $apiExchange->setCreatedAt(new \DateTime());
 
         $this->em->persist($apiExchange);
         $this->em->flush();
@@ -95,6 +97,7 @@ class MailevaApi
             $email = 'anonymous';
         }
         return $email;
+        // return 'annonymous';
     }
 
     public function getAllSendings()
@@ -138,13 +141,39 @@ class MailevaApi
 
         $this->log("connet to MailevaApi ... ", '...');
         $this->log("user infos", $this->getUserInfos());
+        
         $ch = curl_init($this->endpointApi . '/sendings');
+        curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $authorization));
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, \json_encode($params));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $response = json_decode(curl_exec($ch));
         $this->log("response postSending", \json_encode($response), true);
+        $this->saveExchange($apiExchange, \json_encode($response));
+
+        return $response;
+    }
+
+    public function submitSending(Envoi $envoi)
+    {
+
+        $token = $this->connect();
+        $this->log("parameters envoi", \json_encode($envoi));
+        $type = __FUNCTION__;
+        $apiExchange = $this->initExchange($type, \json_encode($envoi));
+        $authorization = 'Authorization: Bearer ' . $token;
+
+        $this->log("connet to MailevaApi ... ", '...');
+        $this->log("user infos", $this->getUserInfos());
+        
+        $ch = curl_init($this->endpointApi . '/sendings/'. $envoi->getEnvoiId());
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $authorization));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = json_decode(curl_exec($ch));
+        $this->log("response submitSending", \json_encode($response), true);
         $this->saveExchange($apiExchange, \json_encode($response));
 
         return $response;

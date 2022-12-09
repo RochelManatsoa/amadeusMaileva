@@ -8,7 +8,7 @@ function initFormStep(form, title, bodyTag, transitionEffect) {
       labels: {
         current: 'current step:',
         pagination: 'Pagination',
-        finish: 'Aperçu',
+        finish: 'Générer',
         next: 'Suivant',
         previous: 'Précédent',
         loading: 'Chargement ...',
@@ -77,8 +77,8 @@ function initFormStep(form, title, bodyTag, transitionEffect) {
                 '<div>' +
                   '<strong>' +
                   label[name] +
-                  '</strong>' +
-                  '<span>' +
+                  ':</strong>' +
+                  ' <span> ' +
                   value +
                   '</span>' +
                   '</div>',
@@ -87,9 +87,7 @@ function initFormStep(form, title, bodyTag, transitionEffect) {
           })
           resum.html(
             html.concat(
-              "<div><a class='btn btn-primary' id='preview' data-ajax='" +
-                data +
-                "'>Aperçu <i class='fa-solid fa-file-pdf'></i></a></div>",
+              "<div></div>",
             ),
           )
         }
