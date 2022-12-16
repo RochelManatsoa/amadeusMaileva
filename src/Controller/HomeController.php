@@ -22,6 +22,7 @@ class HomeController extends AbstractController
 
         return $this->render('home/index.html.twig', [
             'categories' => $categories,
+            'menu' => 'accueil',
         ]);
     }
 
@@ -30,7 +31,9 @@ class HomeController extends AbstractController
      */
     public function howItWorks(MailevaApi $token): Response
     {
-        return $this->render('home/howItWorks.html.twig', []);
+        return $this->render('home/howItWorks.html.twig', [
+            'menu' => 'howItWorks',
+        ]);
     }
 
     /**
@@ -38,6 +41,8 @@ class HomeController extends AbstractController
      */
     public function resiliationFacile(MailevaApi $token): Response
     {
-        return $this->render('home/resiliationFacile.html.twig', []);
+        return $this->render('home/resiliationFacile.html.twig', [
+            'menu' => 'resiliationFacile',
+        ]);
     }
 }

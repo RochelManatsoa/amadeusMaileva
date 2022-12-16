@@ -4,17 +4,37 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container-fluid homepage-cover text-center ">
-		<h1 class="pt-lg-5">La résiliation facile en quelques clics</h1>
-		<p>Modèles de lettre, envoi en recommandé, suivi en ligne</p>
-		<div class="row pt-5 justify-content-md-center">
-			<div class="col-4 align-self-center">
-			{% for category in categories %}
-				<a href="{{path('app_resiliation_category', {slug:category.slug})}}" class="btn btn-primary">{{category.name}}</a>
-			{% endfor %}
+	<div class="container-fluid h-100 home-fond text-white">
+		{#<div class="homepage-cover text-center ">
+			<h1 class="mt-lg-5">La résiliation facile en quelques clics</h1>
+			<p>Modèles de lettre, envoi en recommandé, suivi en ligne</p>
+			<div class="d-flex justify-content-md-center mt-5">
+				<div class="container-category">
+					{% for category in categories %}
+						<a href="{{path('app_resiliation_category', {slug:category.slug})}}" class="btn btn-primary mx-2">{{category.name}}</a>
+					{% endfor %}
+				</div>
+			</div>
+		</div>#}
+		<div class="row h-100">
+			<div class="col-md-6 h-100 d-grid justify-content-center align-items-center">
+				<div class="description-homepage">
+					<h1 class="">La résiliation facile en quelques clics</h1>
+					<p>Modèles de lettre, envoi en recommandé, suivi en ligne</p>
+				</div>
+			</div>
+			<div class="col-md-6 h-100 d-grid align-items-center">
+				<div class="container-category">
+					<h3 class="">Liste des services</h3>
+					<div class="d-block">
+						<div class="d-flex flex-column">
+							{% for category in categories %}
+								<a href="{{path('app_resiliation_category', {slug:category.slug})}}" class="btn btn-primary my-2">{{category.name}}</a>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-
-
 	</div>
 {% endblock %}

@@ -44,8 +44,11 @@ class ResiliationManager
         if (!is_dir($folder)) mkdir($folder, 0777, true);
 		$scanFolder = scandir($folder);
         // if (!in_array("preview.pdf", $scanFolder)) { 
-            $snappy = new Pdf('/usr/local/bin/wkhtmltopdf');
-            $html = $this->twig->render("resiliation/pdf/preview.pdf.twig", ['resiliation' => $resiliation]);
+            $snappy = new Pdf('C://"Program Files"/wkhtmltopdf/bin/wkhtmltopdf.exe');
+            $snappy -> setOption('enable-local-file-access', true);
+            $html = $this->twig->render("resiliation/pdf/preview.pdf.twig", [
+                'resiliation' => $resiliation
+            ]);
             $output = $snappy->getOutputFromHtml($html);
             file_put_contents($file, $output);
         // }

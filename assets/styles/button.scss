@@ -1,0 +1,15 @@
+.btn-blue {
+    color: whitesmoke;
+    background-color: $blue;
+    border-color: $blue;
+    font-weight: 500;
+    &:hover{
+        background-color: $blue-hover;
+        border-color: $blue-hover;
+        color: whitesmoke;
+    }
+    &:focus{
+        outline: 0;
+        box-shadow: 0;
+    }
+}
