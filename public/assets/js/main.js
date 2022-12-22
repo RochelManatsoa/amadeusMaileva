@@ -5,6 +5,7 @@ function initFormStep(form, title, bodyTag, transitionEffect) {
       headerTag: 'h3',
       bodyTag: 'section',
       transitionEffect: 'slideLeft',
+      titleTemplate: '<span class="number"></span> #title#',
       labels: {
         current: 'current step:',
         pagination: 'Pagination',

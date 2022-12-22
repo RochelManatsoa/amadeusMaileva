@@ -10,6 +10,15 @@
    Base styles: opinionated defaults
    ========================================================================== */
 
+:root{
+    --bs-gradient-beige : linear-gradient(45deg, #FFFFFF, #FFEFBA);
+    --bs-gradient-beige-webkit : -webkit-linear-gradient(45deg, #FFFFFF, #FFEFBA);
+    --bs-gradient-orange : linear-gradient(-45deg, #FFEFBA, #ffc400);
+    --bs-gradient-orange-webkit : -webkit-linear-gradient(-45deg, #FFEFBA, #ffc400);
+    --bs-gradient-orange-done : linear-gradient(-45deg, #FFEFBA, #ffc400, #FFEFBA);
+    --bs-gradient-orange-done-webkit : linear-gradient(-45deg, #FFEFBA, #ffc400, #FFEFBA);
+}
+
 html,
 button,
 input,
@@ -208,6 +217,120 @@ textarea {
 
 .clearfix {
     *zoom: 1;
+}
+
+/*
+    JQUERY STEP custommizing
+*/
+
+.container-form{
+    width: 700px;
+}
+
+.wizard > .content .modal-dialog{
+    margin-top: 4rem;
+    width: 684px;
+    height: fit-content;
+}
+
+.wizard>.steps .current a, 
+.wizard>.steps .current a:hover, 
+.wizard>.steps .current a:active{
+    background: #2193b0;  /* fallback for old browsers */
+    background: var(--bs-gradient-orange-webkit);  /* Chrome 10-25, Safari 5.1-6 */
+    background: var(--bs-gradient-orange); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.wizard>.steps .disabled a, 
+.wizard>.steps .disabled a:hover, 
+.wizard>.steps .disabled a:active{
+    background: #FFEFBA;  /* fallback for old browsers */
+    background: var(--bs-gradient-beige-webkit);  /* Chrome 10-25, Safari 5.1-6 */
+    background: var(--bs-gradient-beige); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.wizard>.steps a, 
+.wizard>.steps a:hover{
+    border-radius: 3rem;
+    padding-inline: 0;
+    text-align: center;
+}
+
+.wizard > .steps .done a, 
+.wizard > .steps .done a:hover, 
+.wizard > .steps .done a:active {
+    background: #ffc400;
+}
+
+.wizard > .content, 
+.wizard > .content .modal-content{
+    box-shadow: 0 0 10px 1px rgba(83, 83, 83, 0.5);
+    background: #FFEFBA;  /* fallback for old browsers */
+    background: var(--bs-gradient-beige-webkit);  /* Chrome 10-25, Safari 5.1-6 */
+    background: var(--bs-gradient-beige); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.wizard > .content .accordion-button, 
+.wizard > .content .accordion-body{
+    color: #808080;
+}
+
+.wizard > .content .accordion-button:focus{
+    box-shadow: 0 0 10px 1px rgba(83, 83, 83, 0.5);
+}
+
+.wizard > .content .accordion-button:not(.collapsed), 
+.btn-orange-gradient, 
+.btn-orange-gradient:hover,
+.btn-orange-gradient:focus-visible,
+.wizard > .content .btn-orange-gradient:active{
+    color: white;
+    background: #2193b0;  /* fallback for old browsers */
+    background: var(--bs-gradient-orange-webkit);  /* Chrome 10-25, Safari 5.1-6 */
+    background: var(--bs-gradient-orange); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.btn-orange-gradient>i{
+    color: #b3b3b3;
+}
+
+.wizard > .actions a, 
+.wizard > .actions a:hover, 
+.wizard > .actions a:active{
+    border-radius: 1.5rem;
+}
+
+.wizard > .actions a[href="#previous"], 
+.wizard > .actions a[href="#previous"]:hover, 
+.wizard > .actions a[href="#previous"]:active{
+    color: #808080;
+    background: #FFEFBA;  /* fallback for old browsers */
+    background: var(--bs-gradient-beige-webkit);  /* Chrome 10-25, Safari 5.1-6 */
+    background: var(--bs-gradient-beige); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.wizard > .actions a[href="#next"],
+.wizard > .actions a[href="#next"]:hover, 
+.wizard > .actions a[href="#next"]:active,
+.wizard > .actions a[href="#finish"],
+.wizard > .actions a[href="#finish"]:hover, 
+.wizard > .actions a[href="#finish"]:active{
+    color: #aaa;
+    background: #2193b0;  /* fallback for old browsers */
+    background: var(--bs-gradient-orange-webkit);  /* Chrome 10-25, Safari 5.1-6 */
+    background: var(--bs-gradient-orange); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.wizard > .content > .body input.error{
+    background-color: white;
+    border: solid 2px;
+    width: calc(100% + 8px);
+    margin-inline: -4px;
+    box-shadow: 0 0 10px 1px rgba(83, 83, 83, 0.5);
+}
+
+.accordion-button:not(.collapsed)::after {
+    filter: invert(52%) sepia(2%) saturate(24%) hue-rotate(3deg) brightness(97%) contrast(95%);
 }
 
 /* ==========================================================================

@@ -7,58 +7,51 @@
     background-position: center center;
     background-repeat: no-repeat;
 }*/
-.body-template{
+body{
     background-image: url("../../public/assets/images/homepage-cover-full.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    &::-webkit-scrollbar{
+        width: 0;
+    }
+    .body-template{
+        &>.container-fluid{
+            background: #1d1d5ecc;
+        }
+    }
 }
 /*.home-fond{
     display: grid;
     align-items: center;
 }*/
 .description-homepage{
-    max-width: 25rem;
+    max-width: 24rem;
 }
 .container-category{
     justify-self: end;
     justify-content: center;
     width: 25rem;
     margin-right: 10%;
-    background: linear-gradient(-90deg, rgba(255,255,255,.2), rgba(10, 10, 90, 0.2));
+    --bs-bg-opacity: .2;
+    //background: linear-gradient(-90deg, rgba(255,255,255,.2), rgba(10, 10, 90, 0.2));
     text-align: center;
     border-radius: 5px;
     .category-list{
-        height: 10rem;
+        max-height: 15rem;
         overflow-y: scroll;
         /* width */
         &::-webkit-scrollbar {
-            width: 10px;
+            width: 0px;
         }
-        scrollbar-width: thin!important;
-        
-        /* Track */
-        &::-webkit-scrollbar-track {
-            box-shadow: inset 0 0 5px grey; 
-            border-radius: 10px;
-        }
-        scrollbar-color: rgba(11, 11, 138, 0.4) #80808026;
-
-        /* Handle */
-        &::-webkit-scrollbar-thumb {
-            background: rgba(11, 11, 138, 0.4); 
-            border-radius: 10px;
-        }
-        
-        /* Handle on hover */
-        &::-webkit-scrollbar-thumb:hover {
-            background: rgba(11, 11, 138, 0.6); 
-        }
+        scrollbar-width: none;
     }
     .category-item{
         text-decoration: none;
         color: white;
-        background: linear-gradient(45deg, rgba(255,255,255,.2), rgba(11, 11, 138, 0.6), rgba(255,255,255,.2));
+        //background: linear-gradient(45deg, rgba(255,255,255,.2), rgba(11, 11, 138, 0.6), rgba(255,255,255,.2));
+        background: $gradient-orange;
+        background: $gradient-orange-webkit;
         padding: .2rem;
     }
 }
@@ -69,5 +62,15 @@
     margin-right: 2rem;
 }
 .resiliation-facile-cover, .how-it-work-cover{
-    margin-top: 100px;
+    //margin-top: 100px;
+    color: white;
+    &>div{
+        max-width: 25rem;
+    }
+}
+.text-beige{
+    color: $beige;
+}
+.text-gris{
+    color: $text-color-secondary;
 }

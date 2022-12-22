@@ -8,23 +8,24 @@
 {% block javascripts %}
 	{{parent()}}
 	<link href="{{asset('assets/css/jquery.steps.css')}}" rel="stylesheet">
+	<link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
 {% endblock %}
 
 
 {% block body %}
-	<div class="container py-5">
-		<h1 class="h3 py-3 font-weight-normal text-center">Lettre de résiliation -
+	<div class="container-fluid py-5">
+		<h1 class="h3 py-3 font-weight-normal text-center text-beige">Lettre de résiliation -
 			{{category}}</h1>
 
-		<div class="row">
-			<div class="col-md-8 offset-md-2">
+		<div class="d-flex justify-content-center">
+			<div class="container-form">
 
 				{{ form_start(form, {'attr': {'id': 'example-basic'}}) }}
 
 				<h3>Services à résilier</h3>
 
 				<section style="position: relative;width: 100%;">
-					<legend>{{ form_label(form.service) }}</legend>
+					<legend class="text-grey">{{ form_label(form.service) }}</legend>
 					<div class="accordion" id="accordionExample">
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="headingOne">
@@ -36,9 +37,9 @@
 								<div class="accordion-body">
 									<p>Plus besoin de chercher l'adresse de résiliation, nous l'avons trouvé pour vous ! Sélectionnez une société pour l'ajouter à votre lettre.</p>
 									<!-- Button trigger modal -->
-									<a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="select-service">
+									<a type="button" class="btn btn-orange-gradient" data-bs-toggle="modal" data-bs-target="#exampleModal" id="select-service">
 										Sélectionnez la société à résilier
-										<i class="fa-solid fa-circle-chevron-down mx-2"></i>
+										<i class="fa-regular fa-circle-chevron-up mx-2"></i>
 
 									</a>
 
@@ -74,7 +75,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="accordion-item">
+						<div class="accordion-item mt-3">
 							<h2 class="accordion-header" id="headingTwo">
 								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
 									Adresse de résiliation de votre destinataire
@@ -105,7 +106,7 @@
 
 				<section style="position: relative;width: 100%;">
 
-					<legend>{{ form_label(form.service) }}</legend>
+					<legend class="text-grey">{{ form_label(form.service) }}</legend>
 					<div class="ancientitulaire">
 						{{ form_row(form.number)}}
 						{{ form_row(form.type, {'attr': {'data-letters':  letters | json_encode() 
@@ -123,7 +124,7 @@
 
 				<section style="position: relative;width: 100%;">
 
-					<legend>Mes coordonnées</legend>
+					<legend class="text-grey">Mes coordonnées</legend>
 					<div class="ancientitulaire">
 						<div class="row">
 							<div class="col">{{ form_row(form.client.firstName)}}</div>
@@ -147,7 +148,7 @@
 				<h3>Récapitulatif</h3>
 
 				<section>
-					<legend>Récapitulatif des informations liées à la demande</legend>
+					<legend class="text-grey">Récapitulatif des informations liées à la demande</legend>
                     <div id="resum"></div>
                     <div style="display:none;">
                         {{form_rest(form)}}

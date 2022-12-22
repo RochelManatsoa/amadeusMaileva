@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container-fluid h-100 home-fond text-white">
+	<div class="container-fluid h-100 home-fond text-beige">
 		<div class="row h-100">
 			<div class="col-md-6 h-100 d-grid justify-content-center align-items-center">
 				<div class="description-homepage">
@@ -13,17 +13,14 @@
 				</div>
 			</div>
 			<div class="col-md-6 h-100 d-grid align-items-center">
-				<div class="container-category">
+				<div class="container-category bg-light">
 					<h3 class="">Liste des categories</h3>
-					<div class="category-list d-flex flex-column">
+					<div class="category-list d-grid my-3">
 						{% for category in categories %}
 							{#<a href="{{path('app_resiliation_category', {slug:category.slug})}}" class="btn btn-primary my-2">{{category.name}}</a>#}
 							<a href="{{path('app_resiliation_category', {slug:category.slug})}}" class="my-2 text-decoration-none">
 								<div class="category-item">
 									<h5>{{category.name}}</h5>
-									{% if category.description != NULL %}
-										<p>{{category.description}}</p>
-									{% endif %}
 								</div>
 							</a>
 						{% endfor %}
