@@ -7,6 +7,7 @@ use App\Entity\Category;
 use App\Entity\Envoi;
 use App\Entity\Letter;
 use App\Entity\Service;
+use App\Entity\Document;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -33,7 +34,7 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Envois', 'fas fa-file-import', Envoi::class);
-        yield MenuItem::linkToDashboard('Documents', 'fas fa-folder');
+        yield MenuItem::linkToCrud('Documents', 'fas fa-folder', Document::class);
         yield MenuItem::linkToCrud('Logs', 'fas fa-code', ApiExchange::class);
         yield MenuItem::linkToCrud('Service à résilier', 'fas fa-list', Service::class);
         yield MenuItem::linkToCrud('Catégorie', 'fas fa-tag', Category::class);

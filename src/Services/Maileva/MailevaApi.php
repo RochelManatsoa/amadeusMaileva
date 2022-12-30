@@ -2,8 +2,7 @@
 
 namespace App\Services\Maileva;
 
-use App\Entity\ApiExchange;
-use App\Entity\Envoi;
+use App\Entity\{ApiExchange, Envoi, Resiliation};
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -174,6 +173,38 @@ class MailevaApi
 
         $response = json_decode(curl_exec($ch));
         $this->log("response submitSending", \json_encode($response), true);
+        $this->saveExchange($apiExchange, \json_encode($response));
+
+        return $response;
+    }
+
+    public function addDocSending(Envoi $envoi, Resiliation $resiliation)
+    {
+
+        $token = $this->connect();
+        $this->log("parameters envoi", \json_encode($envoi));
+        $type = __FUNCTION__;
+        $apiExchange = $this->initExchange($type, \json_encode($envoi));
+        $authorization = 'Authorization: Bearer ' . $token;
+
+        $this->log("connet to MailevaApi ... ", '...');
+        $this->log("user infos", $this->getUserInfos());
+        
+        $ch = curl_init($this->endpointApi . '/sendings/'. $envoi->getEnvoiId().'/documents');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: multipart/form-data', $authorization));
+        $fields = [
+            'document' => new \CurlFile($resiliation->getGeneratedResiliationPath().'/resiliation.pdf', 'application/pdf'),
+            'metadata' => \json_encode([
+                'priority' => 1,
+                'name' => 'lettre_resiliation.pdf',
+            ]),
+        ];
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = json_decode(curl_exec($ch));
+        $this->log("response addDocSending", \json_encode($response), true);
         $this->saveExchange($apiExchange, \json_encode($response));
 
         return $response;
