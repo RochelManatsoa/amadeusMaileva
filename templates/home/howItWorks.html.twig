@@ -4,20 +4,20 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container-fluid how-it-work-cover d-flex justify-content-center align-items-center h-100">
-		<div class="text-center">
+	<div class="container-fluid how-it-work-cover justify-content-center overflow-hidden{% if template == 'design2' %} bg-marbre-blanc {% else %} bg-color-primary {% endif %}">
+		<div class="text-center text-beige">
 			<h1 class="pt-lg-5">Comment ça marche</h1>
 			<p>Modèles de lettre, envoi en recommandé, suivi en ligne</p>
-			<p>
-				<a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+			<div class="d-flex flex-sm-row flex-column">
+				<a class="button btn-gradient-orange me-sm-1 mt-sm-0 mt-2 mx-auto" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
 					Link with href
 				</a>
-				<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+				<button class="button btn-gradient-orange ms-sm-1 mt-sm-0 mt-2 mx-auto" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
 					Button with data-bs-target
 				</button>
-			</p>
-			<div class="collapse" id="collapseExample">
-				<div class="card card-body text-secondary">
+			</div>
+			<div class="collapse mt-2 bg-gradient-beige" id="collapseExample" style="max-width: 400px;">
+				<div class="card card-body bg-transparent text-gris">
 					Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
 				</div>
 			</div>

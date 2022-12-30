@@ -51,6 +51,48 @@ class ResiliationController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+
+    /**
+     * @Route("/resiliation2/{slug}", name="app_resiliation2_category")
+     */
+    public function category2(
+        Request $request,
+        Category $category,
+        LetterRepository $letterRepository,
+        ServiceRepository $serviceRepository,
+        ResiliationManager $resiliationManager
+    ) {
+        $service = $serviceRepository->find($category);
+        $services = $serviceRepository->findAll($category);
+        $dataServices = $this->objectToArray($services);
+        $models = $this->objectToArray($letterRepository->findAll());
+        $resiliation = $resiliationManager->init();
+        $resiliation->setService($service);
+        $form = $this->createForm(ResiliationFormType::class, $resiliation, [
+            'defaultModel' => null,
+        ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $resiliation = $form->getData();
+            $resiliationManager->save($resiliation);
+
+            return $this->redirectToRoute('app_resiliation_resume', [
+                'customId' => $resiliation->getCustomId(),
+            ]);
+        }
+
+        return $this->render('resiliation/service2.html.twig', [
+            'services' => $services,
+            'dataServices' => $dataServices,
+            'letters' => $models,
+            'category' => $category->getName(),
+            'form' => $form->createView(),
+            'template' => 'design2',
+        ]);
+    }
+
+
     /**
      * Array of Object to array
      */

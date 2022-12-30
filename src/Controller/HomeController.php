@@ -27,6 +27,23 @@ class HomeController extends AbstractController
     }
 
     /**
+     * @Route("/home2", name="app_home2")
+     */
+    public function index2(
+        MailevaApi $mailevaApi,
+        CategoryRepository $categoryRepository
+    ): Response {
+        // dd($mailevaApi->getOneSending('5fc2c115-7087-4336-ad6f-c76bc61041fb'));
+        $categories = $categoryRepository->findAll();
+
+        return $this->render('home/index2.html.twig', [
+            'categories' => $categories,
+            'menu' => 'accueil',
+            'template' => 'design2',
+        ]);
+    }
+
+    /**
      * @Route("/comment-ca-marche", name="app_how_it_work")
      */
     public function howItWorks(MailevaApi $token): Response

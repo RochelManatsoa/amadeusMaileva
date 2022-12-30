@@ -1,0 +1,64 @@
+// MEDIA Query
+
+@mixin sm-layout {
+    @media (max-width: 575px) { @content; }
+}
+@mixin mdi-layout {
+    @media (max-width: 675px) { @content; }
+}
+
+@mixin md-layout {
+    @media (max-width: 767px) { @content; }
+}
+
+@mixin lg-layout {
+    @media (max-width: 991px) { @content; }
+}
+
+@mixin xl-layout {
+    @media (max-width: 1199px) { @content; }
+}
+
+@mixin sm-height {
+    @media (max-height: 575px) { @content; }
+}
+// other mixins
+
+@mixin font-family-comfortaa {
+    font-family : 'Comfortaa' , sans-serif ;   
+}
+
+@mixin padding-border-outline-none {
+    padding: 0!important;
+    border: 0!important;
+}
+
+@mixin shadow-none {
+    box-shadow: none;
+}
+
+@mixin flex-direction ($direction) {
+    flex-direction: $direction;
+}
+
+@mixin fs-14 {
+    font-size: 14px;
+}
+
+@mixin filter-grey {
+    filter: invert(49%) sepia(6%) saturate(33%) hue-rotate(328deg) brightness(102%) contrast(81%);
+}
+
+@mixin min-height-rest($offsetTop) {
+    min-height: calc(100vh - $offsetTop);
+}
+
+@mixin bg-gradient ($angle, $color1, $color2) {
+    background: $color2;
+    background: -webkit-linear-gradient($angle, $color1, $color2);
+    background: linear-gradient($angle, $color1, $color2)!important;
+}
+
+@mixin shadow-night-blue{
+    box-shadow: 0 0.5rem 1rem #00032f;
+}
