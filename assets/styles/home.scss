@@ -66,6 +66,52 @@ body{
     min-width: 500px;
     border-radius: .4rem;
     margin-right: 2rem;
+    padding: 24px;
+    .user-field{
+        margin-bottom: 16px;
+        label{
+            margin-bottom: 0;
+        }
+    }
+    .connexion-gestion{
+        .checkbox{
+            margin-bottom: 16px;
+        }
+    }
+    @include sm-height{
+        padding: 12px 24px;
+        transform: translateY(30px);
+        .user-field{
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            font-size: 13px;
+            .form-control{
+                max-width: 360px;
+            }
+        }
+        .connexion-gestion{
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            .checkbox{
+                margin-bottom: 0;
+            }
+        }
+    }
+    @include md-layout{
+        margin-right: 0;
+        
+    }
+    @include sm-layout{
+        width: calc(100vw - 75px);
+        min-width: 0;
+        padding: 16px;
+    }
+    @include xs-layout{
+        width: calc(100vw - 24px);
+        padding: 12px;
+    }
 }
 .resiliation-facile-cover, .how-it-work-cover{
     &>div{

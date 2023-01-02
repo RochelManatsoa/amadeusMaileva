@@ -138,7 +138,10 @@
 								<p class="card-text">Plus besoin de chercher l'adresse de résiliation, nous l'avons trouvé pour vous ! Sélectionnez une société pour l'ajouter à votre lettre.</p>
 								<div class="d-flex justify-content-center" id="societe_a_resillier">
 									{% for service in services %}
-										<button class="button btn-gradient-green mx-2" id="{{'service' ~ service.id}}" data-service="{{service.slug}}">{{service.name}}</button>
+										{#<button class="button btn-gradient-green mx-2" id="{{'service' ~ service.id}}" data-service="{{service.slug}}">{{service.name}}</button>#}
+										<a href="#{{service.name}}"  class="button btn-gradient-green mx-2" id="{{'service' ~ service.id}}" data-service="{{service.slug}}">
+											{{service.name}}
+										</a>
 									{% endfor %}
 								</div>
 							</div>

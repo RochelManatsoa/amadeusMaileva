@@ -1,5 +1,8 @@
 // MEDIA Query
 
+@mixin xs-layout {
+    @media (max-width: 420px) { @content; }
+}
 @mixin sm-layout {
     @media (max-width: 575px) { @content; }
 }

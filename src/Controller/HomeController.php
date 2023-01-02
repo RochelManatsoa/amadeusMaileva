@@ -62,4 +62,27 @@ class HomeController extends AbstractController
             'menu' => 'resiliationFacile',
         ]);
     }
+
+    
+    /**
+     * @Route("/comment-ca-marche2", name="app_how_it_work2")
+     */
+    public function howItWorks2(MailevaApi $token): Response
+    {
+        return $this->render('home/howItWorks2.html.twig', [
+            'menu' => 'howItWorks',
+            'template' => 'design2'
+        ]);
+    }
+
+    /**
+     * @Route("/tutoriels-resiliation-facile2", name="app_resiliation_facile2")
+     */
+    public function resiliationFacile2(MailevaApi $token): Response
+    {
+        return $this->render('home/resiliationFacile2.html.twig', [
+            'menu' => 'resiliationFacile',
+            'template' => 'design2'
+        ]);
+    }
 }
