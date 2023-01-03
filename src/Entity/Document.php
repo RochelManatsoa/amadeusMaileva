@@ -18,7 +18,7 @@ class Document
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
     private $docId;
 
@@ -57,17 +57,27 @@ class Document
      */
     private $convertedSize;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Envoi::class, inversedBy="documents")
+     */
+    private $send;
+
+    public function __toString()
+    {
+        return $this->getDocId();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDocId(): ?int
+    public function getDocId(): ?string
     {
         return $this->docId;
     }
 
-    public function setDocId(int $docId): self
+    public function setDocId(string $docId): self
     {
         $this->docId = $docId;
 
@@ -154,6 +164,18 @@ class Document
     public function setConvertedSize(?int $convertedSize): self
     {
         $this->convertedSize = $convertedSize;
+
+        return $this;
+    }
+
+    public function getSend(): ?Envoi
+    {
+        return $this->send;
+    }
+
+    public function setSend(?Envoi $send): self
+    {
+        $this->send = $send;
 
         return $this;
     }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EnvoiRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -171,6 +173,21 @@ class Envoi
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $archiveDate;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Document::class, mappedBy="send")
+     */
+    private $documents;
+
+    public function __construct()
+    {
+        $this->documents = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getEnvoiId();
+    }
 
     public function getId(): ?int
     {
@@ -545,6 +562,36 @@ class Envoi
     public function setEnvoiId(string $envoiId): self
     {
         $this->envoiId = $envoiId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Document>
+     */
+    public function getDocuments(): Collection
+    {
+        return $this->documents;
+    }
+
+    public function addDocument(Document $document): self
+    {
+        if (!$this->documents->contains($document)) {
+            $this->documents[] = $document;
+            $document->setSend($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocument(Document $document): self
+    {
+        if ($this->documents->removeElement($document)) {
+            // set the owning side to null (unless already changed)
+            if ($document->getSend() === $this) {
+                $document->setSend(null);
+            }
+        }
 
         return $this;
     }

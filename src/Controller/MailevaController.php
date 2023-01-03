@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\Envoi;
 use App\Entity\Resiliation;
+use App\Manager\DocumentManager;
 use App\Manager\EnvoiManager;
+use App\Manager\ResiliationManager;
 use App\Services\Maileva\MailevaApi;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -18,10 +18,11 @@ class MailevaController extends AbstractController
     public function send(
         Resiliation $resiliation, 
         MailevaApi $mailevaApi, 
-        EnvoiManager $envoiManager
+        EnvoiManager $envoiManager,
+        ResiliationManager $resiliationManager,
+        DocumentManager $documentManager
         )
     {
-        // dd($mailevaApi->getAllSendings());
         $envoi = $envoiManager->setResiliation($resiliation);        
         $params = [
             "name" => $envoi->getName(),
@@ -47,7 +48,6 @@ class MailevaController extends AbstractController
         if(isset($response->errors[0])){
             dd($response->errors[0]);
         }
-        // dump($response);
         $envoi->setEnvoiId($response->id);
         $envoi->setStatus($response->status);
         $envoi->setDocumentCount(0);
@@ -56,6 +56,22 @@ class MailevaController extends AbstractController
         if(isset($submitResponse->errors[0])){
             dd($submitResponse->errors[0]);
         }
+        $resiliationManager->generateResiliation($resiliation);
+        $docResponse = $mailevaApi->addDocSending($envoi, $resiliation);
+        if(isset($docResponse->errors[0])){
+            dd($docResponse->errors[0]);
+        }
+        $document = $documentManager->init();
+        $document->setDocId($docResponse->id);
+        $document->setPriority($docResponse->priority);
+        $document->setName($docResponse->name);
+        $document->setType($docResponse->type);
+        $document->setPagesCount($docResponse->pages_count);
+        $document->setSheetsCount($docResponse->sheets_count);
+        $document->setSize($docResponse->size);
+        $document->setConvertedSize($docResponse->converted_size);
+        $document->setSend($envoi);
+        $documentManager->save($document);
         dd("envoyé");
 
         return $this->render('maileva/recap.html.twig', [
