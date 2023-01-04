@@ -15,18 +15,18 @@
 	<div class="container-fluid px-0 py-5 {% if template == 'design2' %} bg-marbre-blanc {% else %} bg-color-primary {% endif %}">
 		<div class="">
 			<div class="max-width-content mx-auto">
-				<h1 class="h3 py-3 font-weight-normal text-center text-beige">Lettre de résiliation - {{category}}</h1>
+				<h1 class="h3 py-3 font-weight-normal text-center text-night-blue">Lettre résiliation - {{category}}</h1>
 				<div class="wizard">
-					<div class="content">
-					<div class="row">
-						<div class="col-6 text-center">
-							<a href="{{ path('app_resiliation_preview_doc', {'customId': resiliation.customId})}}" class="btn btn-outline-primary px-2 my-2" target=_blank >Aperçu <i class='fa-solid fa-file-pdf'></i></a><br>
-							<a href="{{ path('app_resiliation_preview', {'customId': resiliation.customId})}}" class="btn btn-outline-secondary px-2 my-2">Modifier <i class='fa-solid fa-edit'></i></a><br>
-							<a href="{{ path('app_maileva_send', {'customId': resiliation.customId})}}" class="btn btn-outline-info btn-md px-2 my-2">Procéder au paiement <i class='fa-solid fa-send'></i></a><br>
-							<a href="{{ path('app_stripe_payment', {'customId': resiliation.customId})}}" class="btn btn-outline-info btn-md px-2 my-2">Payer <i class='fa-solid fa-send'></i></a><br>
-						</div>
-						<div class="col-6">
-							<img class="img-fluid px-2 my-2" src="{{ asset('assets/images/Stripe_payment_form.png')}}" alt="stripe" >
+					<div class="bg-gradient-green content d-grid align-items-center">
+						<div class="row flex-md-row flex-column-reverse mx-0">
+							<div class="col-md px-0 d-flex flex-md-column justify-content-center align-items-center">
+								<a href="{{ path('app_resiliation_preview_doc', {'customId': resiliation.customId})}}" class="button btn-gradient-green" target=_blank >Aperçu <i class='fa-solid fa-file-pdf'></i></a><br>
+								<a href="{{ path('app_resiliation2_preview', {'customId': resiliation.customId})}}" class="button btn-gradient-green-blue">Modifier <i class='fa-solid fa-edit'></i></a><br>
+								<a href="{{ path('app_maileva_send', {'customId': resiliation.customId})}}" class="button btn-night-blue">Envoyer <i class="fa-regular fa-paper-plane"></i>{#<i class='fa-solid fa-send'></i>#}</a><br>
+							</div>
+							<div class="col-md d-flex px-0 ">
+								<img class="img-fluid px-2 my-2" src="{{ asset('assets/images/Stripe_payment_form.png')}}" alt="stripe">
+							</div>
 						</div>
 					</div>
 				</div>

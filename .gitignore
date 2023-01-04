@@ -7,6 +7,7 @@
 /public/bundles/
 /var/
 /vendor/
+/config/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
@@ -25,3 +26,14 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+###> config/packages ###
+/config/packages/doctrine.yaml
+/config/packages/knp_snappy.yaml
+/config/packages/twig.yaml
+###< config/packages
+
+###> logs/document ###
+/public/document/
+/public/logs/
+###< logs/document

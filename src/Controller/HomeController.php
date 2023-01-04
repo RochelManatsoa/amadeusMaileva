@@ -22,6 +22,24 @@ class HomeController extends AbstractController
 
         return $this->render('home/index.html.twig', [
             'categories' => $categories,
+            'menu' => 'accueil',
+        ]);
+    }
+
+    /**
+     * @Route("/home2", name="app_home2")
+     */
+    public function index2(
+        MailevaApi $mailevaApi,
+        CategoryRepository $categoryRepository
+    ): Response {
+        // dd($mailevaApi->getOneSending('5fc2c115-7087-4336-ad6f-c76bc61041fb'));
+        $categories = $categoryRepository->findAll();
+
+        return $this->render('home/index2.html.twig', [
+            'categories' => $categories,
+            'menu' => 'accueil',
+            'template' => 'design2',
         ]);
     }
 
@@ -30,7 +48,9 @@ class HomeController extends AbstractController
      */
     public function howItWorks(MailevaApi $token): Response
     {
-        return $this->render('home/howItWorks.html.twig', []);
+        return $this->render('home/howItWorks.html.twig', [
+            'menu' => 'howItWorks',
+        ]);
     }
 
     /**
@@ -38,6 +58,31 @@ class HomeController extends AbstractController
      */
     public function resiliationFacile(MailevaApi $token): Response
     {
-        return $this->render('home/resiliationFacile.html.twig', []);
+        return $this->render('home/resiliationFacile.html.twig', [
+            'menu' => 'resiliationFacile',
+        ]);
+    }
+
+    
+    /**
+     * @Route("/comment-ca-marche2", name="app_how_it_work2")
+     */
+    public function howItWorks2(MailevaApi $token): Response
+    {
+        return $this->render('home/howItWorks2.html.twig', [
+            'menu' => 'howItWorks',
+            'template' => 'design2'
+        ]);
+    }
+
+    /**
+     * @Route("/tutoriels-resiliation-facile2", name="app_resiliation_facile2")
+     */
+    public function resiliationFacile2(MailevaApi $token): Response
+    {
+        return $this->render('home/resiliationFacile2.html.twig', [
+            'menu' => 'resiliationFacile',
+            'template' => 'design2'
+        ]);
     }
 }

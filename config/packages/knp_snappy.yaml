@@ -1,9 +1,10 @@
 knp_snappy:
     pdf:
         enabled:    true
-        binary:     /usr/local/bin/wkhtmltopdf
+        #binary:    /usr/local/bin/wkhtmltopdf
+        binary:     '\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\"'
         options:    []
     image:
         enabled:    true
-        binary:     /usr/local/bin/wkhtmltoimage
+        binary:     '\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltoimage.exe\"'
         options:    []
