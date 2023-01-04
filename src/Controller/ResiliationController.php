@@ -65,6 +65,9 @@ class ResiliationController extends AbstractController
     ) {
         $service = $serviceRepository->find($category);
         $services = $serviceRepository->findAll($category);
+        // ----------------------------
+        $servicesThree = $serviceRepository->findThree();
+        // --------------------------------------
         $dataServices = $this->objectToArray($services);
         $models = $this->objectToArray($letterRepository->findAll());
         $resiliation = $resiliationManager->init();
@@ -84,6 +87,7 @@ class ResiliationController extends AbstractController
 
         return $this->render('resiliation/service2.html.twig', [
             'services' => $services,
+            'servicesThree' => $servicesThree,
             'dataServices' => $dataServices,
             'letters' => $models,
             'category' => $category->getName(),

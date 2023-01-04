@@ -7,96 +7,6 @@
 
 
 {% block body %}
-    <style type="text/css">
-		{#:root{
-			/*--bs-bleu-clair: rgba(0, 201, 255, 0.9294117647);*/
-			--bs-green-clair: #00ca00;
-			/*--bs-bleu-fonse: rgba(29, 29, 94, 0.8);*/
-			--bs-green-fonse: #005f25;
-			--bs-night-blue: #00032f;
-			--bs-green-white: #e7e7e7;
-			--bs-rest-height: calc(100vh - 226px);
-		}
-		.text-comfortaa{
-			font-family : 'Comfortaa' , sans-serif ;
-		}
-		.navbar-collapse .nav-link{
-			color: var(--bs-night-blue);
-			font-weight: bold;
-		}
-		.container-step-title{
-			width: 260px;
-			border-radius: 5px;
-			padding: 25px 30px;
-			display: grid;
-			height: calc(100% - 135px);
-			align-items: center;
-			position: fixed;
-		}
-		.step-title li{
-			margin: 25px 0;
-			font-size: 20px;
-			font-weight: 500;
-			text-align: center;
-			color: var(--bs-green-white);
-			padding: 10px 0;
-			background: var(--bs-green-fonse);
-			background: -webkit-linear-gradient(to right, var(--bs-green-clair), var(--bs-green-fonse));
-			background: linear-gradient(to right, var(--bs-green-clair), var(--bs-green-fonse)); 
-			position: relative;
-		}
-		.step-title li::before{
-			content: '';
-			position: absolute;
-			transform: translateX(-100%);
-			width: 30px;
-			height: 50px;
-			left: 0;
-			top: 0;
-			background: linear-gradient(to right, transparent, var(--bs-green-clair));
-		}
-		.step-title li::after{
-			content: '';
-			position: absolute;
-			width: 60px;
-			height: 50px;
-			right: -60px;
-			top: 0;
-			border-left: 30px solid var(--bs-green-fonse);
-			border-top: 25px solid transparent;
-			border-bottom: 25px solid transparent;
-			border-right: 30px solid transparent;
-		}
-		.container-form{
-			margin-left: 260px;
-			padding: 0 30px;
-		}
-		.legend{
-			font-size: 25px;
-		}
-		.border-green, .card, .form-control, .form-select{
-			border: solid 2px var(--bs-green-fonse);
-			border-radius: 5px;
-		}
-		.bg-gradient-green{
-			/* background: #000000; fallback for old browsers */
-			background: -webkit-linear-gradient(45deg, #0f9b0f, var(--bs-night-blue));  /* Chrome 10-25, Safari 5.1-6 */
-			background: linear-gradient(45deg, #0f9b0f,var(--bs-night-blue)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-		}
-		.text-green-white{
-			color: var(--bs-green-white);
-		}
-		.container-form,
-		.min-height-body{
-			min-height: var(--bs-rest-height);
-		}
-		.text-night-blue{
-			color: var(--bs-night-blue);
-		}
-		.shadow{
-			box-shadow: 0 0.5rem 1rem #00032f !important;
-		}#}
-    </style>
 
 	<div class="container-fluid pt-5 pb-3 min-vh-100 bg-marbre-blanc step-form">
 		<div>
@@ -137,12 +47,50 @@
 								<h4 class="card-title">Sélectionnez une société depuis notre annuaire</h4>
 								<p class="card-text">Plus besoin de chercher l'adresse de résiliation, nous l'avons trouvé pour vous ! Sélectionnez une société pour l'ajouter à votre lettre.</p>
 								<div class="d-flex justify-content-center" id="societe_a_resillier">
-									{% for service in services %}
-										{#<button class="button btn-gradient-green mx-2" id="{{'service' ~ service.id}}" data-service="{{service.slug}}">{{service.name}}</button>#}
-										<a href="#{{service.name}}"  class="button btn-gradient-green mx-2" id="{{'service' ~ service.id}}" data-service="{{service.slug}}">
+									{#{% for service in services %}
+										<a href="#{{service.name}}"  class="button btn-gradient-green mx-2" id="{{'service' ~ service.id}}" data-service="{{service.slug}}" data-utility="choices">
 											{{service.name}}
 										</a>
+									{% endfor %}#}
+									{% for serviceChoice in servicesThree %}
+										<a href="#{{serviceChoice.name}}" class="button btn-gradient-green mx-2" id="{{'service' ~ serviceChoice.id}}" data-service="{{serviceChoice.slug}}" data-utility="choices">
+											{{serviceChoice.name}}
+										</a>
 									{% endfor %}
+									<!-- Button trigger modal -->
+									<a type="button" class="button btn-gradient-green-blue" data-bs-toggle="modal" data-bs-target="#exampleModal" id="select-service">
+										Voir autre 
+										<i class="fa-regular fa-circle-chevron-up ms-2"></i>
+
+									</a>
+
+									<!-- Modal -->
+									<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+										<div class="modal-dialog modal-dialog-scrollable modal-lg text-dark">
+
+
+											<div class="modal-content">
+												<div class="modal-header">
+
+													<h1 class="modal-title fs-5" id="exampleModalLabel">Sélectionnez une société depuis notre annuaire</h1>
+													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<div class="modal-body">
+													{% for service in services %}
+														<div class="form-check">
+															<input class="form-check-input" type="radio" name="{{'service' ~ service.id}}" id="{{'service' ~ service.id}}" data-service="{{service.slug}}">
+
+
+															<label class="form-check-label" for="{{'service' ~ service.id}}1">
+																{{service.name}}
+															</label>
+														</div>
+													{% endfor %}
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -239,7 +187,7 @@
 
 		$(function(){
 			
-			choices = document.getElementById('societe_a_resillier').querySelectorAll('button');
+			choices = document.querySelectorAll('[data-utility="choices"]');
 			
 			done = [];
 			
@@ -256,6 +204,20 @@
 					$('input#resiliation_form_service_city').val(addressService.city)
 				}
 			}
+
+			$('.form-check').change(function (e) {
+				e.preventDefault()
+				var ref = $(this).children('input').data('service')
+				var services = $('#service-address').data('services');
+				var addressService = services[ref]
+				$('input#resiliation_form_service_name').val(addressService.name)
+				$('input#resiliation_form_service_address').val(addressService.address)
+				$('input#resiliation_form_service_complement').val(addressService.complement)
+				$('input#resiliation_form_service_zipCode').val(addressService.zipCode)
+				$('input#resiliation_form_service_city').val(addressService.city)
+
+				$('.modal').modal('hide');
+			});
 			
 			$('#resiliation_form_description').html(data[1].content);
 
