@@ -39,28 +39,28 @@ class EnvoiRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Envoi[] Returns an array of Envoi objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('e.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   /**
+    * @return Envoi[] Returns an array of Envoi objects
+    */
+   public function getEnvoiByResiliation($value): array
+   {
+       return $this->createQueryBuilder('e')
+           ->andWhere('e.customId = :val')
+           ->setParameter('val', $value)
+           ->orderBy('e.id', 'ASC')
+           ->setMaxResults(10)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
 
-//    public function findOneBySomeField($value): ?Envoi
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+   public function getOneEnvoiByResiliation($value): ?Envoi
+   {
+       return $this->createQueryBuilder('e')
+           ->andWhere('e.customId = :val')
+           ->setParameter('val', $value)
+           ->getQuery()
+           ->getOneOrNullResult()
+       ;
+   }
 }

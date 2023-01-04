@@ -60,7 +60,7 @@
 															<input class="form-check-input" type="radio" name="{{'service' ~ service.id}}" id="{{'service' ~ service.id}}" data-service="{{service.slug}}">
 
 
-															<label class="form-check-label" for="{{'service' ~ service.id}}1">
+															<label class="form-check-label" for="{{'service' ~ service.id}}">
 																{{service.name}}
 															</label>
 														</div>
@@ -178,12 +178,16 @@
             );
 
 			var data = $('#resiliation_form_type').data('letters');
+			var value = $('#resiliation_form_number').val();
+			console.log(value)
+			if (value !== ''){
+				console.log("non vide")
+				updateNumber(value)
+			}
 
 			$('#resiliation_form_number').blur(function (e) {
-				var number = $(this).val() 
-				var content = $('#resiliation_form_description').text()
-				content = content.replace('[ mobile-identifiant ]', number)
-				$('#resiliation_form_description').html(content)
+				var number = $(this).val() 				
+				updateNumber(number)
 			});
 
 			$(document).on('change', '.form-check', function (e) {

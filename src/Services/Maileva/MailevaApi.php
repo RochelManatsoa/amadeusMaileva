@@ -89,14 +89,14 @@ class MailevaApi
 
     private function getUserInfos()
     {
-        $user = $this->tokenStorage->getToken()->getUser();
-        if ($user instanceof User) {
-            $email = $user->getEmail();
-        } else {
-            $email = 'anonymous';
-        }
-        return $email;
-        // return 'annonymous';
+        // $user = $this->tokenStorage->getToken()->getUser();
+        // if ($user instanceof User) {
+        //     $email = $user->getEmail();
+        // } else {
+        //     $email = 'anonymous';
+        // }
+        // return $email;
+        return 'annonymous';
     }
 
     public function getAllSendings()

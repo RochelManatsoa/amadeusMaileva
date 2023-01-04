@@ -72,11 +72,9 @@ class MailevaController extends AbstractController
         $document->setConvertedSize($docResponse->converted_size);
         $document->setSend($envoi);
         $documentManager->save($document);
-        dd("envoyé");
 
-        return $this->render('maileva/recap.html.twig', [
-            'category' => $resiliation->getService()->getCategory()->getName(),
-            'resiliation' => $resiliation,
+        return $this->redirectToRoute('app_stripe_payment', [
+            'customId' => $resiliation->getCustomId(),
         ]);
     }
 }

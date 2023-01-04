@@ -30,3 +30,5 @@ services:
     App\Services\Maileva\MailevaApi:
         arguments: ['%env(resolve:MAILEVA_ENDPOINT)%', '%env(resolve:MAILEVA_ENDPOINT_API)%', '%env(resolve:MAILEVA_CLIENT_TYPE)%', '%env(resolve:MAILEVA_CLIENT_ID)%', '%env(resolve:MAILEVA_CLIENT_SECRET)%', '%env(resolve:MAILEVA_CLIENT_USERNAME)%', '%env(resolve:MAILEVA_CLIENT_PASSWORD)%']
     
+    App\Services\Stripe\StripeApi:
+        arguments: ['%env(resolve:STRIPE_PAYMENT_SECRET_KEY)%', '%env(resolve:STRIPE_WEBHOOK_SECRET_KEY)%']  

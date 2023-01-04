@@ -182,3 +182,9 @@ function initFormStep(form, title, bodyTag, transitionEffect) {
       },
     })
 }
+
+function updateNumber(number){
+  var content = $('#resiliation_form_description').text()
+  content = content.replace('[ mobile-identifiant ]', number)
+  $('#resiliation_form_description').html(content)
+}
