@@ -5,8 +5,8 @@
 
 {% block body %}
 
-	<div class="container-fluid bg-color-primary d-grid justify-content-md-end justify-content-center align-items-center">
-		<div class="container-form-login bg-gradient-beige text-gris shadow">
+	<div class="container-fluid bg-marbre-blanc d-grid justify-content-md-end justify-content-center align-items-center">
+		<div class="container-form-login bg-gradient-green shadow-night-blue text-green-white">
 			<form method="post">
 				{% if error %}
 					<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -30,7 +30,7 @@
 					<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
 				</div>
 				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-				<div class="connexion-gestion">
+                <div class="connexion-gestion">
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" name="_remember_me">
@@ -38,16 +38,17 @@
                         </label>
                     </div>
                     <div class="les-boutons">
-                        <button class="button btn-gradient-orange" type="submit">
+                        <button class="button btn-gradient-green" type="submit">
                             Sign in
                         </button>
-                        <button class="button btn-gradient-orange">
-                            <a class="text-decoration-none text-gris" href="{{path('app_register')}}">
+                        <button class="button btn-gradient-green">
+                            <a class="text-decoration-none text-white" href="{{path('app_register')}}">
                                 Sign up
                             </a>
                         </button>
                     </div>
                 </div>
+				
 			</form>
 		</div>
 	</div>
