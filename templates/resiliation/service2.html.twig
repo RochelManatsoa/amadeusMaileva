@@ -1,0 +1,237 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Résiliation
+	{{category}}
+{% endblock %}
+
+
+{% block body %}
+
+	<div class="container-fluid pt-5 pb-3 min-vh-100 bg-marbre-blanc step-form">
+		<div>
+			
+			<div class="container-step-title d-md-block d-none">
+				<ul class="list-unstyled step-title w-100">
+					<li class="">
+						<a href="#step-form1">
+							Services à résilier
+						</a>
+					</li>
+					<li class="not-yet">
+						<a href="#step-form2">
+							Modèle de lettre
+						</a>
+					</li>
+					<li class="not-yet">
+						<a href="#step-form3">
+							Coordonnées
+						</a>
+					</li>
+					<li class="not-yet">
+						<a href="#step-form4">
+							Récapitulatif
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="container-step-form">
+				<h3 class="text-center mt-5 text-night-blue text-comfortaa fw-bold">Lettre de résiliation - {{category}}</h3>
+				{{ form_start(form, {'attr': {'id': 'example-basic'}}) }}
+
+					<div id="step-form1" class="border-green mx-3 my-5 p-3 bg-gradient-green min-height-body shadow-night-blue current" data-element="step-form1" index="1">
+						{#<h3>A qui addresser la lettre</h3>#}
+						<legend class="text-green-white">{{ form_label(form.service) }}</legend>
+						<div class="card border-green my-3 bg-transparent text-green-white">
+							<div class="card-body">
+								<h4 class="card-title">Sélectionnez une société depuis notre annuaire</h4>
+								<p class="card-text">Plus besoin de chercher l'adresse de résiliation, nous l'avons trouvé pour vous ! Sélectionnez une société pour l'ajouter à votre lettre.</p>
+								<div class="d-flex justify-content-center" id="societe_a_resillier">
+									{#{% for service in services %}
+										<a href="#{{service.name}}"  class="button btn-gradient-green mx-2" id="{{'service' ~ service.id}}" data-service="{{service.slug}}" data-utility="choices">
+											{{service.name}}
+										</a>
+									{% endfor %}#}
+									{% for serviceChoice in servicesThree %}
+										<a href="#{{serviceChoice.name}}" class="button btn-gradient-green mx-2" id="{{'service' ~ serviceChoice.id}}" data-service="{{serviceChoice.slug}}" data-utility="choices">
+											{{serviceChoice.name}}
+										</a>
+									{% endfor %}
+									<!-- Button trigger modal -->
+									<a type="button" class="button btn-gradient-green-blue" data-bs-toggle="modal" data-bs-target="#exampleModal" id="select-service">
+										Voir autre 
+										<i class="fa-regular fa-circle-chevron-up ms-2"></i>
+
+									</a>
+
+									<!-- Modal -->
+									<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+										<div class="modal-dialog modal-dialog-scrollable modal-lg text-dark">
+
+
+											<div class="modal-content">
+												<div class="modal-header">
+
+													<h1 class="modal-title fs-5" id="exampleModalLabel">Sélectionnez une société depuis notre annuaire</h1>
+													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<div class="modal-body">
+													{% for service in services %}
+														<div class="form-check">
+															<input class="form-check-input" type="radio" name="{{'service' ~ service.id}}" id="{{'service' ~ service.id}}" data-service="{{service.slug}}">
+
+
+															<label class="form-check-label" for="{{'service' ~ service.id}}1">
+																{{service.name}}
+															</label>
+														</div>
+													{% endfor %}
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="card border-green my-3 bg-transparent text-green-white">
+							<div id="service-address" data-services="{{ dataServices | json_encode()}}" class="card-body">
+								<h4 class="card-title">Adresse de résiliation de votre destinataire</h4>
+								{{ form_row(form.service.name, { 'attr' : { 'data-service' : 'name'}})}}
+								{{ form_row(form.service.address, { 'attr' : { 'data-service' : 'adress'}})}}
+								{{ form_row(form.service.complement, { 'attr' : { 'data-service' : 'complement'}})}}
+
+								<div class="row">
+									<div class="col-sm">{{ form_row(form.service.zipCode, { 'attr' : { 'data-service' : 'zipCode'}})}}</div>
+									<div class="col-sm">{{ form_row(form.service.city, { 'attr' : { 'data-service' : 'city'}})}}</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div id="step-form2" class="border-green mx-3  my-5 p-3 bg-gradient-green min-height-body shadow-night-blue d-none" data-element="step-form2" index="2">
+						<legend class="text-green-white">{{ form_label(form.service) }}</legend>
+						<div class="ancientitulaire card my-3 border-0 bg-transparent text-green-white">
+							<div class="card-body">
+								{{ form_row(form.number)}}
+								{{ form_row(form.type, {'attr': {'data-letters':  letters | json_encode() 
+								}})}}
+
+
+								{{ form_row(form.description)}}
+							</div>
+						</div>
+					</div>
+
+					<div id="step-form3" class="border-green mx-3  my-5 p-3 bg-gradient-green min-height-body shadow-night-blue d-none" data-element="step-form3" index="3">
+						<legend class="text-green-white">Mes coordonnées</legend>
+						<div class="ancientitulaire card my-3 border-0 bg-transparent text-green-white">
+							<div class="card-body">
+								<div class="row">
+									<div class="col-sm">{{ form_row(form.client.firstName)}}</div>
+									<div class="col-sm">{{ form_row(form.client.lastName)}}</div>
+								</div>
+								{{ form_row(form.client.mobile)}}
+								{{ form_row(form.client.address.name)}}
+								{{ form_row(form.client.address.complement)}}
+								<div class="row">
+									<div class="col-sm">{{ form_row(form.client.address.zipCode)}}</div>
+									<div class="col-sm">{{ form_row(form.client.address.city)}}</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div id="step-form4" class="border-green mx-3 my-5 p-3 bg-gradient-green min-height-body shadow-night-blue d-none" recap data-element="step-form4" index="4">
+						<legend class="text-green-white">Récapitulatif des informations liées à la demande</legend>
+						{#<div id="resum"></div>#}
+						<div class="mt-3">
+							<table id="resum"></table>
+						</div>
+						<div style="display:none;">
+							{{form_rest(form)}}
+						</div>
+					</div>
+
+					<div class="text-end">
+						<ul class="list-inline">
+							<li class="list-inline-item d-none">
+								<a href="#previous" class="button btn-gradient-green-blue" id="previous-button" data-form="previous">
+									Précedent
+								</a>
+							</li>
+							<li class="list-inline-item">
+								<a href="#next" class="button btn-night-blue" id="next-button"  data-form="next">
+									Suivant
+								</a>
+							</li>
+							<li class="list-inline-item d-none">
+								<button class="button btn-night-blue" data-form="submit" 
+								id="finish-button" type="submit">
+									Générer
+								</button>
+							</li>
+						</ul>
+					<div>
+
+				{{ form_end(form) }}
+
+			</div>
+		</div>
+    </div>
+{% endblock %}
+
+{% block jsFooter %}
+	<script src="{{asset('assets/js/essaie.js')}}"></script>
+	<script>
+
+		$(function(){
+			
+			choices = document.querySelectorAll('[data-utility="choices"]');
+			
+			done = [];
+			
+			data = $('#resiliation_form_type').data('letters');
+
+			for (choice of choices){
+				choice.onclick = function(){
+					ref = $(this).data('service');
+					addressService =  $('#service-address').data('services')[ref];
+					$('input#resiliation_form_service_name').val(addressService.name)
+					$('input#resiliation_form_service_address').val(addressService.address)
+					$('input#resiliation_form_service_complement').val(addressService.complement)
+					$('input#resiliation_form_service_zipCode').val(addressService.zipCode)
+					$('input#resiliation_form_service_city').val(addressService.city)
+				}
+			}
+
+			$('.form-check').change(function (e) {
+				e.preventDefault()
+				var ref = $(this).children('input').data('service')
+				var services = $('#service-address').data('services');
+				var addressService = services[ref]
+				$('input#resiliation_form_service_name').val(addressService.name)
+				$('input#resiliation_form_service_address').val(addressService.address)
+				$('input#resiliation_form_service_complement').val(addressService.complement)
+				$('input#resiliation_form_service_zipCode').val(addressService.zipCode)
+				$('input#resiliation_form_service_city').val(addressService.city)
+
+				$('.modal').modal('hide');
+			});
+			
+			$('#resiliation_form_description').html(data[1].content);
+
+			$('#resiliation_form_type').on('change', function (e) {
+				var Value = $(".ancientitulaire").find(":selected").val();
+				$('#resiliation_form_description').text(data[Value].content)
+			})
+
+			document.getElementById('previous-button').onclick = function(){
+				previousStep(document.querySelector('[data-element].current'));
+			}
+			document.getElementById('next-button').onclick = function(){
+				nextStep(document.querySelector('[data-element].current'));
+			}
+		})
+	</script>
+{% endblock %}

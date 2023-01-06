@@ -1,0 +1,31 @@
+$blue : #00c9ffed;
+$blue-hover : #00a7e7;
+$black : #101010;
+$primary-color: #1d1d5ecc;
+$text-color-secondary : #808080;
+$beige : #fff7db;
+$orange : #ffc400;
+$beigeBe : #FFEFBA;
+$green : #00ca00;
+$dark-green : #005f25;
+$night-blue : #00032f;
+$night-blue-hover : #050836;
+$green-white : #e7e7e7;
+
+$gradient-beige : linear-gradient(45deg, white, $beigeBe);
+$gradient-beige-webkit : -webkit-linear-gradient(45deg, white, $beigeBe);
+$gradient-orange : linear-gradient(-45deg, $beigeBe, $orange);
+$gradient-orange-webkit : -webkit-linear-gradient(-45deg, $beigeBe, $orange);
+$gradient-primary : linear-gradient(45deg, #aaa, $primary-color);
+$gradient-primary-webkit : -webkit-linear-gradient(45deg, #aaa, $primary-color);
+$gradient-green : linear-gradient(45deg, $green, $dark-green);
+$gradient-green-webkit : -webkit-linear-gradient(45deg, $green, $dark-green);
+$gradient-green-blue : linear-gradient(45deg, $dark-green, $night-blue);
+$gradient-green-blue-webkit : -webkit-linear-gradient(45deg, $dark-green, $night-blue);
+
+$filter-beige : invert(98%) sepia(98%) saturate(708%) hue-rotate(309deg) brightness(104%) contrast(105%);
+$filter-grey : invert(49%) sepia(6%) saturate(33%) hue-rotate(328deg) brightness(102%) contrast(81%);
+$filter-white-grey : invert(99%) sepia(2%) saturate(503%) hue-rotate(204deg) brightness(111%) contrast(81%);
+$filter-night-blue : invert(8%) sepia(25%) saturate(6875%) hue-rotate(215deg) brightness(83%) contrast(117%);
+
+$border-form-active : #ccc;
