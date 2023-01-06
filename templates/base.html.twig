@@ -18,9 +18,6 @@
 	</head>
 	<body class="vh-100">
 		
-		{% if not template is defined %}
-			{% set template = '' %}
-		{% endif %}
 		{% include "header.html.twig" %}
 		<div class="body-template"> 
 			{% block body %}{% endblock %}

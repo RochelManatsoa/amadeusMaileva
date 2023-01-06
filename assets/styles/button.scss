@@ -31,38 +31,6 @@
     --bs-btn-color-hover: #{$beige};
 }
 
-.btn-night-blue{
-    --bs-btn-bg: #{$night-blue};
-    --bs-btn-border: #{$night-blue-hover};
-    --bs-btn-color: #{$green-white};
-    --bs-btn-bg-hover: #{$night-blue-hover};
-    --bs-btn-border-hover: #{$night-blue-hover};
-    --bs-btn-color-hover: #{$green-white};
-    img{
-        filter: $filter-white-grey;
-    }
-}
-
-.btn-gradient-green-blue{
-    --bs-btn-bg: #{$gradient-green-blue};
-    --bs-btn-bg: #{$gradient-green-blue-webkit};
-    --bs-btn-border: #{$dark-green};
-    --bs-btn-color: #{$green-white};
-    --bs-btn-bg-hover: #{$dark-green};
-    --bs-btn-border-hover: #{$dark-green};
-    --bs-btn-color-hover: #{$green-white};
-}
-
-.btn-gradient-green{
-    --bs-btn-bg: #{$gradient-green};
-    --bs-btn-bg: #{$gradient-green-webkit};
-    --bs-btn-border: #{$green};
-    --bs-btn-color: white;
-    --bs-btn-bg-hover: #{$green};
-    --bs-btn-border-hover: #{$green};
-    --bs-btn-color-hover: white;
-}
-
 .accordion-primary{
     font-size: 20px;
     color: $beige;
@@ -128,12 +96,4 @@
     &:focus{
         @include shadow-none;
     }
-    /*
-    &:not(.collapsed),
-    &:focus,
-    &:focus-visible{
-        outline: 0;
-        border: 0;
-        box-shadow: 0!important;
-    }*/
 }

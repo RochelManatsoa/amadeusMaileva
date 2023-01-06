@@ -39,19 +39,6 @@ class ServiceRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * @return Service[] Returns an array of Service objects
-     */
-    public function findThree(): array
-    {
-        return $this->createQueryBuilder('s')
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(3)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
 //    /**
 //     * @return Service[] Returns an array of Service objects
 //     */
