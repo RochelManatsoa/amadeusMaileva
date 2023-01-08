@@ -138,7 +138,6 @@ start preview pdf
     margin-inline: auto;
     background-image: url("../images/bg-preview.png");
     background-repeat: repeat;
-    /*transform: scale(.5);*/
 }
 .tabulation{
     color: transparent;

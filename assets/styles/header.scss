@@ -14,21 +14,6 @@
             background-color: #1d1d5ecc!important;
         }
     }
-    &.bg-light2{
-        --bs-bg-opacity: .2;
-        background-color: rgba(248, 249, 250, var(--bs-bg-opacity)) !important;
-        .navbar-toggler{
-            &>img{
-                filter: $filter-night-blue;
-            }
-        }
-        @include md-layout{
-            --bs-bg-opacity: 1;
-        }
-        &.nav-scroll{
-            background-color: rgb(248, 249, 250) !important;
-        }
-    }
     &>.container-fluid{
         justify-content: space-around;
         @include lg-layout {
@@ -115,11 +100,6 @@
         }
         &.active{
             color: $blue;
-        }
-    }
-    .nav-blue {
-        .nav-link{
-            color: var(--bs-night-blue);
         }
     }
 }

@@ -1,111 +1,71 @@
 .text-grey{
     color: #aaa;
 }
-.step-form{
-    display: grid;
-    align-items: center;
-    /*.container-step-form{
-        transform: translateY(64px);
-        @include sm-height{
-            transform: translateY(0px);
-        }
-    }*/
-}
-.container-step-title{
-    width: 260px;
-    border-radius: 5px;
-    padding: 25px 30px;
-    position: fixed;
-    transform: translateY(-50%);
-    top: 50%;
-    @include sm-height{
-        top: calc(50% + 48px);
-    }
-    .step-title li{
-        margin: 25px 0;
-        font-size: 20px;
-        font-weight: 500;
-        text-align: center;
-        padding: 10px 0;
-        position: relative;
-        @include bg-gradient (to right, $green, $dark-green);
-        a{
-            color: $green-white;
-            text-decoration: none;
-        }
-        &::before{
-            content: '';
-            position: absolute;
-            width: 30px;
-            height: 50px;
-            transform: translateX(-100%);
-            left: 0;
-            top: 0;
-            @include bg-gradient(to right, transparent, $green)
-        }
-        &::after{
-            content: '';
-            position: absolute;
-            width: 60px;
-            height: 50px;
-            right: -60px;
-            top: 0;
-            border-left: 30px solid $dark-green;
-            border-bottom: 25px solid transparent;
-            border-top: 25px solid transparent;
-            border-right: 25px solid transparent;
-        }
-        &.not-yet{
-            opacity: .5;
-        }
-    }
-}
-.container-step-form{
-    $error-color : #ff0000;
-    margin-left: 260px;
-    padding: 0 30px;
-    @include md-layout{
-        margin-left: 0px;
-    }
-    @include sm-layout{
-        padding-inline: 0;
-    }
-    .legend{
-        font-size: 25px;
-        @include font-family-comfortaa;
-    }
-    .min-height-body{
-        min-height: 530px;
-    }
-    .form-control,
-    .form-select{
-        &.error{
-            background-color: #ffd7d7;
-            border: solid 2px $error-color;
-            width: calc(100% + 8px);
-            margin-inline: -4px;
-            box-shadow: 0 0 10px 1px #ffd7d7;
-        }
-    }
-    label{
-        &.error{
-            color: $error-color;
-        }
-    }
-    #resum{
-        color: $green-white;
-        td{
-            padding: 5px 10px;
-        }
-    }
+.recap-title{
+    margin-bottom: 16px;
 }
 .wizard{
     .content{
-        img[alt="stripe"]{
-            min-width: 350px;
-            @include md-layout{
-                width: 80%!important;
-                margin-inline: auto;
+        &.recap{
+            --recap-height : calc(100vh - 151px);
+            min-height: var(--recap-height)!important;
+            width: 80%;
+            margin: auto;
+            @include sm-height {
+                --recap-height : calc(100vh - 123px);
+                min-height: var(--recap-height)!important;
+            }
+            &>.d-flex{
+                height: var(--recap-height);
+            }
+            .button-container{
+                --recap-basis : 50%;
+                min-width: var(--recap-basis);
+                @include lg-layout {
+                    --recap-basis : 300px;
+                }
+                @include md-layout {
+                    --recap-basis : 200px;
+                }
+                @include sm-layout {
+                    --recap-basis : 100%;
+                }
+            }
+            .letter-container{
+                --recap-basis : 50%;
+                width: calc(100% - var(--recap-basis));
+                height: 100%;
+                @include lg-layout {
+                    --recap-basis : 300px;
+                }
+                @include md-layout {
+                    --recap-basis : 200px;
+                }
+                .letter{
+                    $letter-height : 1123px;
+                    $scale: 0.37;
+                    $letter-height-scale: $letter-height * $scale;
+                    $scale-top: calc(($letter-height - $letter-height-scale) / 2);
+                    $rest-top: calc((var(--recap-height) - $letter-height-scale) / 2);
+                    scale: $scale;
+                    margin-top: calc($rest-top - $scale-top);
+                    @include md-layout {
+                        $scale: 0.25;
+                        $letter-height-scale: $letter-height * $scale;
+                        $scale-top: calc(($letter-height - $letter-height-scale) / 2);
+                        $rest-top: calc((var(--recap-height) - $letter-height-scale) / 2);
+                        scale: $scale;
+                        margin-top: calc($rest-top - $scale-top);
+                    }
+                    @include sm-height {
+                        $scale: 0.25;
+                        $letter-height-scale: $letter-height * $scale;
+                        $scale-top: calc(($letter-height - $letter-height-scale) / 2);
+                        $rest-top: calc((var(--recap-height) - $letter-height-scale) / 2);
+                        scale: $scale;
+                        margin-top: calc($rest-top - $scale-top);
+                    }
+                }
             }
         }
     }

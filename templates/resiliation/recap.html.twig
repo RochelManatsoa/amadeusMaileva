@@ -13,19 +13,51 @@
 
 
 {% block body %}
-	<div class="container-fluid px-0 py-5 {% if template == 'design2' %} bg-marbre-blanc {% else %} bg-color-primary {% endif %}">
+	<div class="container-fluid px-0 pt-5 bg-color-primary">
 		<div class="">
-			<div class="max-width-content mx-auto">
-				<h1 class="h3 py-3 font-weight-normal text-center text-beige">Lettre de résiliation - {{category}}</h1>
-				<div class="wizard">
-					<div class="content">
-                        <div class="row">
-                            <div class="col-6 text-center">
-                                <a href="{{ path('app_resiliation_preview_doc', {'customId': resiliation.customId})}}" class="btn btn-outline-primary px-2 my-2" target=_blank >Aperçu <i class='fa-solid fa-file-pdf'></i></a><br>
-                                <a href="{{ path('app_resiliation_preview', {'customId': resiliation.customId})}}" class="btn btn-outline-secondary px-2 my-2">Modifier <i class='fa-solid fa-edit'></i></a><br>
-                                <a href="{{ path('app_maileva_send', {'customId': resiliation.customId})}}" class="btn btn-outline-info btn-md px-2 my-2">Procéder au paiement <i class='fa-solid fa-send'></i></a><br>
-                                <a href="{{ path('app_stripe_payment', {'customId': resiliation.customId})}}" class="btn btn-outline-info btn-md px-2 my-2">Payer <i class='fa-solid fa-send'></i></a><br>
-                            </div>
+			<h3 class="font-weight-normal text-center text-beige recap-title">Lettre de résiliation - {{category}}</h3>
+			<div class="wizard vw-100">
+				<div class="content recap">
+					<div class="d-flex">
+						<div class="d-flex flex-column justify-content-center align-items-center button-container">
+							<a href="{{ path('app_resiliation_preview_doc', {'customId': 	resiliation.customId})}}" class="button btn-gradient-primary my-2 d-sm-none" target=_blank >Aperçu <i class='fa-solid fa-file-pdf'></i></a>	
+							<a href="{{ path('app_resiliation_preview', {'customId': resiliation.customId})}}" class="button btn-gradient-orange my-2">Modifier <i class='fa-solid fa-edit'></i></a>
+							<a href="{{ path('app_maileva_send', {'customId': resiliation.customId})}}" class="button btn-gradient-beige my-2">Procéder au paiement  <i class="fa-regular fa-paper-plane"></i></a>
+							<a href="{{ path('app_stripe_payment', {'customId': resiliation.customId})}}" class="button btn-gradient-primary my-2">Payer  <i class="fa-regular fa-paper-plane"></i></a>
+						</div>
+						<div class="d-sm-grid d-none align-items-center justify-content-center position-relative letter-container">
+							<div class="letter bg-white p-4">
+								<div class="entete entete-client">
+									{{ resiliation.client.firstName}} {{ resiliation.client.lastName}}<br>
+									{{ resiliation.client.address.name }}<br>
+									{{ resiliation.client.address.zipCode}} - {{ resiliation.client.address.city}}<br>
+									{{ resiliation.client.mobile }}<br>
+								</div>
+								<div class="entete d-flex justify-content-end">
+									<div class="entete-societe">
+										<strong>{{ resiliation.service.name }}</strong> <br>
+										{{ resiliation.service.address }} <br>
+										{% if resiliation.service.complement is not null %}
+											{{ resiliation.service.complement }} <br>
+										{% endif %}
+										{{ resiliation.service.zipCode }} - {{ resiliation.service.city }} <br>
+									</div>
+								</div>
+								<div class="date">
+									<p> A <strong>{{ resiliation.client.address.city }}</strong>, {{ resiliation.createdAt | date('d/m/Y') }}</p>
+								</div>
+								<div class="letter-content">
+									<p><u><strong>Objet</strong></u> : {{ resiliation.type }}</p>
+									<div>
+									{% for text in textArray %}
+										<span class="tabulation">MMMM</span>
+										{{ text }}
+										<br>
+									{% endfor %}
+									</div>
+								</div>
+							</div>
+							<a href="{{ path('app_resiliation_preview_doc', {'customId': resiliation.customId})}}" class="button btn-gradient-primary position-absolute translate-middle start-50" target=_blank >Aperçu <i class='fa-solid fa-file-pdf'></i></a>
 						</div>
 					</div>
 				</div>
