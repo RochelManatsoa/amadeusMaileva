@@ -2,20 +2,29 @@
     color: #aaa;
 }
 .recap-title{
-    margin-bottom: 16px;
+    font-size: calc(1.3rem + 0.6vw);
+    @include sm-layout {
+        font-size: 1.25rem;
+    }
+    @include xs-layout{
+        font-size: 1rem;
+    }
 }
 .wizard{
     .content{
         &.recap{
-            --recap-height : calc(100vh - 151px);
+            //--recap-height : calc(100vh - 151px);
+            --recap-height : 440px;
             min-height: var(--recap-height)!important;
             width: 640px;
             margin: auto;
             @include md-layout{
+                --recap-height : 377px;
+                min-height: var(--recap-height)!important;
                 width: 85%;
             }
             @include sm-height {
-                --recap-height : calc(100vh - 123px);
+                --recap-height : calc(100vh - 130px);
                 min-height: var(--recap-height)!important;
             }
             &>.d-flex{
@@ -62,6 +71,14 @@
                     }
                     @include sm-height {
                         $scale: 0.25;
+                        $letter-height-scale: $letter-height * $scale;
+                        $scale-top: calc(($letter-height - $letter-height-scale) / 2);
+                        $rest-top: calc((var(--recap-height) - $letter-height-scale) / 2);
+                        scale: $scale;
+                        margin-top: calc($rest-top - $scale-top);
+                    }
+                    @include xs-height {
+                        $scale: 0.2;
                         $letter-height-scale: $letter-height * $scale;
                         $scale-top: calc(($letter-height - $letter-height-scale) / 2);
                         $rest-top: calc((var(--recap-height) - $letter-height-scale) / 2);

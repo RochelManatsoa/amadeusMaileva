@@ -151,15 +151,13 @@ class ResiliationController extends AbstractController
     ) {
         $file = $resiliationManager->generatePreview($resiliation);
 
-        //++++++++++++++++++++++++++++++++++
         $text = nl2br($resiliation->getDescription());
         $textArray = explode('<br />', $text);
-        //++++++++++++++++++++++++++++++++++
 
         //return new BinaryFileResponse($file);
         return $this->render('resiliation/pdf/preview.pdf.twig',[
             'resiliation' => $resiliation,
-            'textArray' => $textArray,
+            'resiliationDescription' => $textArray,
         ]);
     }
 }

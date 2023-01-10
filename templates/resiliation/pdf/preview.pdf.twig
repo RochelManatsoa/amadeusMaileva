@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ pathToWeb ~ asset('assets/css/main.css') }}">
   <style type="text/css">
-    .logo-facture{
+    /*.logo-facture{
       width:100px;
     }
     body{
@@ -17,7 +17,7 @@
     }
     h1{
       font-size: 30px;
-    }
+    }*/
   </style>
 </head>
 
@@ -95,7 +95,7 @@
   <div class="letter-content">
       <p><u><strong>Objet</strong></u> : {{ resiliation.type }}</p>
       <div>
-      {% for text in textArray %}
+      {% for text in resiliationDescription %}
           <span class="tabulation">MMMM</span>
           {{ text }}
           <br>
