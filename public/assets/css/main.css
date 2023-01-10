@@ -122,6 +122,7 @@ textarea {
    Helper classes
    ========================================================================== */
 
+
 /* +++++++++++++ 
 start preview pdf
 +++++++++++++ */
@@ -130,8 +131,20 @@ start preview pdf
     background-image: url("../images/bg-preview.png");
     background-repeat: repeat;
 }
-.text-rouge{
-    color: red;
+.letter{
+    width: 794px;
+    height: 1123px;
+    font-family:Roboto;
+    font-size: 14px;
+    margin-inline: auto;
+    background-image: url("../images/bg-preview.png");
+    background-repeat: repeat;
+}
+.tabulation{
+    color: transparent;
+}
+.entete-societe{
+    width: 150px;
 }
 
 /* +++++++++++++ 
