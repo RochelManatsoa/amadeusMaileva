@@ -176,14 +176,19 @@ class ResiliationController extends AbstractController
     /**
      * @Route("/resume/{customId}", name="app_resiliation_resume")
      */
-    public function resume2(Resiliation $resiliation)
+    public function resume(Resiliation $resiliation)
     {
+        //++++++++++++++++++++++++++++++++++
+        $text = nl2br($resiliation->getDescription());
+        $textArray = explode('<br />', $text);
+        //++++++++++++++++++++++++++++++++++
         return $this->render('resiliation/recap.html.twig', [
             'category' => $resiliation
                 ->getService()
                 ->getCategory()
                 ->getName(),
             'resiliation' => $resiliation,
+            'textArray' => $textArray,
         ]);
     }
 
@@ -196,9 +201,15 @@ class ResiliationController extends AbstractController
     ) {
         $file = $resiliationManager->generatePreview($resiliation);
 
+        //++++++++++++++++++++++++++++++++++
+        $text = nl2br($resiliation->getDescription());
+        $textArray = explode('<br />', $text);
+        //++++++++++++++++++++++++++++++++++
+
         //return new BinaryFileResponse($file);
         return $this->render('resiliation/pdf/preview.pdf.twig',[
-            'resiliation' => $resiliation
+            'resiliation' => $resiliation,
+            'textArray' => $textArray,
         ]);
     }
 }
