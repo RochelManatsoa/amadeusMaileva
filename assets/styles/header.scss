@@ -1,3 +1,125 @@
-nav img{
-    width: 200px;
+// modif header
+
+.navbar{
+    position: fixed;
+    width: 100%;
+    z-index: 1021;
+    @include font-family-comfortaa;
+    &.bg-light{
+        --bs-bg-opacity: .2;
+        &.nav-scroll{
+            background-color: #1d1d5ecc!important;
+        }
+        @include md-layout{
+            background-color: #1d1d5ecc!important;
+        }
+    }
+    &.bg-light2{
+        --bs-bg-opacity: .2;
+        background-color: rgba(248, 249, 250, var(--bs-bg-opacity)) !important;
+        .navbar-toggler{
+            &>img{
+                filter: $filter-night-blue;
+            }
+        }
+        @include md-layout{
+            --bs-bg-opacity: 1;
+        }
+        &.nav-scroll{
+            background-color: rgb(248, 249, 250) !important;
+        }
+    }
+    &>.container-fluid{
+        justify-content: space-around;
+        @include lg-layout {
+            justify-content: space-between;
+        }
+    }
+    .btn-user{
+        img{
+            height: 25px;
+            transform: translateY(-2px);
+            //@include filter-grey;
+            @include lg-layout {
+                height: 20px;
+            }
+            @include sm-layout{
+                height: 16px;
+            }
+        }
+        @include md-layout {
+            position: absolute;
+            right: 4rem;
+            top: .75rem;
+        }
+        @include sm-layout{
+            right: 3.5rem;
+            top: .5rem;
+        }
+    }
+    .navbar-brand>img{
+        width: 200px;
+        @include sm-layout{
+            width: 150px;
+        }
+    }
+    
+    &>.navbar-toggler{
+        padding: 0!important;
+        border: 0!important;
+        img{
+            height: 35px;
+            width: 45px;
+            filter: $filter-beige;
+            @include sm-layout{
+                height: 30px;
+                width: 35px;
+            }
+        }
+        &:not(.collapsed),
+        &:focus,
+        &:focus-visible{
+            outline: 0;
+            border: 0;
+            box-shadow: 0!important;
+        }
+    }
+    .navbar-nav{
+        @include md-layout {
+            @include flex-direction(row);
+            justify-content: center;
+            .nav-link{
+                padding-inline: 8px;
+                @include fs-14;
+            }
+        }
+        @include sm-layout{
+            @include flex-direction(column);
+        }
+    }
+}
+
+.navbar-collapse{
+    flex-grow: revert;
+    .nav-white{
+        .nav-link{
+            color: whitesmoke;
+        }
+    }
+    .nav-link{
+        font-size: 1rem;
+        line-height: 1;
+        font-weight: bold;
+        &:hover{
+            color: $blue;
+        }
+        &.active{
+            color: $blue;
+        }
+    }
+    .nav-blue {
+        .nav-link{
+            color: var(--bs-night-blue);
+        }
+    }
 }

@@ -4,17 +4,28 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container-fluid homepage-cover text-center ">
-		<h1 class="pt-lg-5">La résiliation facile en quelques clics</h1>
-		<p>Modèles de lettre, envoi en recommandé, suivi en ligne</p>
-		<div class="row pt-5 justify-content-md-center">
-			<div class="col-4 align-self-center">
-			{% for category in categories %}
-				<a href="{{path('app_resiliation_category', {slug:category.slug})}}" class="btn btn-primary">{{category.name}}</a>
-			{% endfor %}
+	<div class="container-fluid home-fond text-beige bg-marbre-blanc">
+		<div class="row homepage-element pt-5 pb-4">
+			<div class="col-md-6 d-grid justify-content-center my-md-0 my-3 align-items-center">
+				<div class="description-homepage text-night-blue fw-bold text-sm-start text-center">
+					<h1 class="fw-bold">La résiliation facile en quelques clics</h1>
+					<p class="h6">Modèles de lettre, envoi en recommandé, suivi en ligne</p>
+				</div>
+			</div>
+			<div class="col-md-6 d-grid align-items-center">
+				<div class="container-category border-green bg-gradient-green shadow-night-blue w-75">
+					<h3 class="text-green-white">Liste des categories</h3>
+					<div class="d-flex flex-column pt-2 pb-4">
+						{% for category in categories %}
+                        <div class="py-3">
+							<a href="{{path('app_resiliation_category', {slug:category.slug})}}" class="button btn-gradient-green">
+                                {{category.name}}
+							</a>
+                        </div>
+						{% endfor %}
+					</div>
+				</div>
 			</div>
 		</div>
-
-
 	</div>
 {% endblock %}

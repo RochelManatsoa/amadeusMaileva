@@ -17,11 +17,11 @@ class HomeController extends AbstractController
         MailevaApi $mailevaApi,
         CategoryRepository $categoryRepository
     ): Response {
-        // dd($mailevaApi->getOneSending('5fc2c115-7087-4336-ad6f-c76bc61041fb'));
         $categories = $categoryRepository->findAll();
 
         return $this->render('home/index.html.twig', [
             'categories' => $categories,
+            'menu' => 'accueil',
         ]);
     }
 
@@ -30,7 +30,9 @@ class HomeController extends AbstractController
      */
     public function howItWorks(MailevaApi $token): Response
     {
-        return $this->render('home/howItWorks.html.twig', []);
+        return $this->render('home/howItWorks.html.twig', [
+            'menu' => 'howItWorks',
+        ]);
     }
 
     /**
@@ -38,6 +40,8 @@ class HomeController extends AbstractController
      */
     public function resiliationFacile(MailevaApi $token): Response
     {
-        return $this->render('home/resiliationFacile.html.twig', []);
+        return $this->render('home/resiliationFacile.html.twig', [
+            'menu' => 'resiliationFacile',
+        ]);
     }
 }

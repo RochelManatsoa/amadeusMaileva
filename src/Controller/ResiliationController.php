@@ -26,6 +26,9 @@ class ResiliationController extends AbstractController
     ) {
         $service = $serviceRepository->find($category);
         $services = $serviceRepository->findAll($category);
+        // ----------------------------
+        $servicesThree = $serviceRepository->findThree();
+        // --------------------------------------
         $dataServices = $this->objectToArray($services);
         $models = $this->objectToArray($letterRepository->findAll());
         $resiliation = $resiliationManager->init();
@@ -45,12 +48,15 @@ class ResiliationController extends AbstractController
 
         return $this->render('resiliation/service.html.twig', [
             'services' => $services,
+            'servicesThree' => $servicesThree,
             'dataServices' => $dataServices,
             'letters' => $models,
             'category' => $category->getName(),
             'form' => $form->createView(),
         ]);
     }
+
+
     /**
      * Array of Object to array
      */
@@ -122,10 +128,55 @@ class ResiliationController extends AbstractController
         ]);
     }
 
+    
+    /**
+     * @Route("/preview2/{customId}", name="app_resiliation2_preview")
+     */
+    public function preview2(
+        Resiliation $resiliation,
+        Request $request,
+        LetterRepository $letterRepository,
+        ServiceRepository $serviceRepository,
+        ResiliationManager $resiliationManager
+    ) {
+        $services = $serviceRepository->findAll(
+            $resiliation->getService()->getCategory()
+        );
+        $dataServices = $this->objectToArray($services);
+        $defaultModel = $letterRepository->findOneByName(
+            $resiliation->getType()
+        );
+        $models = $this->objectToArray($letterRepository->findAll());
+        $form = $this->createForm(ResiliationFormType::class, $resiliation, [
+            'defaultModel' => $defaultModel,
+        ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $resiliation = $form->getData();
+            $resiliationManager->save($resiliation);
+
+            return $this->redirectToRoute('app_resiliation_resume', [
+                'customId' => $resiliation->getCustomId(),
+            ]);
+        }
+
+        return $this->render('resiliation/service2.html.twig', [
+            'services' => $services,
+            'dataServices' => $dataServices,
+            'letters' => $models,
+            'category' => $resiliation
+                ->getService()
+                ->getCategory()
+                ->getName(),
+            'form' => $form->createView(),
+        ]);
+    }
+
+
     /**
      * @Route("/resume/{customId}", name="app_resiliation_resume")
      */
-    public function resume(Resiliation $resiliation)
+    public function resume2(Resiliation $resiliation)
     {
         return $this->render('resiliation/recap.html.twig', [
             'category' => $resiliation
@@ -145,6 +196,9 @@ class ResiliationController extends AbstractController
     ) {
         $file = $resiliationManager->generatePreview($resiliation);
 
-        return new BinaryFileResponse($file);
+        //return new BinaryFileResponse($file);
+        return $this->render('resiliation/pdf/preview.pdf.twig',[
+            'resiliation' => $resiliation
+        ]);
     }
 }
