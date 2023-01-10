@@ -152,6 +152,9 @@ body{
 .bg-gradient-green{
     @include bg-gradient(45deg, $dark-green, $night-blue);
 }
+.bg-error{
+    background: radial-gradient( #00032f, #ff00008c)!important;
+}
 .border-green{
     border: solid 2px $dark-green;
     border-radius: 5px;

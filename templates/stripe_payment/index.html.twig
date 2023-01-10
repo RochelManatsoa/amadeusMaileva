@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello StripePaymentController!{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block body %}
 <style>
@@ -23,8 +23,8 @@
         margin-inline: 80px; 
     }
 </style>
-<div class="container-fluid home-fond text-beige bg-color-primary justify-content-center">
-    <div class="container-payment bg-gradient-beige d-flex flex-column justify-content-center align-items-center text-gris">
+<div class="container-fluid home-fond text-night-blue bg-marbre-blanc justify-content-center">
+    <div class="container-payment {% if state == 'paid' %} bg-gradient-green {% elseif state == 'fail' %} bg-error {% endif %}d-flex flex-column justify-content-center align-items-center text-green-white">
         {% if state == 'paid' %}
             <img src="{{asset('assets/images/success.png')}}" class="filter-success" alt="payment-response">
             <h3 class="text-center">
