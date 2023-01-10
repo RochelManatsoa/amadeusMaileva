@@ -13,68 +13,57 @@
 
 
 {% block body %}
-	<div class="container-fluid px-0 py-5 bg-marbre-blanc">
+	<div class="container-fluid px-0 pt-5 bg-marbre-blanc">
 		<div class="">
-			<div class="max-width-content mx-auto">
-				<h1 class="h3 py-3 font-weight-normal text-center text-night-blue">Lettre résiliation - {{category}}</h1>
-				<div class="wizard">
-					<div class="content">
-					<div class="row">
-						<div class="col-6 text-center">
-							<a href="{{ path('app_resiliation_preview_doc', {'customId': resiliation.customId})}}" class="btn btn-outline-primary px-2 my-2" target=_blank >Aperçu <i class='fa-solid fa-file-pdf'></i></a><br>
-							<a href="{{ path('app_resiliation_preview', {'customId': resiliation.customId})}}" class="btn btn-outline-secondary px-2 my-2">Modifier <i class='fa-solid fa-edit'></i></a><br>
-							<a href="{{ path('app_maileva_send', {'customId': resiliation.customId})}}" class="btn btn-outline-info btn-md px-2 my-2">Procéder au paiement <i class='fa-solid fa-send'></i></a><br>
-							<a href="{{ path('app_stripe_payment', {'customId': resiliation.customId})}}" class="btn btn-outline-info btn-md px-2 my-2">Payer <i class='fa-solid fa-send'></i></a><br>
-					{#<div class="bg-gradient-green content d-grid align-items-center">
-						<div class="row flex-md-row flex-column-reverse mx-0">
-							<div class="col-md px-0 d-flex flex-md-column justify-content-center align-items-center">
-								<a href="{{ path('app_resiliation_preview_doc', {'customId': resiliation.customId})}}" class="button btn-gradient-green" target=_blank >Aperçu <i class='fa-solid fa-file-pdf'></i></a><br>
-								<a href="{{ path('app_resiliation2_preview', {'customId': resiliation.customId})}}" class="button btn-gradient-green-blue">Modifier <i class='fa-solid fa-edit'></i></a><br>
-								<a href="{{ path('app_maileva_send', {'customId': resiliation.customId})}}" class="button btn-night-blue">Envoyer <i class="fa-regular fa-paper-plane"></i></a><br>
+			<h3 class="text-center text-night-blue text-comfortaa fw-bold recap-title mx-auto">Lettre de résiliation - {{category}}</h3>
+			<div class="wizard vw-100">
+				<div class="content recap bg-gradient-green shadow-night-blue">
+					<div class="d-flex">
+						<div class="d-flex flex-column justify-content-center align-items-center button-container">
+							<a href="{{ path('app_resiliation_preview', {'customId': resiliation.customId})}}" class="button btn-gradient-green my-2">Modifier <i class='fa-solid fa-edit'></i></a>
+							<a href="{{ path('app_resiliation_preview_doc', {'customId': 	resiliation.customId})}}" class="button btn-gradient-green my-2 d-sm-none" target=_blank >Aperçu <i class='fa-solid fa-file-pdf'></i></a>	
+							<a href="{{ path('app_maileva_send', {'customId': resiliation.customId})}}" class="button btn-gradient-green my-2">Procéder au paiement  <i class="fa-regular fa-paper-plane"></i></a>
+							<a href="{{ path('app_stripe_payment', {'customId': resiliation.customId})}}" class="button btn-gradient-green my-2">Payer  <i class="fa-regular fa-paper-plane"></i></a>
+						</div>
+						<div class="d-sm-grid d-none align-items-center justify-content-center position-relative letter-container">
+							<div class="letter bg-white p-4">
+								<div class="entete entete-client">
+									{{ resiliation.client.firstName}} {{ resiliation.client.lastName}}<br>
+									{{ resiliation.client.address.name }}<br>
+									{{ resiliation.client.address.zipCode}} - {{ resiliation.client.address.city}}<br>
+									{{ resiliation.client.mobile }}<br>
+								</div>
+								<div class="entete d-flex justify-content-end">
+									<div class="entete-societe">
+										<strong>{{ resiliation.service.name }}</strong> <br>
+										{{ resiliation.service.address }} <br>
+										{% if resiliation.service.complement is not null %}
+											{{ resiliation.service.complement }} <br>
+										{% endif %}
+										{{ resiliation.service.zipCode }} - {{ resiliation.service.city }} <br>
+									</div>
+								</div>
+								<div class="date">
+									<p> A <strong>{{ resiliation.client.address.city }}</strong>, {{ resiliation.createdAt | date('d/m/Y') }}</p>
+								</div>
+								<div class="letter-content">
+									<p><u><strong>Objet</strong></u> : {{ resiliation.type }}</p>
+									<div>
+									{% for text in textArray %}
+										<span class="tabulation">MMMM</span>
+										{{ text }}
+										<br>
+									{% endfor %}
+									</div>
+								</div>
 							</div>
-							<div class="col-md d-flex px-0 ">
-								<img class="img-fluid px-2 my-2" src="{{ asset('assets/images/Stripe_payment_form.png')}}" alt="stripe">
-							</div>#}
+							<a href="{{ path('app_resiliation_preview_doc', {'customId': resiliation.customId})}}" class="button btn-night-blue position-absolute translate-middle start-50" target=_blank >Aperçu <i class='fa-solid fa-file-pdf'></i></a>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
-{#
-	<div class="letter bg-white p-4">
-		<div class="entete entete-client">
-			{{ resiliation.client.firstName}} {{ resiliation.client.lastName}}<br>
-			{{ resiliation.client.address.name }}<br>
-			{{ resiliation.client.address.zipCode}} - {{ resiliation.client.address.city}}<br>
-			{{ resiliation.client.mobile }}<br>
-		</div>
-		<div class="entete d-flex justify-content-end">
-			<div class="entete-societe">
-			<strong>{{ resiliation.service.name }}</strong> <br>
-			{{ resiliation.service.address }} <br>
-			{% if resiliation.service.complement is not null %}
-				{{ resiliation.service.complement }} <br>
-			{% endif %}
-			{{ resiliation.service.zipCode }} - {{ resiliation.service.city }} <br>
-			</div>
-		</div>
-		<div class="date">
-			<p> A <strong>{{ resiliation.client.address.city }}</strong>, {{ resiliation.createdAt | date('d/m/Y') }}</p>
-		</div>
-		<div class="letter-content">
-			<p><u><strong>Objet</strong></u> : {{ resiliation.type }}</p>
-			<div>
-				{% for text in textArray %}
-					<span class="tabulation">MMMM</span>
-					{{ text }}
-					<br>
-				{% endfor %}
-			</div>
-		</div>
-	</div>
-#}
 {% endblock %}
 {% block jsFooter %}
 	<script src="{{asset('assets/js/jquery.min.js')}}"></script>
@@ -83,7 +72,7 @@
 	<script src="{{asset('assets/js/main.js')}}"></script>
 	<script>
 
-		$(function () {
+		/*$(function () {
 
             initFormStep(
                 $("#example-basic"),
@@ -122,6 +111,6 @@
 				var Value = $(".ancientitulaire").find(":selected").val();
 				$('#resiliation_form_description').text(data[Value].content)
 			})
-		})
+		})*/
 	</script>
 {% endblock %}

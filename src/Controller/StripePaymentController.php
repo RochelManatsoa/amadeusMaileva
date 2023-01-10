@@ -100,7 +100,8 @@ class StripePaymentController extends AbstractController
     public function success(Request $request): Response
     {
         return $this->render('stripe_payment/index.html.twig', [
-            'controller_name' => 'StripePaymentController',
+            'title' => 'Successful Payment',
+            'state' => 'paid',
         ]);
     }
 
@@ -110,7 +111,8 @@ class StripePaymentController extends AbstractController
     public function cancel(): Response
     {
         return $this->render('stripe_payment/index.html.twig', [
-            'controller_name' => 'StripePaymentController',
+            'title' => 'Failed Payment',
+            'state' => 'fail',
         ]);
     }
 }

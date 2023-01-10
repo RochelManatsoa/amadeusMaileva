@@ -99,13 +99,91 @@
         }
     }
 }
+.recap-title{
+    font-size: calc(1.3rem + 0.6vw);
+    @include sm-layout {
+        font-size: 1.25rem;
+    }
+    @include xs-layout{
+        font-size: 1rem;
+    }
+}
 .wizard{
     .content{
-        img[alt="stripe"]{
-            min-width: 350px;
+        &.recap{
+            //--recap-height : calc(100vh - 151px);
+            --recap-height : 440px;
+            min-height: var(--recap-height)!important;
+            width: 640px;
+            margin: auto;
             @include md-layout{
-                width: 80%!important;
-                margin-inline: auto;
+                --recap-height : 377px;
+                min-height: var(--recap-height)!important;
+                width: 85%;
+            }
+            @include sm-height {
+                --recap-height : calc(100vh - 130px);
+                min-height: var(--recap-height)!important;
+            }
+            &>.d-flex{
+                height: var(--recap-height);
+            }
+            .button-container{
+                --recap-basis : 50%;
+                min-width: var(--recap-basis);
+                @include lg-layout {
+                    --recap-basis : 300px;
+                }
+                @include md-layout {
+                    --recap-basis : 240px;
+                }
+                @include sm-layout {
+                    --recap-basis : 100%;
+                }
+            }
+            .letter-container{
+                --recap-basis : 50%;
+                width: calc(100% - var(--recap-basis));
+                height: 100%;
+                @include lg-layout {
+                    --recap-basis : 300px;
+                }
+                @include md-layout {
+                    --recap-basis : 240px;
+                }
+                .letter{
+                    $letter-height : 1123px;
+                    $scale: 0.37;
+                    $letter-height-scale: $letter-height * $scale;
+                    $scale-top: calc(($letter-height - $letter-height-scale) / 2);
+                    $rest-top: calc((var(--recap-height) - $letter-height-scale) / 2);
+                    scale: $scale;
+                    margin-top: calc($rest-top - $scale-top);
+                    @include md-layout {
+                        $scale: 0.25;
+                        $letter-height-scale: $letter-height * $scale;
+                        $scale-top: calc(($letter-height - $letter-height-scale) / 2);
+                        $rest-top: calc((var(--recap-height) - $letter-height-scale) / 2);
+                        scale: $scale;
+                        margin-top: calc($rest-top - $scale-top);
+                    }
+                    @include sm-height {
+                        $scale: 0.25;
+                        $letter-height-scale: $letter-height * $scale;
+                        $scale-top: calc(($letter-height - $letter-height-scale) / 2);
+                        $rest-top: calc((var(--recap-height) - $letter-height-scale) / 2);
+                        scale: $scale;
+                        margin-top: calc($rest-top - $scale-top);
+                    }
+                    @include xs-height {
+                        $scale: 0.2;
+                        $letter-height-scale: $letter-height * $scale;
+                        $scale-top: calc(($letter-height - $letter-height-scale) / 2);
+                        $rest-top: calc((var(--recap-height) - $letter-height-scale) / 2);
+                        scale: $scale;
+                        margin-top: calc($rest-top - $scale-top);
+                    }
+                }
             }
         }
     }

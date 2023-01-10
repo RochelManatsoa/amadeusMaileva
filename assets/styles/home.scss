@@ -165,15 +165,6 @@ body{
 .shadow-night-blue{
     @include shadow-night-blue;
 }
-.max-width-content{
-    max-width: 800px;
-    @include lg-layout{
-        width: 80%;
-    }
-    @include md-layout{
-        width: 85%;
-    }
-    @include sm-layout{
-        width: 90%;
-    }
+.text-comfortaa {
+    @include font-family-comfortaa;
 }
