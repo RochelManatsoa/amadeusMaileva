@@ -189,3 +189,23 @@ function updateNumber(number){
   content = content.replace('[ mobile-identifiant ]', number)
   $('#resiliation_form_description').html(content)
 }
+
+function uncheck(e){
+  if (e.checked) {
+    e.checked = false;
+  }
+}
+
+function uncheckOther(e){
+  let identifiant = e.id;
+  let className = e.className;
+  let parentElement = e.parentElement.parentElement;
+  
+  let radios = parentElement.querySelectorAll('.'+className);
+  for (radio of radios) {
+    if(radio.id !== identifiant){
+      uncheck(radio);
+    }
+  }
+  console.log(identifiant, className, parentElement);
+}

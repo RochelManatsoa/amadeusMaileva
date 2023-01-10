@@ -29,15 +29,15 @@
 						<div class="accordion" id="accordionExample">
 							<div class="accordion-item bg-transparent border-color-primary">
 								<h2 class="accordion-header" id="headingOne">
-									<button class="accordion-button accordion-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+									<div class="accordion-button accordion-primary" {#type="button"#} data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 										Sélectionnez une société depuis notre annuaire
-									</button>
+									</div>
 								</h2>
 								<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
 									<div class="accordion-body">
 										<p class="text-grey">Plus besoin de chercher l'adresse de résiliation, nous l'avons trouvé pour vous ! Sélectionnez une société pour l'ajouter à votre lettre.</p>
 										<!-- Button trigger modal -->
-										<a type="button" class="button btn-gradient-orange" data-bs-toggle="modal" data-bs-target="#exampleModal" id="select-service">
+										<a {#type="button"#} class="button btn-gradient-orange" data-bs-toggle="modal" data-bs-target="#exampleModal" id="select-service">
 											Sélectionnez la société à résilier
 											<i class="fa-regular fa-circle-chevron-up mx-2"></i>
 
@@ -53,33 +53,32 @@
 													<div class="modal-header">
 
 														<h1 class="modal-title fs-5" id="exampleModalLabel">Sélectionnez une société depuis notre annuaire</h1>
-														<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+														<div {#type="button"#} class="btn-close" data-bs-dismiss="modal" aria-label="Close"></div>
 													</div>
 													<div class="modal-body">
 														{% for service in services %}
 															<div class="form-check">
 																<input class="form-check-input" type="radio" name="{{'service' ~ service.id}}" id="{{'service' ~ service.id}}" data-service="{{service.slug}}">
-
-
-															<label class="form-check-label" for="{{'service' ~ service.id}}">
-																{{service.name}}
-															</label>
-														</div>
-													{% endfor %}
+																<label class="form-check-label" for="{{'service' ~ service.id}}">
+																	{{service.name}}
+																</label>
+															</div>
+														{% endfor %}
+													</div>
 												</div>
 											</div>
 										</div>
-
+										<!-- Modal -->
 
 									</div>
 								</div>
 							</div>
 							<div class="accordion-item bg-transparent border-color-primary mt-3">
 								<h2 class="accordion-header" id="headingTwo">
-									<button class="accordion-button accordion-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+									<div class="accordion-button accordion-primary collapsed" {#type="button"#} data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
 										Adresse de résiliation de votre destinataire
 
-									</button>
+									</div>
 								</h2>
 								<div id="collapseTwo" data-services="{{ dataServices | json_encode()}}" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
 
@@ -191,10 +190,12 @@
 			});
 
 			$(document).on('change', '.form-check', function (e) {
-				e.preventDefault()
-				var ref = $(this).children('input').data('service')
+				e.preventDefault();
+				var ref = $(this).children('input').data('service');
 				var services = $('#collapseTwo').data('services');
-				var addressService = services[ref]
+				var addressService = services[ref];
+				var radio = this.querySelector('input');
+				uncheckOther(radio);
 				$('#select-service').html(addressService.name + '<i class="fa-solid fa-circle-chevron-down mx-2"></i>')
 				$('input#resiliation_form_service_name').val(addressService.name)
 				$('input#resiliation_form_service_address').val(addressService.address)

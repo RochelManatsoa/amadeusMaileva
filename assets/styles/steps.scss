@@ -9,8 +9,11 @@
         &.recap{
             --recap-height : calc(100vh - 151px);
             min-height: var(--recap-height)!important;
-            width: 80%;
+            width: 640px;
             margin: auto;
+            @include md-layout{
+                width: 85%;
+            }
             @include sm-height {
                 --recap-height : calc(100vh - 123px);
                 min-height: var(--recap-height)!important;
@@ -25,7 +28,7 @@
                     --recap-basis : 300px;
                 }
                 @include md-layout {
-                    --recap-basis : 200px;
+                    --recap-basis : 240px;
                 }
                 @include sm-layout {
                     --recap-basis : 100%;
@@ -39,7 +42,7 @@
                     --recap-basis : 300px;
                 }
                 @include md-layout {
-                    --recap-basis : 200px;
+                    --recap-basis : 240px;
                 }
                 .letter{
                     $letter-height : 1123px;

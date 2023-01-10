@@ -6,12 +6,13 @@
 @mixin sm-layout {
     @media (max-width: 575px) { @content; }
 }
-@mixin mdi-layout {
-    @media (max-width: 675px) { @content; }
-}
 
 @mixin md-layout {
     @media (max-width: 767px) { @content; }
+}
+
+@mixin mdi-layout {
+    @media (max-width: 800px) { @content; }
 }
 
 @mixin lg-layout {
