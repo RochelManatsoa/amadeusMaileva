@@ -27,3 +27,7 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+###< text Lorem 3000 ###
+/zlorem.html
+###< text Lorem 3000 ###
