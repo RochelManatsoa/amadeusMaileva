@@ -34,6 +34,11 @@ class BlogCategory
      */
     private $posts;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -100,5 +105,17 @@ class BlogCategory
 
     public function __toString(){
         return $this->nom;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 }

@@ -21,6 +21,7 @@ class BlogCategoryCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             TextField::new('nom'),
+            TextField::new('slug')->hideOnForm(),
             TextEditorField::new('description'),
             AssociationField::new('posts')->hideOnForm()
         ];

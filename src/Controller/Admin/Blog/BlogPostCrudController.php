@@ -17,7 +17,7 @@ class BlogPostCrudController extends AbstractCrudController
     {
         return BlogPost::class;
     }
-    /*
+    
     public function configureFields(string $pageName): iterable
     {
         return [
@@ -29,7 +29,6 @@ class BlogPostCrudController extends AbstractCrudController
             AssociationField::new('category')
         ];
     }
-    */
 
     /*
     public function configureFields(string $pageName): iterable

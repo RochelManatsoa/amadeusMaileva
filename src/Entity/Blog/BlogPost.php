@@ -61,6 +61,17 @@ class BlogPost
         return $this;
     }
 
+    public function getSubContenu()
+    {
+        $contenu = $this->contenu;
+        $subContenu = substr($contenu, 5, -6);
+        $subContenu = substr($subContenu, 0, strpos($subContenu, '<'));
+        if (strpos($subContenu, '&')){
+            $subContenu = substr($subContenu, 0, strpos($subContenu, '&'));
+        }
+        return $subContenu;
+    }
+
     public function getContenu(): ?string
     {
         return $this->contenu;

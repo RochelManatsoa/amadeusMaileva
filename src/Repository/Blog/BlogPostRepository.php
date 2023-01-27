@@ -39,6 +39,47 @@ class BlogPostRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @return BlogPost[] Returns an array of BlogPost objects
+     */
+    public function findByCreatedAt(): array
+    {
+        return $this->createQueryBuilder('b')
+            ->orderBy('b.createdAt', 'DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return BlogPost[] Returns an array of BlogPost objects
+     */
+    public function findByCategory($value): array
+        {
+            return $this->createQueryBuilder('b')
+                ->andWhere('b.category = :val')
+                ->setParameter('val', $value)
+                ->orderBy('b.createdAt', 'DESC')
+                ->setMaxResults(5)
+                ->getQuery()
+                ->getResult()
+        ;
+    }
+
+    /**
+     * @return BlogPost[] Returns an array of BlogPost objects
+     */
+    public function findBySlug($value): array
+        {
+            return $this->createQueryBuilder('b')
+                ->andWhere('b.slug = :val')
+                ->setParameter('val', $value)
+                ->getQuery()
+                ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return BlogPost[] Returns an array of BlogPost objects
 //     */
