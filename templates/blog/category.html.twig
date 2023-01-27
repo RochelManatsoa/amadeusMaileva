@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BlogController!{% endblock %}
+
+{% block body %}
+<style>
+    
+</style>
+
+<div class="container-fluid bg-white blog">
+    <div class="blog-container">
+        <h1>{{ category.nom }}</h1>
+
+        {% for post in posts %}
+
+            <div class="post-container py-4">
+                <a href="{{ path('post_show', {'slug':post.slug}) }}" class="post-title h2">{{ post.titre }}</a>
+                <div>
+                    <span> {{ post.createdAt | date('d/m/Y') }} <span>
+                </div>
+                <div class="post-content">
+                    {{ post.subContenu }}
+                </div>
+            </div>
+            
+        {% endfor %}
+    </div>
+    
+    {% include "sidebarBlog.html.twig" %}
+    
+</div>
+{% endblock %}
+{% block jsFooter %}
+    <script src="{{asset('assets/js/sidebar.js')}}"></script>
+    <script>
+        $(function(){
+            $(document).ready(function(){
+                if (!$(".navbar").hasClass("nav-scroll")){
+                    console.log('pas de nav-scroll')
+                    $(".navbar").addClass("nav-scroll");
+                }
+                showCurrent();
+            });
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,19 @@
+.blog{
+    grid-template-columns: auto 250px;
+    align-items: start!important;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    .blog-container{
+        padding-inline: 100px;
+        height: 100%;
+        overflow-y: scroll;
+    }
+    .blog-category{
+        a{
+            color: rgb(17, 17, 17);
+        }
+        .active{
+            color: $orange;
+        }
+    }
+}

@@ -5,6 +5,7 @@
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
+/public/document
 /var/
 /vendor/
 /config/
@@ -26,3 +27,7 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+###< text Lorem 3000 ###
+/zlorem.html
+###< text Lorem 3000 ###
