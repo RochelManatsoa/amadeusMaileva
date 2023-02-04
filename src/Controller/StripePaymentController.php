@@ -2,10 +2,8 @@
 
 namespace App\Controller;
 
-use Stripe\Webhook;
-use App\Entity\Envoi;
 use App\Entity\Resiliation;
-use App\Manager\EnvoiManager;
+use App\Manager\StripeTransactionManager;
 use App\Services\Stripe\StripeApi;
 use App\Repository\EnvoiRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,8 +22,7 @@ class StripePaymentController extends AbstractController
         Resiliation $resiliation,
         StripeApi $stripeApi,
         EnvoiRepository $envoiRepository
-        ): Response
-    {
+    ): Response {
         $envoi = $envoiRepository->getOneEnvoiByResiliation($resiliation->getCustomId());
 
         $response = $stripeApi->startPayment($envoi);
@@ -36,60 +33,47 @@ class StripePaymentController extends AbstractController
     /**
      * @Route("/webhook/stripe", name="app_stripe_response")
      */
-    public function stripeWebhookAction(
-        Request $request,
-        StripeApi $stripeApi
-    ): Response
+    public function stripeWebhookAction(StripeTransactionManager $stripeTransactionManager): Response
     {
-        // $jsonStr = file_get_contents('php://input');
-        // $event = json_decode($jsonStr);
-        // dump($event);
-        // dd($request);
-        // $stripeApi->handle($request);
+        $endpoint_secret = $_ENV['STRIPE_WEBHOOK_SECRET_KEY'];
+        $payload = file_get_contents('php://input');
+        $event = json_decode($payload);
+        \Stripe\Stripe::setApiKey($endpoint_secret);
 
-        $signature = $request->headers->get('stripe-signature');
-        $body = $request->getContent();
-        $event = Webhook::constructEvent(
-            $body,
-            $signature,
-            $this->webhookSecret
-        );
-        dump($event);
-
-        $type = $event->type;
-        $object = $event->data->object;
-
-        switch ($type) {
-            case 'checkout.session.completed':
-                dd($object);
-                break;
-
-            case 'payment_intent.succeeded ':
-                dd($object);
-
-                break;
-
+        switch ($event->type) {
+            case 'charge.succeeded':
+                $charge = $event->data->object;
+                echo 'Received unknown event type ' . $event->type;
+                
             case 'payment_intent.created':
-                dd($object);
-
-                break;
-
+                $paymentIntent = $event->data->object;
+                $transaction = $stripeTransactionManager->init();
+                $transaction->setIntentId($paymentIntent->id);
+                $transaction->setAmount($paymentIntent->amount);
+                $transaction->setAmountReceived($paymentIntent->amount_received);
+                $transaction->setConfirmationMethod($paymentIntent->confirmation_method);
+                $transaction->setCreated($paymentIntent->created);
+                $transaction->setCurrency($paymentIntent->currency);
+                $transaction->setClientSecret($paymentIntent->client_secret);
+                $transaction->setClientSecret($paymentIntent->client_secret);
+                $transaction->setIntentId($paymentIntent->id);
+                $transaction->setIntentId($paymentIntent->id);
+                $stripeTransactionManager->save($transaction);
+                echo 'Received unknown event type ' . $event->type;
+                
+            case 'payment_intent.succeeded':
+                $paymentIntent = $event->data->object;
+                echo 'Received unknown event type ' . $event->type;
+                
             case 'checkout.session.completed':
-                dd($object);
-
-                break;
-
-                // case 'checkout.session.completed':
-                //     # code...
-                //     break;
-
-                // case 'checkout.session.completed':
-                //     # code...
-                //     break;
-
+                $session = $event->data->object;
+                echo 'Received unknown event type ' . $event->type;
+                
             default:
-                echo 'Receive unknown event type '.$event->type;
+                echo 'Received unknown event type ' . $event->type;
         }
+
+        http_response_code(200);
 
         return new JsonResponse(['status' => 'success']);
     }
@@ -99,9 +83,7 @@ class StripePaymentController extends AbstractController
      */
     public function success(Request $request): Response
     {
-        return $this->render('stripe_payment/index.html.twig', [
-            'controller_name' => 'StripePaymentController',
-        ]);
+        return $this->render('stripe_payment/index.html.twig', []);
     }
 
     /**

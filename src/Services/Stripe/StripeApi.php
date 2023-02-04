@@ -17,6 +17,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class StripeApi
 {
+    const STRIPE_PAYMENT_SECRET_KEY = 'sk_test_51MKofmKp6gApFus8kcy3FoWI6d6mo8v7zPg9JY6L65ScWUnTE4bSQO7YMyuup3qH6aEgwUwedsoXheaUU6xLhmWe00QYTJWK4i'; 
 
     public function __construct(string $secretKey, string $webhookSecret = '')
     {
@@ -38,7 +39,7 @@ class StripeApi
                         'product_data' => [
                             'name' => $envoi->getName()
                         ],
-                        'unit_amount' => 300
+                        'unit_amount' => 799
                     ],
                 ]
             ],

@@ -9,6 +9,9 @@ use App\Repository\ServiceRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\{Letter, Service, Category, Resiliation};
+use App\Form\OrderType;
+use App\Manager\EnvoiManager;
+use App\Manager\OrderManager;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -217,14 +220,28 @@ class ResiliationController extends AbstractController
     /**
      * @Route("/resume/{customId}", name="app_resiliation_resume")
      */
-    public function resume(Resiliation $resiliation)
+    public function resume(Resiliation $resiliation, OrderManager $orderManager, EnvoiManager $envoiManager, Request $request)
     {
+        $envoi = $envoiManager->getResiliation($resiliation);
+        $commande = $orderManager->init();
+        $form = $this->createForm(OrderType::class, $commande, []);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $order = $form->getData();
+            $orderManager->save($order);
+
+            return $this->redirectToRoute('app_resiliation_resume', [
+                'customId' => $resiliation->getCustomId(),
+            ]);
+        }
         return $this->render('resiliation/recap.html.twig', [
             'category' => $resiliation
                 ->getService()
                 ->getCategory()
                 ->getName(),
             'resiliation' => $resiliation,
+            'envoi' => $envoi,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -252,9 +269,9 @@ class ResiliationController extends AbstractController
     ) {
         $file = $resiliationManager->generatePreview($resiliation);
 
-        //return new BinaryFileResponse($file);
-        return $this->render('resiliation/pdf/preview.pdf.twig',[
-            'resiliation' => $resiliation
-        ]);
+        return new BinaryFileResponse($file);
+        // return $this->render('resiliation/pdf/preview.pdf.twig',[
+        //     'resiliation' => $resiliation
+        // ]);
     }
 }

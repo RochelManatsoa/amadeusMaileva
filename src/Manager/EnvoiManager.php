@@ -6,17 +6,20 @@ use Twig\Environment as Twig;
 use App\Services\Maileva\MailevaApi;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\{Envoi, Resiliation};
+use App\Repository\EnvoiRepository;
 
 class EnvoiManager
 {
     public function __construct(
         EntityManagerInterface $em,
         MailevaApi $mailevaApi,
+        EnvoiRepository $envoiRepository,
         Twig $twig
     )
     {
         $this->em = $em;
         $this->mailevaApi = $mailevaApi;
+        $this->envoiRepository = $envoiRepository;
         $this->twig = $twig;
     }
 
@@ -32,6 +35,10 @@ class EnvoiManager
     {
         $this->em->persist($envoi);
         $this->em->flush();
+    }
+
+    public function getResiliation(Resiliation $resiliation){
+        return $this->envoiRepository->getOneEnvoiByResiliation($resiliation->getCustomId());
     }
 
     public function setResiliation(Resiliation $resiliation)
