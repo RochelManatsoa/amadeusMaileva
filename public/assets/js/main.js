@@ -4,7 +4,7 @@ function initFormStep(form, title, bodyTag, transitionEffect) {
     .steps({
       headerTag: 'h3',
       bodyTag: 'section',
-      transitionEffect: 'slideLeft',
+      transitionEffect: 1,
       titleTemplate: '<span class="number"></span> #title#',
       labels: {
         current: 'current step:',

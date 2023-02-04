@@ -5,8 +5,11 @@
 
 {% block body %}
 
-	<div class="container-fluid bg-color-primary d-grid justify-content-md-end justify-content-center align-items-center">
-		<div class="container-form-login bg-gradient-beige text-gris shadow">
+<div class="container pt-5">
+	<div class="row">
+		<div class="col-lg-6 col-sm-12"></div>
+		<div class="col-lg-6 col-sm-13">
+
 			<form method="post">
 				{% if error %}
 					<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -21,33 +24,28 @@
 				{% endif %}
 
 				<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-				<div class="user-field">
+				<div class="mb-3">
 					<label class="form-label" for="inputEmail">Email</label>
 					<input class="form-control" type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
 				</div>
-				<div class="user-field">
+				<div class="mb-3">
 					<label for="inputPassword">Password</label>
 					<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
 				</div>
 				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-				<div class="connexion-gestion">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="_remember_me">
-                            Remember me
-                        </label>
-                    </div>
-                    <div class="les-boutons">
-                        <button class="button btn-gradient-orange" type="submit">
-                            Sign in
-                        </button>
-                        <button class="button btn-gradient-orange">
-                            <a class="text-decoration-none text-gris" href="{{path('app_register')}}">
-                                Sign up
-                            </a>
-                        </button>
-                    </div>
-                </div>
+				<div class="checkbox mb-3">
+					<label>
+						<input type="checkbox" name="_remember_me">
+						Remember me
+					</label>
+				</div>
+
+				<button class="btn btn-lg btn-primary" type="submit">
+					Sign in
+				</button>
+				<a class="btn btn-lg btn-info" href="{{path('app_register')}}">
+					Sign up
+				</a>
 			</form>
 		</div>
 	</div>
