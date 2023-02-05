@@ -1,9 +1,66 @@
+@font-face 
+{
+    font-family: "Orkney";
+    src: url('../../public/fonts/OrkneyRegular.eot'); /* IE9 Compat Modes */
+    src: url('../../public/fonts/OrkneyRegular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../../public/fonts/OrkneyRegular.woff') format('woff'), /* Modern Browsers */
+         url('../../public/fonts/OrkneyRegular.ttf')  format('truetype'); /* Safari, Android, iOS */
+    font-weight: normal;
+    font-style: normal;
+}
 .homepage-cover{
+    position: relative;
     color: white;
-    height: 400px;
+    height: 100vh;
+    overflow: hidden;
     background-color: #6DB3F2;
-    background-image: url(../../public/assets/images/homepage-cover-full.png);
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
+    background : url(../../public/assets/images/homepage-cover-full.png) no-repeat center center fixed;
+    background-size:cover;
+    font-family: 'Orkney';
+}
+.slider-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    overflow: hidden;
+}
+.curve-2 {
+    position: absolute;
+    bottom: 0;
+    width: calc(100% + 8px);
+    z-index: 2;
+    width: 100%;
+    width: calc(100% + 4px);
+    height: 100px;
+    color: #ffffff;
+}
+.shape {
+    fill: #fff;
+}
+.slide-content {
+    display: block;
+    margin-bottom: 1px;
+    position: relative;
+    z-index: 8;
+    max-width: 530px;
+}
+.slide-wrap {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+    left: 0;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+.section-area {
+    position: relative;
+    padding: 100px 0 75px;
 }

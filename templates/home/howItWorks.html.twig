@@ -4,21 +4,27 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container-fluid how-it-work-cover text-center ">
-		<h1 class="pt-lg-5">Comment ça marche</h1>
-		<p>Modèles de lettre, envoi en recommandé, suivi en ligne</p>
-		<p>
-			<a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-				Link with href
-			</a>
-			<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-				Button with data-bs-target
-			</button>
-		</p>
-		<div class="collapse" id="collapseExample">
-			<div class="card card-body">
-				Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.	
+	<div class="container-fluid homepage-cover text-center">
+		<div class="slider-overlay" style="background: rgba(0, 0, 0, 0.4) url('/assets/images/slide-dot.png');">
+			<div class="slide-wrap">
+				<div class="container">
+					<div class="row">
+						<div class="col-6">
+							<div class="slide-content">
+							<h1>Comment ça marche</h1>
+							<p>Modèles de lettre, envoi en recommandé, suivi en ligne</p>
+							</div>
+						</div>
+						<div class="col-6">
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
+	</div>
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 35" preserveAspectRatio="none" class="curve-2">
+		<path class="shape" d="M668.5,20s-85.917-4.376-250-14.5C38.888-17.922-70.537,46.862-94,42c-25.429-5.269,79-6,79-6l1631-1-1-6.5s143.44,9.072-5.5,1.5C1470.9,22.954,1412.99-.574,1137,20,936.22,34.967,668.5,20,668.5,20Z"/>
+	</svg>
+	<div class="section-area">
 	</div>
 {% endblock %}
