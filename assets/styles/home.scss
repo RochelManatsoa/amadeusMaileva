@@ -132,6 +132,12 @@ body{
 .text-gris{
     color: $text-color-secondary;
 }
+.text-blue{
+    color: $dark-blue;
+    &:hover{
+        color: $dark-blue;
+    }
+}
 .border-color-primary{
     border-color: $primary-color;
 }

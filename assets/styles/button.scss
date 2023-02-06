@@ -91,6 +91,33 @@
     }
 }
 
+.button-small{
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1.2;
+    padding: 6px 16px;
+    border-radius: 5px;
+    border: 1px solid;
+    text-decoration: none;
+    background: var(--bs-btn-bg);
+    color: var(--bs-btn-color)!important;
+    border-color: var(--bs-btn-border);
+    &:hover,
+    &:active,
+    &:focus,
+    &:focus-visible{
+        background: var(--bs-btn-bg-hover);
+        color: var(--bs-btn-color-hover)!important;
+        border-color: var(--bs-btn-border-hover);
+        box-shadow: 0 0 10px 1px rgb(83, 83, 83);
+        padding: 6px 17px;
+        margin: -1px;
+    }
+    @include sm-layout{
+        padding: 5px 10px;
+    }
+}
+
 .navbar-toggler{
     &>img{
         height: 35px;
