@@ -1,4 +1,4 @@
-.blog{
+/*.blog{
     grid-template-columns: auto 250px;
     align-items: start!important;
     padding-top: 100px;
@@ -14,6 +14,92 @@
         }
         .active{
             color: $orange;
+        }
+    }
+}*/
+
+.blog{
+    width: 1024px;
+    grid-template-columns: 300px auto;
+    margin: 100px auto;
+    @media (max-width: 1072px) {
+        width: auto;
+        margin: 100px 24px;
+    }
+    @include md-layout{
+        grid-template-columns: 250px auto;
+        margin: 50px 24px;
+    }
+    @include sm-layout{
+        grid-template-columns: auto;
+    }
+    a{
+        text-decoration: none;
+        &:hover{
+            text-decoration: underline;
+        }
+        &.text-night-blue:hover{
+            color: $night-blue-hover;
+        }
+        &.post-category{
+            color: $dark-green;
+        }
+        &.post-category:hover{
+            color: $dark-green;
+        }
+    }
+    .post-content{
+        &>h1{
+            font-size: calc(1.325rem + 0.9vw);
+            @include xs-layout {
+                font-size: calc(1.3rem + 0.6vw);
+            }
+        }
+    }
+    .blog-category{
+        a{
+            color: rgb(17, 17, 17);
+        }
+        .active{
+            color: $green;
+        }
+    }
+}
+
+.banner{
+    background-image: url('../../public/assets/images/banner-bg.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    a{
+        color: $green-white;
+        text-decoration: none;
+        &:hover{
+            color: $green-white;
+            text-decoration: underline;
+        }
+    }
+    &>div{
+        background-color: rgba(2, 2, 97, 0.5);
+        &>h1{
+            color: $green-white;
+            font-size: 72px;
+            @include md-layout{
+                font-size: 48px;
+            }
+            @include xs-layout{
+                font-size: 32px;
+            }
+            &>i, &>.category-title{
+                font-size: 48px;
+                @include md-layout{
+                    font-size: 32px;
+                }
+                @include xs-layout{
+                    font-size: 24px;
+                }
+            }
         }
     }
 }

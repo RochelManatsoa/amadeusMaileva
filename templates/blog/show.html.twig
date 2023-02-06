@@ -4,28 +4,72 @@
 
 {% block body %}
 <style>
-
+    body{
+        overflow-y: scroll;
+        scrollbar-width: unset;
+    }
+    body::-webkit-scrollbar{
+        width: unset;
+    }
+    body::-webkit-scrollbar-thumb{
+        background: #808080;
+    }
+    body::-webkit-scrollbar-button {
+        display: block;
+        background-color: #808080;
+        background-repeat: no-repeat;   
+        background-size: 50%;
+        background-position: center;
+    }
+    body::-webkit-scrollbar-button:vertical:start:increment {
+        background-image: url('https://upload.wikimedia.org/wikipedia/commons/7/7e/Chevron-up.svg');   
+    }
+    body::-webkit-scrollbar-button:vertical:start:decrement {
+        display: none;
+    }
+    body::-webkit-scrollbar-button:vertical:end:increment {
+        display: none;
+    }
+    body::-webkit-scrollbar-button:vertical:end:decrement {
+        background-image: url('https://upload.wikimedia.org/wikipedia/commons/e/ee/Chevron-down.svg');   
+    }
+    .body-template > .container-fluid{
+        height: unset;
+    }
 </style>
 
-<div class="container-fluid bg-white blog">
-    <div class="blog-container">
-
-            <div class="post-container">
-                <h1>{{ post.titre }}</h1>
-                <div>
-                    <span> {{ post.createdAt | date('d/m/Y') }} <span>
-                     - 
-                    <a href="{{ path('category_listing_post', {'slug':post.category.slug}) }}" class="h6">  {{ post.category.nom }}</a>
-                </div>
-                <div class="post-content">
-                    {{ post.contenu | raw }}
-                </div>
-            </div>
-            
+<div class="container-fluid bg-white p-0 d-block">
+    <div class="banner">
+        <div class="vh-100 w-100 d-grid align-items-center justify-content-center">
+            <h1>
+                <a href="{{path('app_blog')}}">Blog</a>
+                <i class="fa-regular fa-chevron-right"></i>
+                <span class="category-title"><a href="{{ path('category_listing_post', {'slug':post.category.slug}) }}">  {{ post.category.nom }}</a><span>
+            </h1>
+        </div>
     </div>
+    <div class="blog d-grid">
 
-    {% include "sidebarBlog.html.twig" %}
-    
+        <div>
+            {% include "sidebarBlog.html.twig" %}
+        </div>
+
+        <div class="blog-container ps-lg-3 ps-0">
+
+                <div class="post-container px-3 py-4 my-3 border shadow">
+                    <h1 class="text-night-blue">{{ post.titre }}</h1>
+                    <div>
+                        <span> {{ post.createdAt | date('d/m/Y') }} <span>
+                        - 
+                        <a href="{{ path('category_listing_post', {'slug':post.category.slug}) }}" class="h6 post-category">  {{ post.category.nom }}</a>
+                    </div>
+                    <div class="post-content">
+                        {{ post.contenu | raw }}
+                    </div>
+                </div>
+                
+        </div>
+    </div>
 </div>
 {% endblock %}
 {% block jsFooter %}
