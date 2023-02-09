@@ -46,6 +46,7 @@ when@test:
 
 when@prod:
     monolog:
+        channels: [deprecation]
         handlers:
             main:
                 type: fingers_crossed
