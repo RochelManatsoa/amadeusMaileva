@@ -7,6 +7,7 @@ use App\Manager\DocumentManager;
 use App\Manager\EnvoiManager;
 use App\Manager\ResiliationManager;
 use App\Services\Maileva\MailevaApi;
+use App\Services\Restpdf\RestpdfApi;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -18,6 +19,7 @@ class MailevaController extends AbstractController
     public function send(
         Resiliation $resiliation, 
         MailevaApi $mailevaApi, 
+        RestpdfApi $restpdfApi,
         EnvoiManager $envoiManager,
         ResiliationManager $resiliationManager,
         DocumentManager $documentManager
@@ -56,7 +58,7 @@ class MailevaController extends AbstractController
         if(isset($submitResponse->errors[0])){
             dd($submitResponse->errors[0]);
         }
-        $resiliationManager->generateResiliation($resiliation);
+        $resiliationManager->generateResiliation($resiliation, $restpdfApi);
         $docResponse = $mailevaApi->addDocSending($envoi, $resiliation);
         if(isset($docResponse->errors[0])){
             dd($docResponse->errors[0]);
