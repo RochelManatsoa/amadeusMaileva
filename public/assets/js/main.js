@@ -189,3 +189,15 @@ function updateNumber(number){
   content = content.replace('[ mobile-identifiant ]', number)
   $('#resiliation_form_description').html(content)
 }
+
+function addNumeroContrat(number, data){
+  for(k in data){
+    data[k].numeroContrat = number
+  }
+}
+
+function contentWithContratNumber(object){
+  return object.numeroContrat ? 
+    object.content.replace('[ mobile-identifiant ]', object.numeroContrat) :
+    object.content
+}
