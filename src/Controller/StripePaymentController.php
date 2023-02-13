@@ -91,8 +91,6 @@ class StripePaymentController extends AbstractController
      */
     public function cancel(): Response
     {
-        return $this->render('stripe_payment/index.html.twig', [
-            'controller_name' => 'StripePaymentController',
-        ]);
+        return $this->render('stripe_payment/cancel.html.twig', []);
     }
 }
