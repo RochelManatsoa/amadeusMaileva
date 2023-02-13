@@ -43,8 +43,8 @@ class StripeApi
                     ],
                 ]
             ],
-            'success_url' => 'https://127.0.0.1:8000/stripe/success',
-            'cancel_url' => 'https://127.0.0.1:8000/stripe/failed',
+            'success_url' => 'https://dev.comment-resilier.info/stripe/success',
+            'cancel_url' => 'https://dev.comment-resilier.info/stripe/failed',
             'metadata' => [
                 'envoi_id' => $envoi->getEnvoiId()
             ],
@@ -52,51 +52,5 @@ class StripeApi
         $envoi->setCustomData($sessionStripe->id);
 
         return $sessionStripe->url;
-    }
-
-    public function handle(Request $request)
-    {
-        $signature = $request->headers->get('stripe-signature');
-        $body = $request->getContent();
-        $event = Webhook::constructEvent(
-            $body,
-            $signature,
-            $this->webhookSecret
-        );
-
-        $type = $event->type;
-        $object = $event->data->object;
-
-        switch ($type) {
-            case 'checkout.session.completed':
-                dd($object);
-                break;
-
-            case 'payment_intent.succeeded ':
-                dd($object);
-
-                break;
-
-            case 'payment_intent.created':
-                dd($object);
-
-                break;
-
-            case 'checkout.session.completed':
-                dd($object);
-
-                break;
-
-                // case 'checkout.session.completed':
-                //     # code...
-                //     break;
-
-                // case 'checkout.session.completed':
-                //     # code...
-                //     break;
-
-            default:
-                echo 'Receive unknown event type '.$event->type;
-        }
     }
 }

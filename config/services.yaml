@@ -32,3 +32,6 @@ services:
     
     App\Services\Stripe\StripeApi:
         arguments: ['%env(resolve:STRIPE_PAYMENT_SECRET_KEY)%', '%env(resolve:STRIPE_WEBHOOK_SECRET_KEY)%']  
+    
+    App\Services\Restpdf\RestpdfApi:
+        arguments: ['%env(resolve:RESTPDF_ENDPOINT)%', '%env(resolve:RESTPDF_API_KEY)%'] 

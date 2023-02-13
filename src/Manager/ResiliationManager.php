@@ -8,6 +8,7 @@ use Symfony\Component\Uid\Ulid;
 use App\Services\Maileva\MailevaApi;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\{Resiliation, Service, Client};
+use App\Services\Restpdf\RestpdfApi;
 
 class ResiliationManager
 {
@@ -37,36 +38,31 @@ class ResiliationManager
         $this->em->flush();
     }
 
-    public function generatePreview(Resiliation $resiliation)
+    public function generatePreview(Resiliation $resiliation, RestpdfApi $restpdfApi)
     {
 		$folder = $resiliation->getGeneratedResiliationPath();
         $file = $resiliation->getGeneratedPreviewPathFile();
         if (!is_dir($folder)) mkdir($folder, 0777, true);
 		$scanFolder = scandir($folder);
-        // if (!in_array("preview.pdf", $scanFolder)) { 
-            $snappy = new Pdf('/usr/local/bin/wkhtmltopdf');
-            $snappy -> setOption('enable-local-file-access', true);
-            $html = $this->twig->render("resiliation/pdf/preview.pdf.twig", [
-                'resiliation' => $resiliation
-            ]);
-            $output = $snappy->getOutputFromHtml($html);
-            file_put_contents($file, $output);
-        // }
+        
+        $html = $this->twig->render("resiliation/pdf/preview.pdf.twig", [
+            'resiliation' => $resiliation
+        ]);
+
+        $restpdfApi->generatePdf($file, $html);
         
         return $file;
 	}
 
-    public function generateResiliation(Resiliation $resiliation)
+    public function generateResiliation(Resiliation $resiliation, RestpdfApi $restpdfApi)
     {
 		$folder = $resiliation->getGeneratedResiliationPath();
         $file = $resiliation->getGeneratedResiliationPathFile();
         if (!is_dir($folder)) mkdir($folder, 0777, true);
 		$scanFolder = scandir($folder);
         if (!in_array("resiliation.pdf", $scanFolder)) { 
-            $snappy = new Pdf('/usr/local/bin/wkhtmltopdf');
             $html = $this->twig->render("resiliation/pdf/resiliation.pdf.twig", ['resiliation' => $resiliation]);
-            $output = $snappy->getOutputFromHtml($html);
-            file_put_contents($file, $output);
+            $restpdfApi->generatePdf($file, $html);
         }
         
         return $file;

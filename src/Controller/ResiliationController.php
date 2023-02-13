@@ -12,6 +12,7 @@ use App\Entity\{Letter, Service, Category, Resiliation};
 use App\Form\OrderType;
 use App\Manager\EnvoiManager;
 use App\Manager\OrderManager;
+use App\Services\Restpdf\RestpdfApi;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -160,10 +161,14 @@ class ResiliationController extends AbstractController
      */
     public function previewDocument(
         Resiliation $resiliation,
+        RestpdfApi $restpdfApi,
         ResiliationManager $resiliationManager
     ) {
-        $file = $resiliationManager->generatePreview($resiliation);
+        $file = $resiliationManager->generatePreview($resiliation, $restpdfApi);
 
         return new BinaryFileResponse($file);
+        // return $this->render('resiliation/pdf/preview.pdf.twig',[
+        //     'resiliation' => $resiliation
+        // ]);
     }
 }
