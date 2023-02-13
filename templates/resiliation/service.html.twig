@@ -177,15 +177,9 @@
 
 			var data = $('#resiliation_form_type').data('letters');
 			var value = $('#resiliation_form_number').val();
-			console.log(value)
-			if (value !== ''){
-				console.log("non vide")
-				updateNumber(value)
-			}
 
 			$('#resiliation_form_number').keyup(function (e) {
 				var number = $(this).val() 				
-				//updateNumber(number)
 				addNumeroContrat(number, data)
 				$('#resiliation_form_description').html(contentWithContratNumber(data[1]))
 			});
@@ -211,6 +205,9 @@
 				var Value = $(".ancientitulaire").find(":selected").val();
 				$('#resiliation_form_description').text(contentWithContratNumber(data[Value]))
 			})
+			if (value !== ''){
+				updateNumber(value)
+			}
 		})
 	</script>
 {% endblock %}
