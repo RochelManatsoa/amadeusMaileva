@@ -116,6 +116,30 @@ textarea {
    Helper classes
    ========================================================================== */
 
+#zip-code{
+    width: 250px;
+    background-color: white;
+    position: absolute;
+    z-index: 3021;
+    overflow-y: scroll;
+    height: fit-content;
+    max-height: 150px;
+    bottom: 52px;
+    right: 0;
+    padding: 8px;
+}
+#zip-code li{
+    cursor: pointer;
+}
+#zip-code li:hover{
+    color: green!important;
+}
+input#resiliation_form_client_address_city{
+    text-transform: capitalize;
+}
+/* ==========================================================================
+   suggestion codePostal 
+   ========================================================================== */
 .ir {
     background-color: transparent;
     border: 0;

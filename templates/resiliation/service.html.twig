@@ -101,7 +101,12 @@
 						{{ form_row(form.client.address.name)}}
 						{{ form_row(form.client.address.complement)}}
 						<div class="row">
-							<div class="col-sm">{{ form_row(form.client.address.zipCode)}}</div>
+							<div class="col-sm position-relative">
+								{{ form_row(form.client.address.zipCode)}}
+								<div id="zip-code" class="d-none text-secondary border shadow">
+									<ul class="list-unstyled" id="suggest-zipCode"></ul>
+								</div>
+							</div>
 							<div class="col-sm">{{ form_row(form.client.address.city)}}</div>
 						</div>
 
@@ -174,6 +179,14 @@
                 "fieldset",
                 "fade"
             );
+			/*
+			const villes = VILLES
+			const codePostals = getAllPostalCode(villes)
+			const listVilles = getAllVilles(villes)
+			const villeParCodePostal = getVillesPerPostalCode(codePostals, villes)
+			const communeParVille = getCommunePerVille(listVilles, villes)
+			*/
+			getVilleFrance();
 
 			var data = $('#resiliation_form_type').data('letters');
 			var value = $('#resiliation_form_number').val();
@@ -208,6 +221,15 @@
 			$('#resiliation_form_type').on('change', function (e) {
 				var Value = $(".ancientitulaire").find(":selected").val();
 				$('#resiliation_form_description').text(data[Value].content)
+			})
+
+			$('#resiliation_form_client_address_zipCode').keyup(function(e){
+				postalCode = e.target.value
+				showSuggestPostalCode(postalCode, villeParCodePostal)
+			})
+
+			$( "#resiliation_form_client_address_zipCode" ).on( "keydown", (e)=>{
+				console.log(e.key);
 			})
 		})
 	</script>

@@ -115,7 +115,7 @@ function initFormStep(form, title, bodyTag, transitionEffect) {
         'resiliation_form[service][zipCode]': {
           required: true,
           digits: true,
-          minlength: 5,
+          minlength: 4,
           maxlength: 5,
         },
         'resiliation_form[service][city]': {
@@ -136,7 +136,7 @@ function initFormStep(form, title, bodyTag, transitionEffect) {
         'resiliation_form[client][address][zipCode]': {
           required: true,
           digits: true,
-          minlength: 5,
+          minlength: 4,
           maxlength: 5,
         },
         'resiliation_form[duplicata][address][city]': {
@@ -152,9 +152,9 @@ function initFormStep(form, title, bodyTag, transitionEffect) {
         },
         'resiliation_form[service][zipCode]': {
           required: 'Champs obligatoire',
-          digits: 'Le code postal doit être à 5 chiffres',
-          minlength: 'Le code postal doit être à 5 chiffres',
-          maxlength: 'Le code postal doit être à 5 chiffres',
+          digits: 'Le code postal doit être à 4 ou 5 chiffres',
+          minlength: 'Le code postal doit être au moins 4 chiffres',
+          maxlength: 'Le code postal doit être au plus 5 chiffres',
         },
         'resiliation_form[service][city]': {
           required: 'Champs obligatoire',
@@ -173,9 +173,9 @@ function initFormStep(form, title, bodyTag, transitionEffect) {
         },
         'resiliation_form[client][address][zipCode]': {
           required: 'Champs obligatoire',
-          digits: 'Le code postal doit être à 5 chiffres',
-          minlength: 'Le code postal doit être à 5 chiffres',
-          maxlength: 'Le code postal doit être à 5 chiffres',
+          digits: 'Le code postal doit être à 4 ou 5 chiffres',
+          minlength: 'Le code postal doit être au moins 4 chiffres',
+          maxlength: 'Le code postal doit être au plus 5 chiffres',
         },
         'resiliation_form[client][address][city]': {
           required: 'Champs obligatoire',
@@ -188,4 +188,130 @@ function updateNumber(number){
   var content = $('#resiliation_form_description').text()
   content = content.replace('[ mobile-identifiant ]', number)
   $('#resiliation_form_description').html(content)
+}
+
+var villeParCodePostal, communeParVille;
+
+function getVilleFrance(){
+  var xhttp = new XMLHttpRequest()
+  
+  xhttp.onreadystatechange = function(){
+    if (this.readyState == 4 && this.status == 200){
+      const list = this.responseText
+      villes = JSON.parse(list)
+      codePostals = getAllPostalCode(villes)
+      listVilles = getAllVilles(villes)
+      villeParCodePostal = getVillesPerPostalCode(codePostals, villes)
+      communeParVille = getCommunePerVille(listVilles, villes)
+    }
+  }
+  xhttp.open('GET', 'https://raw.githubusercontent.com/high54/Communes-France-JSON/master/france.json')
+  xhttp.send();
+}
+
+function getAllPostalCode(villes){
+  codePostal = []
+  villes.forEach(function(el){
+    if (!codePostal.includes(el.Code_postal)){
+      codePostal.push(el.Code_postal)
+    }
+  })
+  return codePostal;
+}
+
+function getAllVilles(villes){
+  listVilles = []
+  villes.forEach(function(el){
+    if(!listVilles.includes(el.Libelle_acheminement)){
+      listVilles.push(el.Libelle_acheminement)
+    }
+  })
+  return listVilles;
+}
+
+function keyFormat(string){
+  string = string.toLowerCase()
+  if (string.includes(' ')){
+    string = string.replaceAll(' ','_')
+  }
+  return string
+}
+
+function getVillesPerPostalCode(codePostal, villes){
+  let listVilles = {}
+  codePostal.forEach(function(postalCode){
+    key = postalCode.toString()
+    villesArray = []
+    communes = []
+    for (ville of villes) {
+      if (ville["Code_postal"] === postalCode && !communes.includes(ville["Code_commune_INSEE"])){
+        communes.push(ville["Code_commune_INSEE"])
+        villesArray.push(ville)
+      }
+    }
+    listVilles[key] = villesArray
+  })
+  return listVilles
+}
+
+function getCommunePerVille(listVilles, villes){
+  let retour = {}
+  listVilles.forEach(function(el){
+    key = keyFormat(el)
+    villesArray = []
+    communes = []
+    for (ville of villes) {
+      if (ville["Libelle_acheminement"] === el && !communes.includes(ville["Code_commune_INSEE"])){
+        communes.push(ville["Code_commune_INSEE"])
+        villesArray.push(ville)
+      }
+    }
+    retour[key] = villesArray
+  })
+  return retour
+}
+
+function getSuggestPostalCode(postalCode, villeParCodePostal) {
+  result = []
+  if (postalCode.length > 3){
+    for (zipCode in villeParCodePostal) {
+      if (zipCode.includes(postalCode)){
+        for (ville in villeParCodePostal[zipCode]){
+          result.push(villeParCodePostal[zipCode][ville])
+        }
+      }
+    }
+  }
+  return result;
+}
+
+function showSuggestPostalCode(postalCode, villeParCodePostal) {
+  suggestPostalCode = getSuggestPostalCode(postalCode, villeParCodePostal)
+  list = document.getElementById('suggest-zipCode')
+  list.innerHTML = null
+  if (suggestPostalCode.length > 0){
+    $('#zip-code').removeClass('d-none')
+    suggestPostalCode.forEach(function (ville){
+      item = document.createElement('li')
+      item.className = "text-capitalize"
+      item.setAttribute("data-zipCode", ville["Code_postal"].toString())
+      item.setAttribute("data-ville", ville["Libelle_acheminement"].toLowerCase())
+      item.innerText = ville["Nom_commune"].toLowerCase()
+      list.appendChild(item)
+      $(item).on( "mouseenter", function() {
+        setZipCode(this);
+      } )
+      $(item).on( "click", function() {
+        setZipCode(this)
+        $('#zip-code').addClass('d-none')
+      } )
+    })
+  }
+}
+
+function setZipCode (el){
+  zipCode = el.getAttribute('data-zipCode')
+  ville = el.getAttribute('data-ville')
+  $('input#resiliation_form_client_address_zipCode').val(zipCode)
+  $('input#resiliation_form_client_address_city').val(ville)
 }
