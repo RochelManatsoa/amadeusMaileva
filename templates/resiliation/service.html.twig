@@ -22,7 +22,7 @@
 
 				{{ form_start(form, {'attr': {'id': 'example-basic'}}) }}
 
-				<h3>Services à résilier</h3>
+				<h3>1</h3>
 
 				<section style="position: relative;width: 100%;">
 					<legend class="text-grey">{{ form_label(form.service) }}</legend>
@@ -30,7 +30,7 @@
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="headingOne">
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-									Sélectionnez une société depuis notre annuaire
+									Services à résilier
 								</button>
 							</h2>
 							<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
@@ -71,11 +71,11 @@
 
 				</section>
 
-				<h3>Modèle de lettre</h3>
+				<h3>2</h3>
 
 				<section style="position: relative;width: 100%;">
 
-					<legend>{{ form_label(form.service) }}</legend>
+					<legend>Modèle de lettre</legend>
 					<div class="ancientitulaire">
 						{{ form_row(form.number)}}
 						{{ form_row(form.type, {'attr': {'data-letters':  letters | json_encode() 
@@ -87,7 +87,7 @@
 				</section>
 
 
-				<h3>Coordonnées</h3>
+				<h3>3</h3>
 
 				<section style="position: relative;width: 100%;">
 
@@ -112,7 +112,7 @@
 				</section>
 
 
-				<h3>Récapitulatif</h3>
+				<h3>4</h3>
 
 				<section>
 					<legend>Récapitulatif des informations liées à la demande</legend>
@@ -143,11 +143,11 @@
 				</div>
 				<div class="modal-body">
 					{% for service in services %}
-						<div class="form-check">
+						<div class="form-check" for="{{'service' ~ service.id}}">
 							<input class="form-check-input" type="radio" name="{{'service' ~ service.id}}" id="{{'service' ~ service.id}}" data-service="{{service.slug}}">
 
 
-							<label class="form-check-label" for="{{'service' ~ service.id}}1">
+							<label class="form-check-label" for="{{'service' ~ service.id}}">
 								{{service.name}}
 							</label>
 						</div>
@@ -184,7 +184,7 @@
 				$('#resiliation_form_description').html(contentWithContratNumber(data[1]))
 			});
 
-			$(document).on('change', '.form-check', function (e) {
+			$('.form-check').change(function (e) {
 				e.preventDefault()
 				var ref = $(this).children('input').data('service')
 				var services = $('#collapseTwo').data('services');
@@ -205,6 +205,33 @@
 				var Value = $(".ancientitulaire").find(":selected").val();
 				$('#resiliation_form_description').text(contentWithContratNumber(data[Value]))
 			})
+			var zipCode = $('#resiliation_form_client_address_zipCode')
+			zipCode.keyup(function(e){
+				var val = $(this).val() 
+				var url = "https://vicopo.selfbuild.fr/cherche/" + val	
+				var selectCity = $('#resiliation_form_client_address_city')
+				fetch(url)
+				.then(function (response) {
+					return response.json();
+				})
+				.then(function (data) {
+					$("#resiliation_form_client_address_city option").remove();
+					data.cities.map((value) => {
+						let cityName = document.createElement("option");
+						cityName.setAttribute("value", value.city);
+						cityName.setAttribute("data-zipcode", value.code);
+						cityName.innerText = value.city;
+						selectCity.append(cityName);
+						$("#resiliation_form_client_address_city").on( "change", function() {
+							setZipCode($(this).find(":selected"))
+						})
+					});
+				});
+			})
+			function setZipCode (el){
+				zip = el.attr('data-zipcode')
+				zipCode.val(zip)
+			}
 			if (value !== ''){
 				updateNumber(value)
 			}
