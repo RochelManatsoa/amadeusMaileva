@@ -56,6 +56,7 @@
 {
     position: relative;
     display: block;
+    text-align: center;
     width: 100%;
 }
 
@@ -93,14 +94,15 @@
 .wizard > .steps a:active
 {
     display: block;
-    width: auto;
+    width: 30px;
+    height: 30px;
+    text-align: center;
     margin: 0 0.5em 0.5em;
-    padding: 1em 1em;
     text-decoration: none;
 
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
-    border-radius: 5px;
+    border-radius: 50px;
 }
 
 .wizard > .steps .disabled a,
@@ -212,9 +214,14 @@
 
 .wizard > .content > .body label.error
 {
-    color: #8a1f11;
+    color: #ffffff;
+    background-color: #8a1f11;
     display: inline-block;
-    margin-left: 1.5em;
+    margin-left: 1em;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 0 5px 0 5px;
+    border-radius: 5px;
 }
 
 .wizard > .actions

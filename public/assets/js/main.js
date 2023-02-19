@@ -152,9 +152,9 @@ function initFormStep(form, title, bodyTag, transitionEffect) {
         },
         'resiliation_form[service][zipCode]': {
           required: 'Champs obligatoire',
-          digits: 'Le code postal doit être à 5 chiffres',
-          minlength: 'Le code postal doit être à 5 chiffres',
-          maxlength: 'Le code postal doit être à 5 chiffres',
+          digits: 'Doit être à 5 chiffres',
+          minlength: 'Doit être à 5 chiffres',
+          maxlength: 'Doit être à 5 chiffres',
         },
         'resiliation_form[service][city]': {
           required: 'Champs obligatoire',
@@ -173,9 +173,9 @@ function initFormStep(form, title, bodyTag, transitionEffect) {
         },
         'resiliation_form[client][address][zipCode]': {
           required: 'Champs obligatoire',
-          digits: 'Le code postal doit être à 5 chiffres',
-          minlength: 'Le code postal doit être à 5 chiffres',
-          maxlength: 'Le code postal doit être à 5 chiffres',
+          digits: 'Doit être à 5 chiffres',
+          minlength: 'Doit être à 5 chiffres',
+          maxlength: 'Doit être à 5 chiffres',
         },
         'resiliation_form[client][address][city]': {
           required: 'Champs obligatoire',
