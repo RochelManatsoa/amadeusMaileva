@@ -24,16 +24,16 @@ function getCategories(){
     })
 }
 
-function getThreeLastestPosts(){
-    let restUrl = "https://comment-resilier.info/wp-json/wp/v2/posts?per_page=3";
+function getPosts(){
+    let restUrl = "https://comment-resilier.info/wp-json/wp/v2/posts";
     numAjaxRequests ++;
 
     $.getJSON(restUrl, function(restPosts){
-        let count = 0;
         restPosts.forEach(element => {
             let object = {};
             object.id = element.id;
             object.title = element.title.rendered;
+            object.slug = element.slug;
             object.href = '';
             object.description = element.excerpt.rendered;
             object.content = element.content.rendered;
@@ -51,15 +51,22 @@ function getThreeLastestPosts(){
             })
             object.categories = postCategories;
             posts.push(object);
-            if (count === 0){
-                showPost(object, true);
-            } else {
-                showPost(object);
-            }
-            count ++;
+            
         });
         numAjaxRequests --;
         checkIfAllRequestsComplete();
+    })
+}
+
+function showThreeLatestPosts(allPosts){
+    let count = 0;
+    allPosts.forEach(element => {
+        if (count === 0){
+            showPost(element, true);
+        } else if (count > 0 && count < 3){
+            showPost(element);
+        }
+        count ++;
     })
 }
 
@@ -87,36 +94,29 @@ function showPost(post, active){
     $( postElement ).appendTo( $( '#blog-posts' ) );
 }
 
-function sideBar(){
-    let restUrl = "https://comment-resilier.info/wp-json/wp/v2/posts";
-    numAjaxRequests ++;
+function createSidebar(allPosts, allCategories){
+    let listPost = [];
+    allCategories.forEach(category => {
+        let object = {};
+        for (key in category) {
+            object[key] = category[key];
+        }
+        object.posts = []
+        allPosts.forEach(post => {
+            if (post.categories.includes(category)){
+                postInCategory = {}
+                postInCategory.id = post.id;
+                postInCategory.title = post.title;
+                postInCategory.href = '';
 
-    $.getJSON(restUrl, function(restPosts){
-        let listPost = [];
-        categories.forEach(category => {
-            let object = {};
-            for (key in category) {
-                object[key] = category[key];
-            }
-            object.posts = []
-            restPosts.forEach(post => {
-                if (post.categories.includes(category.id)){
-                    postInCategory = {}
-                    postInCategory.id = post.id;
-                    postInCategory.title = post.title.rendered;
-                    postInCategory.href = '';
-
-                    object.posts.push(postInCategory);
-                }
-            })
-            if (object.posts.length > 0) {
-                listPost.push(object);
+                object.posts.push(postInCategory);
             }
         })
-        theSidebar(listPost);
-        numAjaxRequests --;
-        checkIfAllRequestsComplete();
+        if (object.posts.length > 0) {
+            listPost.push(object);
+        }
     })
+    theSidebar(listPost);
 }
 
 function theSidebar(listPost) {
@@ -148,12 +148,13 @@ function setActiveLink(){
     $(parentActive).removeClass('d-none');
 }
 
-//function setActivesidebar(){}
-
 function checkIfAllRequestsComplete() {
     if (numAjaxRequests === 0) {
         // Toutes les requêtes sont terminées
-        console.log("Toutes les requêtes AJAX sont terminées !");
+        createSidebar(posts, categories);
+        if (location.pathname === '/blog'){
+            showThreeLatestPosts(posts);
+        }
         setActiveLink();
     }
 }
