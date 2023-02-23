@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BlogController!{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid" style="margin-top: 100px;">
+        <h2 class="text-center text-uppercase" id="category-name"></h2>
+        <div class="d-grid" style="grid-template-columns: 350px auto;">
+            <div class="" id="blog-sidebar"></div>
+            <div class="ms-xl-4 ms-0" id="blog-posts"></div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block jsFooter %}
+	<script src="{{asset('assets/js/jquery.min.js')}}"></script>
+	<script src="{{asset('assets/js/blog.js')}}"></script>
+	<script>
+
+		$(function () {
+
+            getCategories();
+            getPosts();
+
+		})
+	</script>
+{% endblock %}

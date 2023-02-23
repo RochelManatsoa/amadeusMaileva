@@ -9,14 +9,16 @@ function formatImgUrl(imgUrl, width, height) {
 }
 
 function getCategories(){
-    let restUrl = "https://comment-resilier.info/wp-json/wp/v2/categories";
+    let restUrl = "https://comment-resilier.info/wp-json/wp/v2/categories",
+        href = location.origin;
     numAjaxRequests ++;
     $.getJSON(restUrl, function(restCategories){
         restCategories.forEach(element => {
             let object = {};
             object.id = element.id;
             object.name = element.name;
-            object.href = '';
+            object.slug = element.slug;
+            object.href = href+'/category/'+element.slug;
             categories.push(object);
         })
         numAjaxRequests --;
@@ -72,6 +74,18 @@ function showThreeLatestPosts(allPosts){
     })
 }
 
+function showPostsByCategory(allPosts, category){
+    let count = 0;
+    allPosts.forEach(element => {
+        if (count === 0 && element.categories.includes(category)){
+            showPost(element, true);
+        } else if (count > 0 && element.categories.includes(category)){
+            showPost(element);
+        }
+        count ++;
+    })
+}
+
 function showPost(post, active){
     category = '<span class="text-info h6">';
     post.categories.forEach(cat => {
@@ -109,7 +123,7 @@ function createSidebar(allPosts, allCategories){
                 postInCategory = {}
                 postInCategory.id = post.id;
                 postInCategory.title = post.title;
-                postInCategory.href = '';
+                postInCategory.href = post.href;
 
                 object.posts.push(postInCategory);
             }
@@ -160,18 +174,14 @@ function checkIfAllRequestsComplete() {
             slug = location.pathname.slice(location.pathname.slice(1).indexOf('/')+2);
             content = thePost(getPostBySlug(posts, slug));
             $(content).appendTo($('#blog-posts'))
+        } else if (location.pathname.includes('/category/')){
+            slug = location.pathname.slice(location.pathname.slice(1).indexOf('/')+2);
+            category = getCategoryBySlug(categories, slug);
+            $('#category-name').html(category.name);
+            showPostsByCategory(posts, category);
         }
         setActiveLink();
     }
-}
-
-function thePost(currentPost){
-    result = '<div class="me-5 post-content active" post-Id="'+currentPost.id+'">';
-    result += theFeatureImage(currentPost.content);
-    result += theContent(currentPost.content);
-    result += theIframe(currentPost.content);
-    result += '</div>';
-    return result;
 }
 
 function getPostBySlug(allPosts, slug){
@@ -182,6 +192,25 @@ function getPostBySlug(allPosts, slug){
             result.content = post.content;
         }
     })
+    return result;
+}
+
+function getCategoryBySlug(allCategories, slug){
+    let result;
+    allCategories.forEach(el => {
+        if (el.slug === slug){
+            result = el;
+        }
+    })
+    return result;
+}
+
+function thePost(currentPost){
+    result = '<div class="me-5 post-content active" post-Id="'+currentPost.id+'">';
+    result += theFeatureImage(currentPost.content);
+    result += theContent(currentPost.content);
+    result += theIframe(currentPost.content);
+    result += '</div>';
     return result;
 }
 
