@@ -17,4 +17,14 @@ class BlogController extends AbstractController
             'controller_name' => 'BlogController',
         ]);
     }
+
+    /**
+     * @Route("/comment-résilier/{slug}", name="app_show")
+     */
+    public function show(): Response
+    {
+        return $this->render('blog/show.html.twig', [
+            'controller_name' => 'BlogController',
+        ]);
+    }
 }

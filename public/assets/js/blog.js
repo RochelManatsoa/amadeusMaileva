@@ -25,8 +25,10 @@ function getCategories(){
 }
 
 function getPosts(){
-    let restUrl = "https://comment-resilier.info/wp-json/wp/v2/posts";
+    let restUrl = "https://comment-resilier.info/wp-json/wp/v2/posts",
+        href = location.origin;
     numAjaxRequests ++;
+
 
     $.getJSON(restUrl, function(restPosts){
         restPosts.forEach(element => {
@@ -34,7 +36,7 @@ function getPosts(){
             object.id = element.id;
             object.title = element.title.rendered;
             object.slug = element.slug;
-            object.href = '';
+            object.href = href+'/comment-résilier/'+element.slug;
             object.description = element.excerpt.rendered;
             object.content = element.content.rendered;
             object.featured_image = element.featured_media ? 
@@ -154,7 +156,56 @@ function checkIfAllRequestsComplete() {
         createSidebar(posts, categories);
         if (location.pathname === '/blog'){
             showThreeLatestPosts(posts);
+        } else if (location.pathname.includes('/comment')){
+            slug = location.pathname.slice(location.pathname.slice(1).indexOf('/')+2);
+            content = thePost(getPostBySlug(posts, slug));
+            $(content).appendTo($('#blog-posts'))
         }
         setActiveLink();
     }
+}
+
+function thePost(currentPost){
+    result = '<div class="me-5 post-content active" post-Id="'+currentPost.id+'">';
+    result += theFeatureImage(currentPost.content);
+    result += theContent(currentPost.content);
+    result += theIframe(currentPost.content);
+    result += '</div>';
+    return result;
+}
+
+function getPostBySlug(allPosts, slug){
+    let result = {};
+    allPosts.forEach(post => {
+        if (post.slug === slug){
+            result.id = post.id;
+            result.content = post.content;
+        }
+    })
+    return result;
+}
+
+function theFeatureImage(content){
+    startImageSrc = content.indexOf("src")+5;
+    endImageSrc = content.slice(startImageSrc).indexOf('"')+startImageSrc;
+    imageSrc = content.slice(startImageSrc, endImageSrc);
+    //return imageSrc;
+    return '<img src="'+imageSrc+'" class="post-image">';
+}
+
+function theContent(content){
+    startContent = content.indexOf('<h2');
+    endContent = content.slice(startContent).indexOf('<figure')+startContent-4;
+    newContent = content.slice(startContent, endContent);
+    startlink = newContent.indexOf('<a');
+    endlink = newContent.indexOf('</a>')+4;
+    newContent = newContent.replace(newContent.slice(startlink, endlink), 'Comment résilier');
+    return newContent;
+}
+
+function theIframe(content){
+    startIframe = content.indexOf('<iframe');
+    endIframe = content.indexOf('</iframe>')+9;
+    iframe = content.slice(startIframe, endIframe);
+    return iframe;
 }
