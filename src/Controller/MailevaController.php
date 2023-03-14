@@ -54,15 +54,19 @@ class MailevaController extends AbstractController
         $envoi->setStatus($response->status);
         $envoi->setDocumentCount(0);
         $envoiManager->save($envoi);
-        $submitResponse = $mailevaApi->submitSending($envoi);
-        if(isset($submitResponse->errors[0])){
-            dd($submitResponse->errors[0]);
-        }
-        $resiliationManager->generateResiliation($resiliation, $restpdfApi);
+        // $submitResponse = $mailevaApi->submitSending($envoi);
+        // if(isset($submitResponse->errors[0])){
+        //     dd($submitResponse->errors[0]);
+        // }
+        $resiliationfile = $resiliationManager->generateResiliation($resiliation, $restpdfApi);
+        dump($resiliationfile);
+        // $previewfile = $resiliationManager->generatePreview($resiliation, $restpdfApi);
+        // dump($previewfile);
         $docResponse = $mailevaApi->addDocSending($envoi, $resiliation);
         if(isset($docResponse->errors[0])){
             dd($docResponse->errors[0]);
         }
+        //$recipientResponse = $mailevaApi->addRecipient($envoi, $resiliation, $docResponse->id);
         $document = $documentManager->init();
         $document->setDocId($docResponse->id);
         $document->setPriority($docResponse->priority);
@@ -74,6 +78,9 @@ class MailevaController extends AbstractController
         $document->setConvertedSize($docResponse->converted_size);
         $document->setSend($envoi);
         $documentManager->save($document);
+        dump($docResponse);
+        $recipientResponse = $mailevaApi->addRecipient($envoi, $resiliation, $docResponse->id);
+        dd($recipientResponse);
 
         return $this->redirectToRoute('app_stripe_payment', [
             'customId' => $resiliation->getCustomId(),

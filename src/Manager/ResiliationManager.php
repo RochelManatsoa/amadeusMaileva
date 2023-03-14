@@ -44,12 +44,12 @@ class ResiliationManager
         $file = $resiliation->getGeneratedPreviewPathFile();
         if (!is_dir($folder)) mkdir($folder, 0777, true);
 		$scanFolder = scandir($folder);
-        
-        $html = $this->twig->render("resiliation/pdf/preview.pdf.twig", [
-            'resiliation' => $resiliation
-        ]);
-
-        $restpdfApi->generatePdf($file, $html);
+        if (!in_array("preview.pdf", $scanFolder)) {
+            $html = $this->twig->render("resiliation/pdf/preview.pdf.twig", [
+                'resiliation' => $resiliation
+            ]);
+            $restpdfApi->generatePdf($file, $html);
+        }
         
         return $file;
 	}
@@ -64,7 +64,6 @@ class ResiliationManager
             $html = $this->twig->render("resiliation/pdf/resiliation.pdf.twig", ['resiliation' => $resiliation]);
             $restpdfApi->generatePdf($file, $html);
         }
-        
         return $file;
 	}
 }

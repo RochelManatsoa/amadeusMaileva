@@ -47,6 +47,8 @@ class RestpdfApi
             file_put_contents($file, $curlResponse);
         } else {
             echo 'There was a problem converting the URL to PDF';
+            $erreur = curl_error($curl);
+            dump($erreur);
         }
 
         curl_close($curl);

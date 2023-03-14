@@ -2,7 +2,7 @@
 
 namespace App\Services\Maileva;
 
-use App\Entity\{ApiExchange, Envoi, Resiliation};
+use App\Entity\{ApiExchange, Envoi, Resiliation, Service, Document};
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -53,11 +53,10 @@ class MailevaApi
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $response = json_decode(curl_exec($ch));
-
         return $response->access_token;
     }
 
-    private function initExchange(string $type, string $params) : ApiExchange
+    private function initExchange(string $type, string $params): ApiExchange
     {
         $apiExchange = new ApiExchange();
         $apiExchange
@@ -140,7 +139,7 @@ class MailevaApi
 
         $this->log("connet to MailevaApi ... ", '...');
         $this->log("user infos", $this->getUserInfos());
-        
+
         $ch = curl_init($this->endpointApi . '/sendings');
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $authorization));
@@ -165,8 +164,8 @@ class MailevaApi
 
         $this->log("connet to MailevaApi ... ", '...');
         $this->log("user infos", $this->getUserInfos());
-        
-        $ch = curl_init($this->endpointApi . '/sendings/'. $envoi->getEnvoiId());
+
+        $ch = curl_init($this->endpointApi . '/sendings/' . $envoi->getEnvoiId());
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $authorization));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -189,22 +188,69 @@ class MailevaApi
 
         $this->log("connet to MailevaApi ... ", '...');
         $this->log("user infos", $this->getUserInfos());
-        
-        $ch = curl_init($this->endpointApi . '/sendings/'. $envoi->getEnvoiId().'/documents');
+
+        $ch = curl_init($this->endpointApi . '/sendings/' . $envoi->getEnvoiId() . '/documents');
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: multipart/form-data', $authorization));
+        $filePath = realpath($resiliation->getGeneratedResiliationPathFile());
         $fields = [
-            'document' => new \CurlFile($resiliation->getGeneratedResiliationPath().'/resiliation.pdf', 'application/pdf'),
-            'metadata' => \json_encode([
+            'document' => curl_file_create($filePath, 'application/pdf', 'lettre_resiliation.pdf'),
+            'metadata' => \json_encode(array(
                 'priority' => 1,
-                'name' => 'lettre_resiliation.pdf',
-            ]),
+                'name' => 'lettre_resiliation.pdf'
+            )),
         ];
+        dump($fields);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $response = json_decode(curl_exec($ch));
         $this->log("response addDocSending", \json_encode($response), true);
+        $this->saveExchange($apiExchange, \json_encode($response));
+
+        return $response;
+    }
+
+    public function addRecipient(Envoi $envoi, Resiliation $resiliation, string $documentId)
+    {
+        $token = $this->connect();
+        $this->log("parameters envoi", \json_encode($envoi));
+        $type = __FUNCTION__;
+        $apiExchange = $this->initExchange($type, \json_encode($envoi));
+        $authorization = 'Authorization: Bearer ' . $token;
+
+        $this->log("connet to MailevaApi ... ", '...');
+        $this->log("user infos", $this->getUserInfos());
+
+        $ch = curl_init($this->endpointApi . '/sendings/' . $envoi->getEnvoiId() . '/recipients');
+        /*
+            essaie code
+        */
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $authorization));
+        $destinataire = $resiliation->getService();
+        $docrange = [
+            "document_id" => $documentId,
+            "start_page" => "1",
+            "end_page" => "1"
+        ];
+        $recipient = [
+            "custom_id" => $resiliation->getCustomId(),
+            "address_line_1" => $destinataire->getName(),
+            "address_line_2" => "",
+            "address_line_3" => "",
+            "address_line_4" => $destinataire->getAddress(),
+            "address_line_5" => "",
+            "address_line_6" => $destinataire->getZipCode() . '  ' . $destinataire->getCity(),
+            "country_code" => "FR",
+            "pages_range" => $docrange
+        ];
+        dump(\json_encode($recipient));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, \json_encode($recipient));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = json_decode(curl_exec($ch));
+        $this->log("response addRecipient", \json_encode($response), true);
         $this->saveExchange($apiExchange, \json_encode($response));
 
         return $response;
