@@ -33,6 +33,7 @@ class ServiceCrudController extends AbstractCrudController
         yield TextField::new('address');
         yield TextField::new('complement')->hideOnIndex();
         yield TextField::new('zipCode');
+        yield TextField::new('slug');
         yield TextField::new('city');
         yield TextField::new('country')->hideOnIndex();
     }

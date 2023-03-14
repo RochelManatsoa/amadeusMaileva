@@ -66,5 +66,41 @@ class ResiliationManager
         }
         
         return $file;
+    }
+    
+
+    public function generateSnappyPreview(Resiliation $resiliation)
+    {
+		$folder = $resiliation->getGeneratedResiliationPath();
+        $file = $resiliation->getGeneratedPreviewPathFile();
+        if (!is_dir($folder)) mkdir($folder, 0777, true);
+		$scanFolder = scandir($folder);
+        // if (!in_array("preview.pdf", $scanFolder)) { 
+            $snappy = new Pdf('/usr/local/bin/wkhtmltopdf');
+            $snappy -> setOption('enable-local-file-access', true);
+            $html = $this->twig->render("resiliation/pdf/preview.pdf.twig", [
+                'resiliation' => $resiliation
+            ]);
+            $output = $snappy->getOutputFromHtml($html);
+            file_put_contents($file, $output);
+        // }
+        
+        return $file;
+	}
+
+    public function generateSnappyResiliation(Resiliation $resiliation)
+    {
+		$folder = $resiliation->getGeneratedResiliationPath();
+        $file = $resiliation->getGeneratedResiliationPathFile();
+        if (!is_dir($folder)) mkdir($folder, 0777, true);
+		$scanFolder = scandir($folder);
+        if (!in_array("resiliation.pdf", $scanFolder)) { 
+            $snappy = new Pdf('/usr/local/bin/wkhtmltopdf');
+            $html = $this->twig->render("resiliation/pdf/resiliation.pdf.twig", ['resiliation' => $resiliation]);
+            $output = $snappy->getOutputFromHtml($html);
+            file_put_contents($file, $output);
+        }
+        
+        return $file;
 	}
 }

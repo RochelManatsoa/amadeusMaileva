@@ -56,6 +56,7 @@
 
 								<div class="accordion-body">
 									<div class="card card-body">
+										{{ form_row(form.service.slug, { 'attr' : { 'data-service' : 'slug'}})}}
 										{{ form_row(form.service.name, { 'attr' : { 'data-service' : 'name'}})}}
 										{{ form_row(form.service.address, { 'attr' : { 'data-service' : 'adress'}})}}
 										{{ form_row(form.service.complement, { 'attr' : { 'data-service' : 'complement'}})}}
@@ -190,6 +191,7 @@
 				var services = $('#collapseTwo').data('services');
 				var addressService = services[ref]
 				$('#select-service').html(addressService.name + '<i class="fa-solid fa-circle-chevron-down mx-2"></i>')
+				$('input#resiliation_form_service_slug').val(addressService.slug)
 				$('input#resiliation_form_service_name').val(addressService.name)
 				$('input#resiliation_form_service_address').val(addressService.address)
 				$('input#resiliation_form_service_complement').val(addressService.complement)
@@ -210,18 +212,21 @@
 				var val = $(this).val() 
 				var url = "https://vicopo.selfbuild.fr/cherche/" + val	
 				var selectCity = $('#resiliation_form_client_address_city')
+				selectCity
+				.replaceWith('<select id="resiliation_form_client_address_city" name="resiliation_form[client][address][city]" class="form-control valid">' +
+					'<option value="0">Selectionner</option>' +
+					'</select>');
 				fetch(url)
 				.then(function (response) {
 					return response.json();
 				})
 				.then(function (data) {
-					$("#resiliation_form_client_address_city option").remove();
-					data.cities.map((value) => {
+					data.cities.map((city) => {
 						let cityName = document.createElement("option");
-						cityName.setAttribute("value", value.city);
-						cityName.setAttribute("data-zipcode", value.code);
-						cityName.innerText = value.city;
-						selectCity.append(cityName);
+						cityName.setAttribute("value", city.city);
+						cityName.setAttribute("data-zipcode", city.code);
+						cityName.innerText = city.city;
+						$('#resiliation_form_client_address_city').append(cityName);
 						$("#resiliation_form_client_address_city").on( "change", function() {
 							setZipCode($(this).find(":selected"))
 						})
