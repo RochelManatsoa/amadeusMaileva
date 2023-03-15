@@ -200,7 +200,6 @@ class MailevaApi
                 'name' => 'lettre_resiliation.pdf'
             )),
         ];
-        dump($fields);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
@@ -223,17 +222,14 @@ class MailevaApi
         $this->log("user infos", $this->getUserInfos());
 
         $ch = curl_init($this->endpointApi . '/sendings/' . $envoi->getEnvoiId() . '/recipients');
-        /*
-            essaie code
-        */
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $authorization));
         $destinataire = $resiliation->getService();
-        $docrange = [
-            "document_id" => $documentId,
-            "start_page" => "1",
-            "end_page" => "1"
-        ];
+        $object = new \stdClass();
+        $object->document_id = $documentId;
+        $object->start_page = 1;
+        $object->end_page = 1;
+
         $recipient = [
             "custom_id" => $resiliation->getCustomId(),
             "address_line_1" => $destinataire->getName(),
@@ -243,9 +239,8 @@ class MailevaApi
             "address_line_5" => "",
             "address_line_6" => $destinataire->getZipCode() . '  ' . $destinataire->getCity(),
             "country_code" => "FR",
-            "pages_range" => $docrange
+            "documents_override" => [$object]
         ];
-        dump(\json_encode($recipient));
         curl_setopt($ch, CURLOPT_POSTFIELDS, \json_encode($recipient));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
