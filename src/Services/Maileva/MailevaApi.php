@@ -38,22 +38,28 @@ class MailevaApi
 
     private function connect()
     {
+        session_set_cookie_params(3600);
+        session_start();
+        if (!isset($_SESSION['token']) || $_SESSION['token'] === ""){
+            $identifications = [
+                'client_id'   => $this->clientId,
+                'client_secret'   => $this->clientSecret,
+                'grant_type'   => $this->type,
+                'username' => $this->clientUsername,
+                'password' => $this->clientPassword,
+            ];
+            $url = $this->endpoint;
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($identifications));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    
+            $response = json_decode(curl_exec($ch));
 
-        $identifications = [
-            'client_id'   => $this->clientId,
-            'client_secret'   => $this->clientSecret,
-            'grant_type'   => $this->type,
-            'username' => $this->clientUsername,
-            'password' => $this->clientPassword,
-        ];
-        $url = $this->endpoint;
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($identifications));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $response = json_decode(curl_exec($ch));
-        return $response->access_token;
+            $_SESSION['token'] = $response->access_token;
+        }
+        
+        return $_SESSION['token'];
     }
 
     private function initExchange(string $type, string $params): ApiExchange
