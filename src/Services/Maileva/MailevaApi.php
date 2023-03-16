@@ -46,8 +46,8 @@ class MailevaApi
             'username' => $this->clientUsername,
             'password' => $this->clientPassword,
         ];
-
-        $ch = curl_init($this->endpoint);
+        $url = $this->endpoint;
+        $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($identifications));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -165,7 +165,8 @@ class MailevaApi
         $this->log("connet to MailevaApi ... ", '...');
         $this->log("user infos", $this->getUserInfos());
 
-        $ch = curl_init($this->endpointApi . '/sendings/' . $envoi->getEnvoiId());
+        $url = $this->endpointApi . '/sendings/' . $envoi->getEnvoiId() . '/submit';
+        $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $authorization));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -173,7 +174,7 @@ class MailevaApi
         $response = json_decode(curl_exec($ch));
         $this->log("response submitSending", \json_encode($response), true);
         $this->saveExchange($apiExchange, \json_encode($response));
-
+        
         return $response;
     }
 
