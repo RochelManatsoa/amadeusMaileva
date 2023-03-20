@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Service;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -12,6 +13,7 @@ class ServiceFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('slug', HiddenType::class, [])
             ->add('name', null, ['label' => 'Nom du service *'])
             ->add('address', null, ['label' => 'Addresse du service *'])
             ->add('complement', null, ['label' => 'Complément'])

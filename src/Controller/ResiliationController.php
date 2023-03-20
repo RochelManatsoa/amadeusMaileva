@@ -40,6 +40,8 @@ class ResiliationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $resiliation = $form->getData();
+            $service = $serviceRepository->findOneBy(['slug' => $resiliation->getService()->getSlug()]);
+            $resiliation->setService($service);
             $resiliationManager->save($resiliation);
 
             return $this->redirectToRoute('app_resiliation_resume', [
@@ -72,6 +74,7 @@ class ResiliationController extends AbstractController
 
             if ($object instanceof Service) {
                 $newArray[$object->getSlug()] = [
+                    'slug' => $object->getSlug(),
                     'address' => $object->getAddress(),
                     'complement' => $object->getComplement(),
                     'zipCode' => $object->getZipCode(),
@@ -165,6 +168,7 @@ class ResiliationController extends AbstractController
         ResiliationManager $resiliationManager
     ) {
         $file = $resiliationManager->generatePreview($resiliation, $restpdfApi);
+        // $file = $resiliationManager->generateSnappyPreview($resiliation);
 
         return new BinaryFileResponse($file);
         // return $this->render('resiliation/pdf/preview.pdf.twig',[

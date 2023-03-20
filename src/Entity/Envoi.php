@@ -179,9 +179,15 @@ class Envoi
      */
     private $documents;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Recipient::class, mappedBy="send")
+     */
+    private $recipients;
+
     public function __construct()
     {
         $this->documents = new ArrayCollection();
+        $this->recipients = new ArrayCollection();
     }
 
     public function __toString()
@@ -590,6 +596,36 @@ class Envoi
             // set the owning side to null (unless already changed)
             if ($document->getSend() === $this) {
                 $document->setSend(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Recipient>
+     */
+    public function getRecipients(): Collection
+    {
+        return $this->recipients;
+    }
+
+    public function addRecipient(Recipient $recipient): self
+    {
+        if (!$this->recipients->contains($recipient)) {
+            $this->recipients[] = $recipient;
+            $recipient->setSend($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipient(Recipient $recipient): self
+    {
+        if ($this->recipients->removeElement($recipient)) {
+            // set the owning side to null (unless already changed)
+            if ($recipient->getSend() === $this) {
+                $recipient->setSend(null);
             }
         }
 

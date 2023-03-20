@@ -16,12 +16,7 @@ class AddressFormType extends AbstractType
             ->add('name', null, ['label' => 'Addresse *'])
             ->add('complement', null, ['label' => 'Complément'])
             ->add('zipCode', null, ['label' => 'Code postale *'])
-            ->add('city', ChoiceType::class, [
-                'choices' => [
-                    'Sélectionnez' => null
-                ],
-                'label' => 'Ville *'
-                ])
+            ->add('city', null, ['label' => 'Ville *'])
             // ->add('country')
         ;
     }

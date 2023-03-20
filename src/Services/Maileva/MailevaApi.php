@@ -7,7 +7,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\User;
-
+use App\Repository\{DocumentRepository, RecipientRepository};
 
 class MailevaApi
 {
@@ -22,6 +22,8 @@ class MailevaApi
         $clientPassword,
         LoggerInterface $mailevaLogger,
         TokenStorageInterface $tokenStorage,
+        DocumentRepository $documentRepository,
+        RecipientRepository $recipientRepository,
         EntityManagerInterface $em
     ) {
         $this->endpoint = $endpoint;
@@ -33,6 +35,8 @@ class MailevaApi
         $this->clientPassword = $clientPassword;
         $this->mailevaLogger = $mailevaLogger;
         $this->tokenStorage = $tokenStorage;
+        $this->documentRepository = $documentRepository;
+        $this->recipientRepository = $recipientRepository;
         $this->em = $em;
     }
 
@@ -133,9 +137,9 @@ class MailevaApi
     {
 
         $token = $this->connect();
-        $this->log("parameters", \json_encode($params));
+        $this->log("parameters postSending", \json_encode($params, JSON_PRETTY_PRINT));
         $type = __FUNCTION__;
-        $apiExchange = $this->initExchange($type, \json_encode($params));
+        $apiExchange = $this->initExchange($type, \json_encode($params, JSON_PRETTY_PRINT));
         $authorization = 'Authorization: Bearer ' . $token;
 
         $this->log("connet to MailevaApi ... ", '...');
@@ -148,8 +152,8 @@ class MailevaApi
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $response = json_decode(curl_exec($ch));
-        $this->log("response postSending", \json_encode($response), true);
-        $this->saveExchange($apiExchange, \json_encode($response));
+        $this->log("response postSending", \json_encode($response, JSON_PRETTY_PRINT), true);
+        $this->saveExchange($apiExchange, \json_encode($response, JSON_PRETTY_PRINT));
 
         return $response;
     }
@@ -158,9 +162,9 @@ class MailevaApi
     {
 
         $token = $this->connect();
-        $this->log("parameters envoi", \json_encode($envoi));
+        $this->log("parameters submitSending", \json_encode($this->objectToArray($envoi), JSON_PRETTY_PRINT));
         $type = __FUNCTION__;
-        $apiExchange = $this->initExchange($type, \json_encode($envoi));
+        $apiExchange = $this->initExchange($type, \json_encode($this->objectToArray($envoi), JSON_PRETTY_PRINT));
         $authorization = 'Authorization: Bearer ' . $token;
 
         $this->log("connet to MailevaApi ... ", '...');
@@ -172,8 +176,14 @@ class MailevaApi
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $response = json_decode(curl_exec($ch));
-        $this->log("response submitSending", \json_encode($response), true);
-        $this->saveExchange($apiExchange, \json_encode($response));
+        if(null === $response){
+            $response = [
+                'status' => 200,
+                'message' => 'success'
+            ];
+        }
+        $this->log("response submitSending", \json_encode($response, JSON_PRETTY_PRINT), true);
+        $this->saveExchange($apiExchange, \json_encode($response, JSON_PRETTY_PRINT));
 
         return $response;
     }
@@ -182,9 +192,9 @@ class MailevaApi
     {
 
         $token = $this->connect();
-        $this->log("parameters envoi", \json_encode($envoi));
+        $this->log("parameters addDocSending", \json_encode($this->objectToArray($envoi), JSON_PRETTY_PRINT));
         $type = __FUNCTION__;
-        $apiExchange = $this->initExchange($type, \json_encode($envoi));
+        $apiExchange = $this->initExchange($type, \json_encode($this->objectToArray($envoi), JSON_PRETTY_PRINT));
         $authorization = 'Authorization: Bearer ' . $token;
 
         $this->log("connet to MailevaApi ... ", '...');
@@ -194,7 +204,7 @@ class MailevaApi
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: multipart/form-data', $authorization));
         $fields = [
-            'document' => new \CurlFile($resiliation->getGeneratedResiliationPath().'/resiliation.pdf', 'application/pdf'),
+            'document' => curl_file_create($resiliation->getGeneratedResiliationPath().'/resiliation.pdf', 'application/pdf', 'resiliation.pdf'),
             'metadata' => \json_encode([
                 'priority' => 1,
                 'name' => 'lettre_resiliation.pdf',
@@ -204,9 +214,102 @@ class MailevaApi
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $response = json_decode(curl_exec($ch));
-        $this->log("response addDocSending", \json_encode($response), true);
-        $this->saveExchange($apiExchange, \json_encode($response));
+        $this->log("response addDocSending", \json_encode($response, JSON_PRETTY_PRINT), true);
+        $this->saveExchange($apiExchange, \json_encode($response, JSON_PRETTY_PRINT));
 
         return $response;
+    }
+
+    public function addRecipientSending(array $recipient, Envoi $envoi){
+
+        $token = $this->connect();
+        $this->log("parameters addRecipientSending", \json_encode($recipient, JSON_PRETTY_PRINT));
+        $type = __FUNCTION__;
+        $apiExchange = $this->initExchange($type, \json_encode($recipient, JSON_PRETTY_PRINT));
+        $authorization = 'Authorization: Bearer ' . $token;
+
+        $this->log("connet to MailevaApi ... ", '...');
+        $this->log("user infos", $this->getUserInfos());
+        $ch = curl_init($this->endpointApi . '/sendings/'. $envoi->getEnvoiId().'/recipients');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $authorization));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, \json_encode($recipient, JSON_PRETTY_PRINT));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = json_decode(curl_exec($ch));
+        $this->log("response addRecipientSending", \json_encode($response, JSON_PRETTY_PRINT), true);
+        $this->saveExchange($apiExchange, \json_encode($response, JSON_PRETTY_PRINT));
+
+        return $response;
+
+    }
+
+    public function getDocSending($doc, $sendingId){
+
+        $token = $this->connect();
+        $this->log("parameters envoi", \json_encode(['document_id' => $doc, 'sending_id' => $sendingId], JSON_PRETTY_PRINT));
+        $type = __FUNCTION__;
+        $apiExchange = $this->initExchange($type, \json_encode(['document_id' => $doc, 'sending_id' => $sendingId], JSON_PRETTY_PRINT));
+        $authorization = 'Authorization: Bearer ' . $token;
+
+        $this->log("connet to MailevaApi ... ", '...');
+        $this->log("user infos", $this->getUserInfos());
+
+        $ch = curl_init($this->endpointApi . '/sendings/'. $sendingId.'/documents/'.$doc);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $authorization));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = json_decode(curl_exec($ch));
+        $this->log("response $doc, $sendingId", \json_encode($response, JSON_PRETTY_PRINT), true);
+        $this->saveExchange($apiExchange, \json_encode($response, JSON_PRETTY_PRINT));
+
+        return $response;
+
+    }
+
+    private function objectToArray(Envoi $envoi){
+
+        $recipients = $this->recipientRepository->findByEnvoi($envoi->getId());
+        $documents = $this->documentRepository->findByEnvoi($envoi->getId());
+        $recipientsArray = [];
+        $documentsArray = [];
+
+        foreach($recipients as $key => $value){
+            $recipientsArray[$key] = [
+                'recipientId' => $value->getRecipientId(),
+                'addressLine1' => $value->getAddressLine1(),
+                'addressLine4' => $value->getAddressLine4(),
+                'addressLine6' => $value->getAddressLine6(),
+                'documents_override' => $value->getPagesRange(),
+                'status' => $value->getStatus(),
+                'customId' => $value->getCustomId(),
+            ];
+        }
+
+        foreach($documents as $key => $value){
+            $documentsArray[$key] = [
+                'docId' => $value->getDocId(),
+                'priority' => $value->getPriority(),
+                'name' => $value->getName(),
+                'type' => $value->getType(),
+                'pagesCount' => $value->getPagesCount(),
+                'sheetsCount' => $value->getSheetsCount(),
+                'size' => $value->getSize(),
+                'convertedSize' => $value->getConvertedSize(),
+            ];
+        }
+
+        $newArray = [];
+        $newArray['name'] = $envoi->getName();
+        $newArray['envoiId'] = $envoi->getEnvoiId();
+        $newArray['customId'] = $envoi->getCustomId();
+        $newArray['documentCount'] = $envoi->getDocumentCount();
+        $newArray['documents'] = $documentsArray;
+        $newArray['status'] = $envoi->getStatus();
+        $newArray['client'] = $envoi->getSendersAddressLine1();
+        $newArray['adresse'] = $envoi->getSendersAddressLine4().' '. $envoi->getSendersAddressLine6();
+        $newArray['destinataire'] = $recipientsArray;
+
+        return $newArray;
     }
 }
