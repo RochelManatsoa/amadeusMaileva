@@ -103,10 +103,21 @@ class MailevaApi
         return 'annonymous';
     }
 
+    private function getToMaileva()
+    {
+        //session_start();
+        if (!isset($_SESSION['connect-maileva'])) {
+            session_set_cookie_params(3600);
+            session_start();
+            $_SESSION['connect-maileva'] = $this->connect();
+        }
+        return $_SESSION['connect-maileva'];
+    }
+
     public function getAllSendings()
     {
 
-        $token = $this->connect();
+        $token = $this->getToMaileva();
         $authorization = 'Authorization: Bearer ' . $token;
 
         $ch = curl_init($this->endpointApi . '/sendings');
@@ -121,7 +132,7 @@ class MailevaApi
     public function getOneSending(string $sendingId)
     {
 
-        $token = $this->connect();
+        $token = $this->getToMaileva();
         $authorization = 'Authorization: Bearer ' . $token;
 
         $ch = curl_init($this->endpointApi . '/sendings/' . $sendingId);
@@ -136,7 +147,7 @@ class MailevaApi
     public function postSending(array $params)
     {
 
-        $token = $this->connect();
+        $token = $this->getToMaileva();
         $this->log("parameters postSending", \json_encode($params, JSON_PRETTY_PRINT));
         $type = __FUNCTION__;
         $apiExchange = $this->initExchange($type, \json_encode($params, JSON_PRETTY_PRINT));
@@ -161,7 +172,7 @@ class MailevaApi
     public function submitSending(Envoi $envoi)
     {
 
-        $token = $this->connect();
+        $token = $this->getToMaileva();
         $this->log("parameters submitSending", \json_encode($this->objectToArray($envoi), JSON_PRETTY_PRINT));
         $type = __FUNCTION__;
         $apiExchange = $this->initExchange($type, \json_encode($this->objectToArray($envoi), JSON_PRETTY_PRINT));
@@ -170,7 +181,7 @@ class MailevaApi
         $this->log("connet to MailevaApi ... ", '...');
         $this->log("user infos", $this->getUserInfos());
         
-        $ch = curl_init($this->endpointApi . '/sendings/'. $envoi->getEnvoiId());
+        $ch = curl_init($this->endpointApi . '/sendings/'. $envoi->getEnvoiId() .'/submit');
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $authorization));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -191,7 +202,7 @@ class MailevaApi
     public function addDocSending(Envoi $envoi, Resiliation $resiliation)
     {
 
-        $token = $this->connect();
+        $token = $this->getToMaileva();
         $this->log("parameters addDocSending", \json_encode($this->objectToArray($envoi), JSON_PRETTY_PRINT));
         $type = __FUNCTION__;
         $apiExchange = $this->initExchange($type, \json_encode($this->objectToArray($envoi), JSON_PRETTY_PRINT));
@@ -222,7 +233,7 @@ class MailevaApi
 
     public function addRecipientSending(array $recipient, Envoi $envoi){
 
-        $token = $this->connect();
+        $token = $this->getToMaileva();
         $this->log("parameters addRecipientSending", \json_encode($recipient, JSON_PRETTY_PRINT));
         $type = __FUNCTION__;
         $apiExchange = $this->initExchange($type, \json_encode($recipient, JSON_PRETTY_PRINT));
@@ -246,7 +257,7 @@ class MailevaApi
 
     public function getDocSending($doc, $sendingId){
 
-        $token = $this->connect();
+        $token = $this->getToMaileva();
         $this->log("parameters envoi", \json_encode(['document_id' => $doc, 'sending_id' => $sendingId], JSON_PRETTY_PRINT));
         $type = __FUNCTION__;
         $apiExchange = $this->initExchange($type, \json_encode(['document_id' => $doc, 'sending_id' => $sendingId], JSON_PRETTY_PRINT));
