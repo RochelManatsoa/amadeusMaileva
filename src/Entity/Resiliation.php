@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
-
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ResiliationRepository;
 
 /**
  * @ORM\Entity(repositoryClass=ResiliationRepository::class)
+ * @ApiResource()
  */
 class Resiliation
 {

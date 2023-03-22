@@ -35,5 +35,9 @@ yarn-error.log
 
 ###> logs/document ###
 /public/document/
-/public/logs/
+/public/logsMaileva/
 ###< logs/document
+
+###> docker-compose ###
+/docker-compose.yaml
+###< docker-compose
