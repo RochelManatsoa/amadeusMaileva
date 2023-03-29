@@ -7,6 +7,7 @@ use App\Entity\Resiliation;
 use App\Manager\ClientManager;
 use App\Manager\ResiliationManager;
 use App\Repository\ClientRepository;
+use App\Repository\LetterRepository;
 use App\Repository\ResiliationRepository;
 use App\Repository\ServiceRepository;
 use stdClass;
@@ -26,6 +27,14 @@ class ApiController extends AbstractController
     public function index(ServiceRepository $serviceRepository): Response
     {
         return $this->json($serviceRepository->findAll(), 200, [], []);
+    }
+
+    /**
+     * @Route("/api/letters", name="api_letters", methods={"GET"})
+     */
+    public function getLetters(LetterRepository $letterRepository)
+    {
+        return $this->json($letterRepository->findAll(), 200, [], []);
     }
 
     /**
