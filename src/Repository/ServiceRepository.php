@@ -52,6 +52,16 @@ class ServiceRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findOneBySlug($value): ?Service
+   {
+       return $this->createQueryBuilder('s')
+           ->andWhere('s.slug = :val')
+           ->setParameter('val', $value)
+           ->getQuery()
+           ->getOneOrNullResult()
+       ;
+   }
+
 //    /**
 //     * @return Service[] Returns an array of Service objects
 //     */

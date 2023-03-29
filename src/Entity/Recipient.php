@@ -2,13 +2,11 @@
 
 namespace App\Entity;
 
-use apiplatform\Core\Annotation\ApiResource;
 use App\Repository\RecipientRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=RecipientRepository::class)
- * @ApiResource()
  */
 class Recipient
 {
