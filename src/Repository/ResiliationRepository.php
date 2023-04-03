@@ -39,6 +39,16 @@ class ResiliationRepository extends ServiceEntityRepository
         }
     }
 
+    public function findOneByCustomId($value): ?Resiliation
+   {
+       return $this->createQueryBuilder('r')
+           ->andWhere('r.customId = :val')
+           ->setParameter('val', $value)
+           ->getQuery()
+           ->getOneOrNullResult()
+       ;
+   }
+
 //    /**
 //     * @return Resiliation[] Returns an array of Resiliation objects
 //     */

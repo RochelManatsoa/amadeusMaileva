@@ -43,8 +43,8 @@ class StripeApi
                     ],
                 ]
             ],
-            'success_url' => 'https://dev.comment-resilier.info/stripe/success',
-            'cancel_url' => 'https://dev.comment-resilier.info/stripe/failed',
+            'success_url' => 'https://comment-resilier.info/lettre-de-resiliation-internet-mobile-tv/?status=success',
+            'cancel_url' => 'https://comment-resilier.info/lettre-de-resiliation-internet-mobile-tv/?status=failed',
             'metadata' => [
                 'envoi_id' => $envoi->getEnvoiId()
             ],

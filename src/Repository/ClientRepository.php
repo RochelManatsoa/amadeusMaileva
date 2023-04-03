@@ -39,6 +39,19 @@ class ClientRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+    * @return Client[] Returns an array of Client objects
+    */
+   public function findLatest(): array
+   {
+       return $this->createQueryBuilder('c')
+            ->orderBy('c.id', 'DESC')
+            ->setMaxResults(1)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
+
 //    /**
 //     * @return Client[] Returns an array of Client objects
 //     */

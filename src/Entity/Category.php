@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
+ * @ApiResource()
  */
 class Category
 {
@@ -39,6 +41,11 @@ class Category
      */
     private $slug;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Letter::class, mappedBy="category")
+     */
+    private $letters;
+
     public function __toString(): string
     {
         return (string) $this->getName();
@@ -47,6 +54,7 @@ class Category
     public function __construct()
     {
         $this->services = new ArrayCollection();
+        $this->letters = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -116,6 +124,36 @@ class Category
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Letter>
+     */
+    public function getLetters(): Collection
+    {
+        return $this->letters;
+    }
+
+    public function addLetter(Letter $letter): self
+    {
+        if (!$this->letters->contains($letter)) {
+            $this->letters[] = $letter;
+            $letter->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLetter(Letter $letter): self
+    {
+        if ($this->letters->removeElement($letter)) {
+            // set the owning side to null (unless already changed)
+            if ($letter->getCategory() === $this) {
+                $letter->setCategory(null);
+            }
+        }
 
         return $this;
     }
