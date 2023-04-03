@@ -32,6 +32,11 @@ class Letter
      */
     private $name;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="letters")
+     */
+    private $category;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,5 +81,17 @@ class Letter
     public function __toString(): string
     {
         return (string) $this->getName();
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
     }
 }

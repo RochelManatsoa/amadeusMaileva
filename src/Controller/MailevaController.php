@@ -105,7 +105,7 @@ class MailevaController extends AbstractController
         $pageRange = new stdClass();
         $pageRange->document_id = $document->getDocId();
         $pageRange->start_page = "1";
-        $pageRange->end_page = (string)$document->getPagesCount();
+        $pageRange->end_page = (string)$document->getPagesCount() === "0" ? "1" : (string)$document->getPagesCount();
 
         $recipient['documents_override'] = [
             $pageRange

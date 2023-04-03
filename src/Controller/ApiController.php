@@ -2,22 +2,24 @@
 
 namespace App\Controller;
 
+use stdClass;
 use App\Entity\Address;
+use App\Entity\Category;
 use App\Entity\Resiliation;
 use App\Manager\ClientManager;
+use Symfony\Component\Uid\Ulid;
 use App\Manager\ResiliationManager;
 use App\Repository\ClientRepository;
 use App\Repository\LetterRepository;
-use App\Repository\ResiliationRepository;
 use App\Repository\ServiceRepository;
-use stdClass;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\CategoryRepository;
+use App\Repository\ResiliationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Uid\Ulid;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 
 class ApiController extends AbstractController
 {
@@ -120,12 +122,12 @@ class ApiController extends AbstractController
             $resiliation->setCustomId(new Ulid());
 
             $resiliationManager->save($resiliation);
-            
+
             return $this->json($resiliation, 201, [], []);
         } catch (NotEncodableValueException $e) {
             return $this->json([
-                "status"=>400,
-                "message"=>$e->getMessage()
+                "status" => 400,
+                "message" => $e->getMessage()
             ], 400);
         }
     }
@@ -140,8 +142,7 @@ class ApiController extends AbstractController
         ResiliationManager $resiliationManager,
         ServiceRepository $serviceRepository,
         ClientManager $clientManager
-    )
-    {
+    ) {
         $request = json_decode($request->getContent(), true);
 
         $service = $serviceRepository->findOneBySlug($request["service"]["slug"]);
@@ -164,7 +165,7 @@ class ApiController extends AbstractController
         $resiliationClient->setAddress($resiliationClientAddress);
 
         $clientManager->save($resiliationClient);
-        
+
         $resiliation->setNumber($request["number"]);
         $resiliation->setType($request["type"]);
         $resiliation->setDescription($request["description"]);
@@ -173,5 +174,21 @@ class ApiController extends AbstractController
         $resiliationManager->save($resiliation);
 
         return $this->json($resiliation, 201, [], []);
+    }
+
+    /**
+     * @Route("/api/categories", name="api_categories", methods={"GET"})
+     */
+    public function getCategories(CategoryRepository $categoryRepository): Response
+    {
+        return $this->json($categoryRepository->findAll(), 200, [], []);
+    }
+
+    /**
+     * @Route("/api/services/{slug}", name="api_services_by_cat", methods={"GET"})
+     */
+    public function getServiceByCat(ServiceRepository $serviceRepository, Category $category): Response
+    {
+        return $this->json($serviceRepository->findByCategory($category), 200, [], []);
     }
 }
