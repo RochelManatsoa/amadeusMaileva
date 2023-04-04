@@ -191,4 +191,12 @@ class ApiController extends AbstractController
     {
         return $this->json($serviceRepository->findByCategory($category), 200, [], []);
     }
+
+    /**
+     * @Route("/api/letters/{slug}", name="api_letters_by_cat", methods={"GET"})
+     */
+    public function getLettersByCat(LetterRepository $lettersRepository, Category $category): Response
+    {
+        return $this->json($lettersRepository->findByCategory($category), 200, [], []);
+    }
 }
