@@ -83,6 +83,7 @@ class ServiceRepository extends ServiceEntityRepository
             ->addSelect('s')
             ->where('s.name LIKE :val')
             ->setParameter('val', '%' . $str . '%')
+            ->orderBy('s.name', 'ASC')
             ->getQuery()
             ->getResult();
     }
