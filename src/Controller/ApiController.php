@@ -30,6 +30,13 @@ class ApiController extends AbstractController
     {
         return $this->json($serviceRepository->findAll(), 200, [], []);
     }
+    /**
+     * @Route("/api/tag/services/{string}", name="api_services_by_tag", methods={"GET"})
+     */
+    public function tag(ServiceRepository $serviceRepository, $string): Response
+    {
+        return $this->json($serviceRepository->findServiceByTag($string), 200, [], []);
+    }
 
     /**
      * @Route("/api/letters", name="api_letters", methods={"GET"})
@@ -55,7 +62,7 @@ class ApiController extends AbstractController
         $service->address = $resiliationService->getAddress();
         $service->zipCode = $resiliationService->getZipCode();
         $service->city = $resiliationService->getCity();
-        $service->name = $resiliationService->getName();
+        $service->catSlug = $resiliationService->getCategory()->getSlug();
         $service->country = $resiliationService->getCountry();
         $service->category = $resiliationService->getCategory()->getName();
 
@@ -117,7 +124,7 @@ class ApiController extends AbstractController
 
             $resiliation["client"] = "/apip/clients/" . $clientlatest->getId();
 
-            $resiliation = $serializerInterface->deserialize(json_encode($resiliation), Resiliation::class, 'json', []);
+            $resiliation = $serializerInterface->deserialize(json_encode($resiliation, JSON_PRETTY_PRINT), Resiliation::class, 'json', []);
             $resiliation->setCreatedAt(new \DateTime());
             $resiliation->setCustomId(new Ulid());
 
