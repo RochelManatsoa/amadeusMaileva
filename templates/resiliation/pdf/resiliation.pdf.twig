@@ -1,0 +1,99 @@
+<style type="text/css">
+  .size{
+    font-family:Roboto;
+    width:210mm;
+  }
+  .row{
+    display:block;
+  }
+  .invoice1{
+    font-size:12px;
+    display:inline-block;
+    padding:5mm 9mm 5mm 9mm;
+    height:26mm!important;
+    width:77mm!important;
+    position: absolute;
+    top:0;
+    left:0;
+  }
+  .invoice2{
+    font-size:12px;
+    display:inline-block;
+    padding:5mm 9mm 5mm 9mm;
+    margin-left: 104mm;
+    height:35mm!important;
+    width:88mm!important;
+    position: absolute;
+    top:38mm;
+    right:0;
+  }
+  .qr{
+    display:inline-block;
+    height:118mm!important;
+    width:11mm!important;
+    position: absolute;
+    bottom:0;
+    left:0;
+  }
+  .npone{
+    display:block;
+  }
+  .content{
+    font-size:12px;
+    display:block;
+    padding-right:9mm;
+    position: absolute;
+    top:93mm;
+    left:19mm;
+  }
+</style>
+
+<div class="size">
+  <div class="row">
+  <div class="invoice1">
+    <div class="expediteur">
+		<p>
+      {{ resiliation.client.firstName}}, {{ resiliation.client.lastName}}<br>
+      {{ resiliation.client.address.name }}
+      {% if resiliation.client.address.complement is not null %}
+        {{ resiliation.client.address.complement }} <br>
+      {% endif %}
+      {{ resiliation.service.zipCode }} - {{ resiliation.service.city }}<br>
+      {{ resiliation.client.address.zipCode}} - {{ resiliation.client.address.city}}<br>
+      {{ resiliation.client.mobile }}<br>
+      FRANCE
+    </p>
+    </div>
+  </div>
+  <div class="npone">
+  </div>
+  </div>
+  <div class="row">
+  <div class="npone">
+  </div>
+  <div class="invoice2">
+		<p>
+      <strong>{{ resiliation.service.name }}</strong> <br>
+      {{ resiliation.service.address }} <br>
+      {% if resiliation.service.complement is not null %}
+        {{ resiliation.service.complement }} <br>
+      {% endif %}
+      {{ resiliation.service.zipCode }} - {{ resiliation.service.city }} <br>
+      FRANCE
+    </p>
+  </div>
+  </div>
+  <div class="row">
+    <div class="qr">
+    </div>
+
+    <div class="content">
+      <p> A <strong>{{ resiliation.client.address.city |capitalize }}</strong>, {{ resiliation.createdAt | date('d/m/Y') }}</p><br>
+      <p><u><strong>Objet</strong></u> : {{ resiliation.type }}</p>
+      <div>
+        {{ resiliation.description |nl2br }} 
+      </div>
+    </div>
+  </div>
+  
+</div>       

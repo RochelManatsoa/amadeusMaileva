@@ -48,42 +48,53 @@ class ServiceRepository extends ServiceEntityRepository
             ->orderBy('s.id', 'ASC')
             ->setMaxResults(3)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     public function findOneBySlug($value): ?Service
-   {
-       return $this->createQueryBuilder('s')
-           ->andWhere('s.slug = :val')
-           ->setParameter('val', $value)
-           ->getQuery()
-           ->getOneOrNullResult()
-       ;
-   }
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.slug = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 
-   /**
-    * @return Service[] Returns an array of Service objects
-    */
-   public function findByCategory($value): array
-   {
-       return $this->createQueryBuilder('s')
-           ->andWhere('s.category = :val')
-           ->setParameter('val', $value)
-           ->orderBy('s.id', 'ASC')
-           ->setMaxResults(10)
-           ->getQuery()
-           ->getResult()
-       ;
-   }
+    /**
+     * @return Service[] Returns an array of Service objects
+     */
+    public function findByCategory($value): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.category = :val')
+            ->setParameter('val', $value)
+            ->orderBy('s.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 
-//    public function findOneBySomeField($value): ?Service
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * @return Service[] Returns an array of Service objects
+     */
+    public function findServiceByTag($str)
+    {
+
+        return $this->createQueryBuilder('s')
+            ->addSelect('s')
+            ->where('s.name LIKE :val')
+            ->setParameter('val', '%' . $str . '%')
+            ->orderBy('s.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    //    public function findOneBySomeField($value): ?Service
+    //    {
+    //        return $this->createQueryBuilder('s')
+    //            ->andWhere('s.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

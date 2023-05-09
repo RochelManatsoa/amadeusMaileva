@@ -39,6 +39,20 @@ class LetterRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+    * @return Letter[] Returns an array of Letter objects
+    */
+   public function findByCategory($value): array
+   {
+       return $this->createQueryBuilder('l')
+           ->andWhere('l.category = :val')
+           ->setParameter('val', $value)
+           ->orderBy('l.id', 'ASC')
+           ->getQuery()
+           ->getResult()
+       ;
+   }
+
 //    /**
 //     * @return Letter[] Returns an array of Letter objects
 //     */

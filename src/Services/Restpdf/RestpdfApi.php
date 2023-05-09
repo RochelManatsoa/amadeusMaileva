@@ -35,9 +35,14 @@ class RestpdfApi
                 "output" => "data",
                 "html"    => $html,
                 "asdasd" => "A4",
-                // "PdfOptions" => [
-                //     "page_header" => 
-                // ]
+                "pdf_options" => [
+                    "page_margin" => [
+                        "top" => 0,
+                        "bottom" => 0,
+                        "left" => 0,
+                        "right" => 0,
+                    ],
+                ],
             ])
         ]);
 
