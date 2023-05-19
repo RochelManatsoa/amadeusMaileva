@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use App\Entity\User;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -45,5 +46,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Services à résilier', 'fas fa-list', Service::class);
         yield MenuItem::linkToCrud('Catégories', 'fas fa-tag', Category::class);
         yield MenuItem::linkToCrud('Modèles de lettre', 'fas fa-edit', Letter::class);
+        yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
     }
 }
